@@ -7,7 +7,16 @@ cdef extern from "<windows.h>":
 cdef extern from "vxlapi.h":
     ctypedef short XLstatus
     XLstatus xlOpenDriver()
-
+    XLstatus xlCloseDriver()
+    const char *xlGetErrorString(XLstatus err)
 
 def OpenDriver():
     return xlOpenDriver()
+
+def CloseDriver():
+    return xlCloseDriver()
+
+def GetErrorString(XLstatus err):
+    return xlGetErrorString(err)
+
+
