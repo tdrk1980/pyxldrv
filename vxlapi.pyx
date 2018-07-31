@@ -9,7 +9,7 @@ cdef extern from "vxlapi.h":
 
     XLstatus xlGetApplConfig(char *appName, unsigned int appChannel, unsigned int *pHwType, unsigned int *pHwIndex, unsigned int *pHwChannel, unsigned int busType)
     XLstatus xlSetApplConfig(char *appName, unsigned int appChannel, unsigned int hwType, unsigned int hwIndex, unsigned int hwChannel, unsigned int busType)
-
+    XLstatus xlGetDriverConfig(XLdriverConfig *pDriverConfig)
 
 cpdef OpenDriver():
     return xlOpenDriver()
