@@ -135,3 +135,4 @@ cdef extern from "vxlapi.h":
             XL_CHANNEL_CONFIG   channel[XL_CONFIG_MAX_CHANNELS]
     
         ctypedef XL_DRIVER_CONFIG  XLdriverConfig
+

@@ -65,5 +65,23 @@ class Test(unittest.TestCase):
         ret = xl.CloseDriver()
         self.assertEqual(ret, XL_SUCCESS)
 
+    def test_getdriverconfig(self):
+        print(inspect.getframeinfo(inspect.currentframe())[2])
+        from pprint import pprint
+
+        ret = xl.OpenDriver()
+        self.assertEqual(ret, XL_SUCCESS)
+
+        ret = xl.SetApplConfig(appName=bytes("pyxldrv".encode()), appChannel=0, pHwType=[XL_HWTYPE_VIRTUAL], pHwIndex=[0], pHwChannel=[0], busType=XL_BUS_TYPE_CAN)
+        self.assertEqual(ret, XL_SUCCESS)
+
+        driverConfig = {}
+
+        ret = xl.GetDriverConfig(driverConfig)
+        self.assertEqual(ret, XL_SUCCESS)
+        pprint(driverConfig)
+
+        ret = xl.CloseDriver()
+        self.assertEqual(ret, XL_SUCCESS)
 if __name__ == '__main__':
     unittest.main()
