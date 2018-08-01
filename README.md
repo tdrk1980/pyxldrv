@@ -4,23 +4,45 @@
 
 ## What
 
-- xldrv is a wrapper of [Vector XL Driver Library][1] for Python.
-- [Vector XL Driver Library][1] inlclude dlls for C/C++, C# but not for Python, which are used to control Vector's Network interfaces without [CANoe][4]
+- [Vector XL Driver Library][1] inlclude dlls for C/C++, C# but not for Python.
+- pyxldrv wraps dlls for C/C++ as imporable library(vxlapi).
+    - To wrap C/C++ dll, pyxldrv uses Cython.
+    - Cython generates a library for Python("vxlapi.xxxxxx.pyd") from Cython codes(vxlapi.pxd and vxlapi.pyx).
 
+```
+import vxlapi as xl
 
-CANoe : One of the most famous Automotive Network Analyzer 
-[^vec2]:Vector Driver supports "Virtual CAN Bus"(used for unit test). So, wihtout both Network interfaces and CANoe, you can test XLDriverLibrary/xldrv.
+ret = xl.OpenDriver()
+
+...
+
+ret = xl.CloseDriver()
+```
 
 
 ## Installation
 
+### CANoe
+
 - Get XL Driver Library and Vector Driver Setup from [Vector Download-Center][2] and install them.
 
-![xldriver](./images/Vector_XL_Driver_Library.PNG)
+![xldriver](./images/Vector_XL_Driver_Library.png)
 
-![VectorDriverSetup](./images/vector_Driver_Setup.PNG)
+![VectorDriverSetup](./images/Vector_Driver_Setup.png)
 
-- If you used Windows10(64bit), get CANoe 
+- If you use Windows7/8.1/10(64bit), you can use CANoe Demo version for testing.
+    - Check CANoe 11.0 (64 bit)
+    - Click "> Continue". Please note that it requires "contact information".
+
+![CANoe Demo](./images/CANoeDemo.png)
+
+
+## Cython and build tool
+
+- Get Cython via pip at first.
+
+- For Python 3.6
+    - Get [Build Tools for Visual Studio 2017](https://www.visualstudio.com/ja/downloads).
 
 
 ## build command
@@ -28,6 +50,8 @@ CANoe : One of the most famous Automotive Network Analyzer
 ```
 python setup.py build_ext -i --compiler=msvc
 ```
+
+setup.py supports only for 64bit version but you can use
 
 ## basic test
 
