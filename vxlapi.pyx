@@ -11,6 +11,14 @@ cdef extern from "vxlapi.h":
     int XL_BUS_TYPE_J1708
     int XL_BUS_TYPE_ETHERNET
     int XL_BUS_TYPE_A429
+
+    int XL_BUS_PARAMS_CANOPMODE_CAN20
+    int XL_BUS_PARAMS_CANOPMODE_CANFD
+
+    int XL_A429_MSG_CHANNEL_DIR_TX
+    int XL_A429_MSG_CHANNEL_DIR_RX
+
+
     XLstatus xlOpenDriver()
     XLstatus xlCloseDriver()
 
@@ -69,28 +77,101 @@ def GetDriverConfig(dict pDriverConfig):
         ch["channelBusCapabilities"] = driverConfig.channel[i].channelBusCapabilities
         ch["isOnBus"] = driverConfig.channel[i].isOnBus
         ch["connectedBusType"] = driverConfig.channel[i].connectedBusType
+
         busParams = {}
         busParams["busType"] = driverConfig.channel[i].busParams.busType
+
         data = {}
         if busParams["busType"]   == XL_BUS_TYPE_NONE:
             pass
         elif busParams["busType"] == XL_BUS_TYPE_CAN:
-            can = {}
-            can["bitRate"] = driverConfig.channel[i].busParams.data.can.bitRate
-            can["sjw"] = driverConfig.channel[i].busParams.data.can.sjw
-            can["tseg1"] = driverConfig.channel[i].busParams.data.can.tseg1
-            can["tseg2"] = driverConfig.channel[i].busParams.data.can.tseg2
-            can["sam"] = driverConfig.channel[i].busParams.data.can.sam
-            can["outputMode"] = driverConfig.channel[i].busParams.data.can.outputMode
-            can["reserved"] = bytearray([driverConfig.channel[i].busParams.data.can.reserved[j] for j in range(7)])
-            can["canOpMode"] = driverConfig.channel[i].busParams.data.can.canOpMode
-            data["can"] = can
+            if driverConfig.channel[i].busParams.data.can.canOpMode == XL_BUS_PARAMS_CANOPMODE_CAN20:
+                can = {}
+                can["bitRate"]    = driverConfig.channel[i].busParams.data.can.bitRate
+                can["sjw"]        = driverConfig.channel[i].busParams.data.can.sjw
+                can["tseg1"]      = driverConfig.channel[i].busParams.data.can.tseg1
+                can["tseg2"]      = driverConfig.channel[i].busParams.data.can.tseg2
+                can["sam"]        = driverConfig.channel[i].busParams.data.can.sam
+                can["outputMode"] = driverConfig.channel[i].busParams.data.can.outputMode
+                can["reserved[7]"]= bytearray([driverConfig.channel[i].busParams.data.can.reserved[j] for j in range(7)])
+                can["canOpMode"]  = driverConfig.channel[i].busParams.data.can.canOpMode
+                data["can"] = can
+            elif driverConfig.channel[i].busParams.data.can.canOpMode == XL_BUS_PARAMS_CANOPMODE_CANFD:
+                canFD = {}
+                canFD["arbitrationBitRate"] = driverConfig.channel[i].busParams.data.canFD.arbitrationBitRate
+                canFD["sjwAbr"]             = driverConfig.channel[i].busParams.data.canFD.sjwAbr
+                canFD["tseg1Abr"]           = driverConfig.channel[i].busParams.data.canFD.tseg1Abr
+                canFD["tseg2Abr"]           = driverConfig.channel[i].busParams.data.canFD.tseg2Abr
+                canFD["samAbr"]             = driverConfig.channel[i].busParams.data.canFD.samAbr
+                canFD["outputMode"]         = driverConfig.channel[i].busParams.data.canFD.outputMode
+                canFD["sjwDbr"]             = driverConfig.channel[i].busParams.data.canFD.sjwDbr
+                canFD["tseg1Dbr"]           = driverConfig.channel[i].busParams.data.canFD.tseg1Dbr
+                canFD["tseg2Dbr"]           = driverConfig.channel[i].busParams.data.canFD.tseg2Dbr
+                canFD["dataBitRate"]        = driverConfig.channel[i].busParams.data.canFD.dataBitRate
+                canFD["canOpMode"]          = driverConfig.channel[i].busParams.data.canFD.canOpMode
+                data["canFD"] = canFD
+            else:
+                pass
+        elif busParams["busType"] == XL_BUS_TYPE_LIN:
+            pass
+        elif busParams["busType"] == XL_BUS_TYPE_FLEXRAY:
+            flexray = {}
+            flexray["status"]   = driverConfig.channel[i].busParams.data.flexray.status
+            flexray["cfgMode"]  = driverConfig.channel[i].busParams.data.flexray.cfgMode
+            flexray["baudrate"] = driverConfig.channel[i].busParams.data.flexray.baudrate
+            data["flexray"] = flexray
+        elif busParams["busType"] == XL_BUS_TYPE_AFDX:
+            pass
+        elif busParams["busType"] == XL_BUS_TYPE_MOST:
+            most = {}
+            most["activeSpeedGrade"]     = driverConfig.channel[i].busParams.data.most.activeSpeedGrade
+            most["compatibleSpeedGrade"] = driverConfig.channel[i].busParams.data.most.compatibleSpeedGrade
+            most["inicFwVersion"]        = driverConfig.channel[i].busParams.data.most.inicFwVersion
+            data["most"] = most
+        elif busParams["busType"] == XL_BUS_TYPE_DAIO:
+            pass
+        elif busParams["busType"] == XL_BUS_TYPE_J1708:
+            pass
+        elif busParams["busType"] == XL_BUS_TYPE_ETHERNET:
+            ethernet = {}
+            ethernet["macAddr[6]"]         = bytearray([driverConfig.channel[i].busParams.data.ethernet.macAddr[j] for j in range(6)])
+            ethernet["connector"]       = driverConfig.channel[i].busParams.data.ethernet.connector
+            ethernet["phy"]             = driverConfig.channel[i].busParams.data.ethernet.phy
+            ethernet["link"]            = driverConfig.channel[i].busParams.data.ethernet.link
+            ethernet["speed"]           = driverConfig.channel[i].busParams.data.ethernet.speed
+            ethernet["clockMode"]       = driverConfig.channel[i].busParams.data.ethernet.clockMode
+            ethernet["bypass"]          = driverConfig.channel[i].busParams.data.ethernet.bypass
+            data["ethernet"] = ethernet
+        elif busParams["busType"] == XL_BUS_TYPE_A429:
+            a429 = {}
+            a429["res1"] = driverConfig.channel[i].busParams.data.a429.res1
+            a429["channelDirection"] = driverConfig.channel[i].busParams.data.a429.channelDirection
+            dir = {}
+            if a429["channelDirection"] == XL_A429_MSG_CHANNEL_DIR_TX:
+                dir["bitrate"] = driverConfig.channel[i].busParams.data.a429.dir.tx.bitrate
+                dir["parity"]  = driverConfig.channel[i].busParams.data.a429.dir.tx.parity
+                dir["minGap"]  = driverConfig.channel[i].busParams.data.a429.dir.tx.minGap
+            elif driverConfig.channel[i].busParams.data.a429.channelDirection == XL_A429_MSG_CHANNEL_DIR_RX:
+                dir["bitrate"]     = driverConfig.channel[i].busParams.data.a429.dir.rx.bitrate
+                dir["minBitrate"]  = driverConfig.channel[i].busParams.data.a429.dir.rx.minBitrate
+                dir["maxBitrate"]  = driverConfig.channel[i].busParams.data.a429.dir.rx.maxBitrate
+                dir["parity"]      = driverConfig.channel[i].busParams.data.a429.dir.rx.parity
+                dir["minGap"]      = driverConfig.channel[i].busParams.data.a429.dir.rx.minGap
+                dir["autoBaudrate"]= driverConfig.channel[i].busParams.data.a429.dir.rx.autoBaudrate
+            else:
+                pass
+            dir["raw[24]"] = bytearray([driverConfig.channel[i].busParams.data.raw[j] for j in range(24)])
+            a429["dir"]  = dir
+            data["a429"] = a429
         else:
             pass
+        
+        data["raw[28]"]   = bytearray([driverConfig.channel[i].busParams.data.raw[j] for j in range(28)])
         busParams["data"] = data
         ch["busParams"] = busParams
 
         channel.append(ch)
+    
     pDriverConfig["channel"] = channel
 
     return status
