@@ -59,24 +59,25 @@ def GetDriverConfig(dict pDriverConfig):
     
     status = xlGetDriverConfig(&driverConfig)
 
-    pDriverConfig["dllVersion"] = driverConfig.dllVersion
+    pDriverConfig["dllVersion"]   = driverConfig.dllVersion
     pDriverConfig["channelCount"] = driverConfig.channelCount
+    pDriverConfig["reserved[10]"] = [driverConfig.reserved[i] for i in range(10)]
 
     channel = []
     for i in range(driverConfig.channelCount):
         ch = {}
-        ch["name"]    = bytes(driverConfig.channel[i].name)
-        ch["hwType"]  = driverConfig.channel[i].hwType
-        ch["hwIndex"] = driverConfig.channel[i].hwIndex
-        ch["transceiverType"] = driverConfig.channel[i].transceiverType
-        ch["transceiverState"] = driverConfig.channel[i].transceiverState
-        ch["configError"] = driverConfig.channel[i].configError
-        ch["channelIndex"] = driverConfig.channel[i].channelIndex
-        ch["channelMask"] = driverConfig.channel[i].channelMask
-        ch["channelCapabilities"] = driverConfig.channel[i].channelCapabilities
+        ch["name"]                   = bytes(driverConfig.channel[i].name)
+        ch["hwType"]                 = driverConfig.channel[i].hwType
+        ch["hwIndex"]                = driverConfig.channel[i].hwIndex
+        ch["transceiverType"]        = driverConfig.channel[i].transceiverType
+        ch["transceiverState"]       = driverConfig.channel[i].transceiverState
+        ch["configError"]            = driverConfig.channel[i].configError
+        ch["channelIndex"]           = driverConfig.channel[i].channelIndex
+        ch["channelMask"]            = driverConfig.channel[i].channelMask
+        ch["channelCapabilities"]    = driverConfig.channel[i].channelCapabilities
         ch["channelBusCapabilities"] = driverConfig.channel[i].channelBusCapabilities
-        ch["isOnBus"] = driverConfig.channel[i].isOnBus
-        ch["connectedBusType"] = driverConfig.channel[i].connectedBusType
+        ch["isOnBus"]                = driverConfig.channel[i].isOnBus
+        ch["connectedBusType"]       = driverConfig.channel[i].connectedBusType
 
         busParams = {}
         busParams["busType"] = driverConfig.channel[i].busParams.busType
@@ -134,7 +135,7 @@ def GetDriverConfig(dict pDriverConfig):
             pass
         elif busParams["busType"] == XL_BUS_TYPE_ETHERNET:
             ethernet = {}
-            ethernet["macAddr[6]"]         = bytearray([driverConfig.channel[i].busParams.data.ethernet.macAddr[j] for j in range(6)])
+            ethernet["macAddr[6]"]      = bytearray([driverConfig.channel[i].busParams.data.ethernet.macAddr[j] for j in range(6)])
             ethernet["connector"]       = driverConfig.channel[i].busParams.data.ethernet.connector
             ethernet["phy"]             = driverConfig.channel[i].busParams.data.ethernet.phy
             ethernet["link"]            = driverConfig.channel[i].busParams.data.ethernet.link
@@ -160,7 +161,7 @@ def GetDriverConfig(dict pDriverConfig):
                 dir["autoBaudrate"]= driverConfig.channel[i].busParams.data.a429.dir.rx.autoBaudrate
             else:
                 pass
-            dir["raw[24]"] = bytearray([driverConfig.channel[i].busParams.data.raw[j] for j in range(24)])
+            dir["raw[24]"]   = bytearray([driverConfig.channel[i].busParams.data.raw[j] for j in range(24)])
             a429["dir"]  = dir
             data["a429"] = a429
         else:
@@ -169,6 +170,33 @@ def GetDriverConfig(dict pDriverConfig):
         data["raw[28]"]   = bytearray([driverConfig.channel[i].busParams.data.raw[j] for j in range(28)])
         busParams["data"] = data
         ch["busParams"] = busParams
+
+        ch["_doNotUse"]                     = driverConfig.channel[i]._doNotUse
+        ch["driverVersion"]                 = driverConfig.channel[i].driverVersion
+        ch["interfaceVersion"]              = driverConfig.channel[i].interfaceVersion
+        ch["raw_data[10]"]                  = [driverConfig.channel[i].raw_data[j] for j in range(10)]
+        ch["serialNumber"]                  = driverConfig.channel[i].serialNumber
+        ch["articleNumber"]                 = driverConfig.channel[i].articleNumber
+        ch["transceiverName"]               = bytes(driverConfig.channel[i].transceiverName)
+        ch["specialCabFlags"]               = driverConfig.channel[i].specialCabFlags
+        ch["dominantTimeout"]               = driverConfig.channel[i].dominantTimeout
+        ch["dominantRecessiveDelay"]        = driverConfig.channel[i].dominantRecessiveDelay
+        ch["recessiveDominantDelay"]        = driverConfig.channel[i].recessiveDominantDelay
+        ch["connectionInfo"]                = driverConfig.channel[i].connectionInfo
+        ch["currentlyAvailableTimestamps"]  = driverConfig.channel[i].currentlyAvailableTimestamps
+        ch["minimalSupplyVoltage"]          = driverConfig.channel[i].minimalSupplyVoltage
+        ch["maximalSupplyVoltage"]          = driverConfig.channel[i].maximalSupplyVoltage
+        ch["maximalBaudrate"]               = driverConfig.channel[i].maximalBaudrate
+        ch["fpgaCoreCapabilities"]          = driverConfig.channel[i].fpgaCoreCapabilities
+        ch["specialDeviceStatus"]           = driverConfig.channel[i].specialDeviceStatus
+        ch["channelBusActiveCapabilities"]  = driverConfig.channel[i].channelBusActiveCapabilities
+        ch["breakOffset"]                   = driverConfig.channel[i].breakOffset
+        ch["delimiterOffset"]               = driverConfig.channel[i].delimiterOffset
+        ch["reserved[3]"]                      = bytearray([driverConfig.channel[i].reserved[j] for j in range(3)])
+
+
+
+
 
         channel.append(ch)
     
