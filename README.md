@@ -4,15 +4,10 @@
 
 ## What
 
-<<<<<<< HEAD
 - [Vector XL Driver Library][1] inlclude dlls for C/C++, C# but not for Python.
 - pyxldrv wraps dlls for C/C++ as imporable library(vxlapi).
     - To wrap C/C++ dll, pyxldrv uses Cython.
     - Cython generates a library for Python("vxlapi.xxxxxx.pyd") from Cython codes(vxlapi.pxd and vxlapi.pyx).
-=======
-- [Vector XL Driver Library][1] inlclude dlls for C/C++, C# but not for Python
-- 
->>>>>>> 1f1b8fc55689e63532b35018d56c52a9d9c86c00
 
 ```
 import vxlapi as xl
@@ -21,14 +16,8 @@ ret = xl.OpenDriver()
 
 ...
 
-<<<<<<< HEAD
 ret = xl.CloseDriver()
 ```
-=======
-CANoe : One of the most famous Automotive Network Analyzer.
-
-:Vector Driver supports "Virtual CAN Bus"(used for unit test). So, wihtout both Network interfaces and CANoe, you can test XLDriverLibrary/xldrv.
->>>>>>> 1f1b8fc55689e63532b35018d56c52a9d9c86c00
 
 
 ## Installation
