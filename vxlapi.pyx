@@ -64,7 +64,8 @@ def GetDriverConfig(dict pDriverConfig):
     pDriverConfig["reserved[10]"] = [driverConfig.reserved[i] for i in range(10)]
 
     channel = []
-    for i in range(driverConfig.channelCount):
+    cdef int channelCount = driverConfig.channelCount
+    for i in range(channelCount):
         ch = {}
         ch["name"]                   = bytes(driverConfig.channel[i].name)
         ch["hwType"]                 = driverConfig.channel[i].hwType
@@ -86,18 +87,7 @@ def GetDriverConfig(dict pDriverConfig):
         if busParams["busType"]   == XL_BUS_TYPE_NONE:
             pass
         elif busParams["busType"] == XL_BUS_TYPE_CAN:
-            if driverConfig.channel[i].busParams.data.can.canOpMode == XL_BUS_PARAMS_CANOPMODE_CAN20:
-                can = {}
-                can["bitRate"]    = driverConfig.channel[i].busParams.data.can.bitRate
-                can["sjw"]        = driverConfig.channel[i].busParams.data.can.sjw
-                can["tseg1"]      = driverConfig.channel[i].busParams.data.can.tseg1
-                can["tseg2"]      = driverConfig.channel[i].busParams.data.can.tseg2
-                can["sam"]        = driverConfig.channel[i].busParams.data.can.sam
-                can["outputMode"] = driverConfig.channel[i].busParams.data.can.outputMode
-                can["reserved[7]"]= bytearray([driverConfig.channel[i].busParams.data.can.reserved[j] for j in range(7)])
-                can["canOpMode"]  = driverConfig.channel[i].busParams.data.can.canOpMode
-                data["can"] = can
-            elif driverConfig.channel[i].busParams.data.can.canOpMode == XL_BUS_PARAMS_CANOPMODE_CANFD:
+            if driverConfig.channel[i].busParams.data.can.canOpMode == XL_BUS_PARAMS_CANOPMODE_CANFD:
                 canFD = {}
                 canFD["arbitrationBitRate"] = driverConfig.channel[i].busParams.data.canFD.arbitrationBitRate
                 canFD["sjwAbr"]             = driverConfig.channel[i].busParams.data.canFD.sjwAbr
@@ -112,7 +102,16 @@ def GetDriverConfig(dict pDriverConfig):
                 canFD["canOpMode"]          = driverConfig.channel[i].busParams.data.canFD.canOpMode
                 data["canFD"] = canFD
             else:
-                pass
+                can = {}
+                can["bitRate"]    = driverConfig.channel[i].busParams.data.can.bitRate
+                can["sjw"]        = driverConfig.channel[i].busParams.data.can.sjw
+                can["tseg1"]      = driverConfig.channel[i].busParams.data.can.tseg1
+                can["tseg2"]      = driverConfig.channel[i].busParams.data.can.tseg2
+                can["sam"]        = driverConfig.channel[i].busParams.data.can.sam
+                can["outputMode"] = driverConfig.channel[i].busParams.data.can.outputMode
+                can["reserved[7]"]= bytearray([driverConfig.channel[i].busParams.data.can.reserved[j] for j in range(7)])
+                can["canOpMode"]  = driverConfig.channel[i].busParams.data.can.canOpMode
+                data["can"] = can
         elif busParams["busType"] == XL_BUS_TYPE_LIN:
             pass
         elif busParams["busType"] == XL_BUS_TYPE_FLEXRAY:
