@@ -8,10 +8,12 @@ cdef extern from "vxlapi.h":
     cdef:
         DEF XL_MAX_LENGTH          = 31
         DEF XL_CONFIG_MAX_CHANNELS = 64
+        DEF XL_INVALID_PORTHANDLE  = -1
 
         ctypedef short XLstatus
         ctypedef unsigned long long XLuint64
         ctypedef XLuint64 XLaccess
+        ctypedef long XLportHandle
     
         struct st_can:
             unsigned int    bitRate

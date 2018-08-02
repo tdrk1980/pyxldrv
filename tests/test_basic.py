@@ -9,6 +9,10 @@ XL_SUCCESS = 0
 XL_HWTYPE_VIRTUAL = 1
 
 XL_BUS_TYPE_CAN = 0x00000001
+XL_INTERFACE_VERSION_V3 = 3
+XL_INTERFACE_VERSION_V4 = 4 # XL_INTERFACE_VERSION_V4 for MOST,CAN FD, Ethernet, FlexRay, ARINC429
+XL_INTERFACE_VERSION = XL_INTERFACE_VERSION_V3 # XL_INTERFACE_VERSION for CAN, LIN, DAIO.
+XL_INVALID_PORTHANDLE  = -1
 
 class Test(unittest.TestCase):
     # def setUp(self):
@@ -98,6 +102,32 @@ class Test(unittest.TestCase):
 
         access_mask = xl.GetChannelMask(pHwType[0],pHwIndex[0],pHwChannel[0])
         self.assertNotEqual(access_mask,0)
+
+        ret = xl.CloseDriver()
+        self.assertEqual(ret, XL_SUCCESS)
+
+    def test_openport(self):
+        ret = xl.OpenDriver()
+        self.assertEqual(ret, XL_SUCCESS)
+
+        ret = xl.SetApplConfig(appName=bytes("pyxldrv".encode()), appChannel=0, pHwType=[XL_HWTYPE_VIRTUAL], pHwIndex=[0], pHwChannel=[0], busType=XL_BUS_TYPE_CAN)
+        self.assertEqual(ret, XL_SUCCESS)
+            
+        pHwType = [0]
+        pHwIndex = [0]
+        pHwChannel = [0]
+        ret = xl.GetApplConfig(appName=bytes("pyxldrv".encode()), appChannel=0, pHwType=pHwType, pHwIndex=pHwIndex, pHwChannel=pHwChannel, busType=XL_BUS_TYPE_CAN)
+        self.assertEqual(ret, XL_SUCCESS)
+
+        access_mask = xl.GetChannelMask(pHwType[0],pHwIndex[0],pHwChannel[0])
+        self.assertNotEqual(access_mask,0)
+
+        port_handle = [XL_INVALID_PORTHANDLE]
+        permission_mask = [0]
+        rx_queue_size = 2^10
+        ret = xl.OpenPort(port_handle, bytes("pyxldrv".encode()), access_mask, permission_mask, rx_queue_size, XL_INTERFACE_VERSION, XL_BUS_TYPE_CAN)
+        self.assertEqual(ret, XL_SUCCESS)
+        self.assertNotEqual(port_handle, XL_INVALID_PORTHANDLE)
 
         ret = xl.CloseDriver()
         self.assertEqual(ret, XL_SUCCESS)
