@@ -21,6 +21,7 @@ cdef extern from "vxlapi.h":
 
     XLstatus xlOpenDriver()
     XLstatus xlCloseDriver()
+    XLaccess xlGetChannelMask(int hwType, int hwIndex, int hwChannel)
 
     const char *xlGetErrorString(XLstatus err)
 
@@ -33,6 +34,9 @@ cpdef OpenDriver():
 
 cpdef CloseDriver():
     return xlCloseDriver()
+
+cpdef GetChannelMask(int hwType, int hwIndex, int hwChannel):
+    return xlGetChannelMask(hwType, hwIndex, hwChannel)
 
 cpdef GetErrorString(XLstatus err):
     return xlGetErrorString(err)
