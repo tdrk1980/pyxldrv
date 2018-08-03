@@ -88,6 +88,7 @@ class Test(unittest.TestCase):
         self.assertEqual(ret, XL_SUCCESS)
 
     def test_getchannelmask(self):
+        print(inspect.getframeinfo(inspect.currentframe())[2])
         ret = xl.OpenDriver()
         self.assertEqual(ret, XL_SUCCESS)
 
@@ -106,7 +107,8 @@ class Test(unittest.TestCase):
         ret = xl.CloseDriver()
         self.assertEqual(ret, XL_SUCCESS)
 
-    def test_openport(self):
+    def test_openport_closeport(self):
+        print(inspect.getframeinfo(inspect.currentframe())[2])
         ret = xl.OpenDriver()
         self.assertEqual(ret, XL_SUCCESS)
 
@@ -128,6 +130,9 @@ class Test(unittest.TestCase):
         ret = xl.OpenPort(port_handle, bytes("pyxldrv".encode()), access_mask, permission_mask, rx_queue_size, XL_INTERFACE_VERSION, XL_BUS_TYPE_CAN)
         self.assertEqual(ret, XL_SUCCESS)
         self.assertNotEqual(port_handle, XL_INVALID_PORTHANDLE)
+
+        ret = xl.ClosePort(port_handle[0])
+        self.assertEqual(ret, XL_SUCCESS)
 
         ret = xl.CloseDriver()
         self.assertEqual(ret, XL_SUCCESS)
