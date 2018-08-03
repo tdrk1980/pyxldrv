@@ -128,7 +128,7 @@ class Test(unittest.TestCase):
         self.assertNotEqual(access_mask,0)
 
         port_handle = [XL_INVALID_PORTHANDLE]
-        permission_mask = [0]
+        permission_mask = [access_mask]
         rx_queue_size = 2^10
         ret = xl.OpenPort(port_handle, bytes("pyxldrv".encode()), access_mask, permission_mask, rx_queue_size, XL_INTERFACE_VERSION, XL_BUS_TYPE_CAN)
         self.assertEqual(ret, XL_SUCCESS)
