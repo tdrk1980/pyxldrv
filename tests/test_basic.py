@@ -141,7 +141,7 @@ class Test(unittest.TestCase):
         self.assertEqual(ret, XL_SUCCESS)
 
 
-    def test_activate(self):
+    def test_activate_deactivate(self):
         print(inspect.getframeinfo(inspect.currentframe())[2])
         ret = xl.OpenDriver()
         self.assertEqual(ret, XL_SUCCESS)
@@ -167,6 +167,10 @@ class Test(unittest.TestCase):
 
         ret = xl.ActivateChannel(port_handle[0], access_mask, XL_BUS_TYPE_CAN, XL_ACTIVATE_RESET_CLOCK)
         self.assertEqual(ret, XL_SUCCESS)
+
+        ret = xl.DeactivateChannel(port_handle[0], access_mask)
+        self.assertEqual(ret, XL_SUCCESS)
+
 
         ret = xl.ClosePort(port_handle[0])
         self.assertEqual(ret, XL_SUCCESS)

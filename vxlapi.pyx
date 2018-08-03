@@ -26,6 +26,7 @@ cdef extern from "vxlapi.h":
     XLstatus xlClosePort(XLportHandle portHandle)
 
     XLstatus xlActivateChannel(XLportHandle portHandle, XLaccess accessMask, unsigned int busType, unsigned int flags)
+    XLstatus xlDeactivateChannel(XLportHandle portHandle, XLaccess accessMask)
 
     const char *xlGetErrorString(XLstatus err)
 
@@ -58,6 +59,9 @@ cpdef ClosePort(XLportHandle portHandle):
 
 cpdef ActivateChannel(XLportHandle portHandle, XLaccess accessMask, unsigned int busType, unsigned int flags):
     return xlActivateChannel(portHandle, accessMask, busType, flags)
+
+cpdef DeactivateChannel(XLportHandle portHandle, XLaccess accessMask):
+    return xlDeactivateChannel(portHandle, accessMask)
 
 cpdef GetErrorString(XLstatus err):
     return xlGetErrorString(err)
