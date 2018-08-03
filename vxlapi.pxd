@@ -9,6 +9,7 @@ cdef extern from "vxlapi.h":
         DEF XL_MAX_LENGTH          = 31
         DEF XL_CONFIG_MAX_CHANNELS = 64
         DEF XL_INVALID_PORTHANDLE  = -1
+        DEF MAX_MSG_LEN = 8
 
         ctypedef short XLstatus
         ctypedef unsigned long long XLuint64
@@ -139,3 +140,111 @@ cdef extern from "vxlapi.h":
     
         ctypedef XL_DRIVER_CONFIG  XLdriverConfig
 
+        struct s_xl_can_msg:
+            unsigned long     id
+            unsigned short    flags
+            unsigned short    dlc
+            XLuint64          res1
+            unsigned char     data[MAX_MSG_LEN]
+            XLuint64          res2
+        
+        struct s_xl_chip_state:
+            unsigned char busStatus
+            unsigned char txErrorCounter
+            unsigned char rxErrorCounter
+
+        struct s_xl_transceiver:
+            unsigned char  event_reason
+            unsigned char  is_present
+
+        struct s_xl_lin_msg:
+            unsigned char id
+            unsigned char dlc
+            unsigned short flags
+            unsigned char data[8]
+            unsigned char crc
+
+        struct s_xl_lin_sleep:
+            unsigned char flag
+
+        struct s_xl_lin_no_ans:
+            unsigned char id
+
+        struct s_xl_lin_wake_up:
+            unsigned char flag
+            unsigned char unused[3]
+            unsigned int  startOffs
+            unsigned int  width
+
+        struct s_xl_lin_crc_info:
+            unsigned char id
+            unsigned char flags
+
+        union  s_xl_lin_msg_api:
+            s_xl_lin_msg           linMsg
+            s_xl_lin_no_ans        linNoAns
+            s_xl_lin_wake_up       linWakeUp
+            s_xl_lin_sleep         linSleep
+            s_xl_lin_crc_info      linCRCinfo
+
+        ctypedef struct XL_IO_DIGITAL_DATA:
+            unsigned int digitalInputData
+
+        ctypedef struct XL_IO_ANALOG_DATA:
+            unsigned int measuredAnalogData0
+            unsigned int measuredAnalogData1
+            unsigned int measuredAnalogData2
+            unsigned int measuredAnalogData3
+
+        union st_dio_data:
+            XL_IO_DIGITAL_DATA  digital
+            XL_IO_ANALOG_DATA   analog
+
+        struct s_xl_daio_piggy_data:
+            unsigned int daioEvtTag
+            unsigned int triggerType
+            st_dio_data  data
+
+        struct s_xl_daio_data:
+                unsigned short    flags
+                unsigned int      timestamp_correction
+                unsigned char     mask_digital
+                unsigned char     value_digital
+                unsigned char     mask_analog
+                unsigned char     reserved0
+                unsigned short    value_analog[4]
+                unsigned int      pwm_frequency
+                unsigned short    pwm_value
+                unsigned int      reserved1
+                unsigned int      reserved2
+
+        struct s_xl_sync_pulse_ev:
+            unsigned int      triggerSource
+            unsigned int      reserved
+            XLuint64          time
+
+        struct s_xl_sync_pulse:
+            unsigned char     pulseCode
+            XLuint64          time
+
+        union s_xl_tag_data:
+            s_xl_can_msg           msg
+            s_xl_chip_state        chipState
+            s_xl_lin_msg_api       linMsgApi
+            s_xl_sync_pulse        syncPulse
+            s_xl_daio_data         daioData
+            s_xl_transceiver       transceiver
+            s_xl_daio_piggy_data   daioPiggyData
+
+        ctypedef unsigned char  XLeventTag
+        ctypedef struct s_xl_event:
+            XLeventTag             tag
+            unsigned char          chanIndex
+            unsigned short         transId
+            unsigned short         portHandle
+            unsigned char          flags
+            unsigned char          reserved
+            XLuint64               timeStamp
+            s_xl_tag_data          tagData
+        
+        ctypedef s_xl_event XLevent

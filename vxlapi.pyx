@@ -21,12 +21,16 @@ cdef extern from "vxlapi.h":
 
     XLstatus xlOpenDriver()
     XLstatus xlCloseDriver()
+
     XLaccess xlGetChannelMask(int hwType, int hwIndex, int hwChannel)
+
     XLstatus xlOpenPort(XLportHandle* portHandle, char* userName, XLaccess accessMask, XLaccess* permissionMask, unsigned int rxQueueSize, unsigned int xlInterfaceVersion, unsigned int busType)
     XLstatus xlClosePort(XLportHandle portHandle)
 
     XLstatus xlActivateChannel(XLportHandle portHandle, XLaccess accessMask, unsigned int busType, unsigned int flags)
     XLstatus xlDeactivateChannel(XLportHandle portHandle, XLaccess accessMask)
+
+    XLstatus xlCanTransmit(XLportHandle portHandle, XLaccess accessMask, unsigned int* messageCount, void* pMessage)
 
     const char *xlGetErrorString(XLstatus err)
 
@@ -62,6 +66,15 @@ cpdef ActivateChannel(XLportHandle portHandle, XLaccess accessMask, unsigned int
 
 cpdef DeactivateChannel(XLportHandle portHandle, XLaccess accessMask):
     return xlDeactivateChannel(portHandle, accessMask)
+
+cpdef CanTransmit(XLportHandle portHandle, XLaccess accessMask, list messageCount, dict pMessage):
+    cdef XLstatus status = 0
+    cdef unsigned int message_count = messageCount[0]
+    cdef XLevent msg[10]
+    #status = xlCanTransmit(portHandle, accessMask, &message_count, )
+    
+    messageCount[0] = message_count
+    return status
 
 cpdef GetErrorString(XLstatus err):
     return xlGetErrorString(err)
