@@ -30,11 +30,11 @@ ret = xl.CloseDriver()
 
 ![VectorDriverSetup](./images/Vector_Driver_Setup.png)
 
-- If you use Windows7/8.1/10(64bit), you can use CANoe Demo version for testing.
+<!-- - If you use Windows7/8.1/10(64bit), you can use CANoe Demo version for testing.
     - Check CANoe 11.0 (64 bit)
     - Click "> Continue". Please note that it requires "contact information".
 
-![CANoe Demo](./images/CANoeDemo.png)
+![CANoe Demo](./images/CANoeDemo.png) -->
 
 
 ## Cython and build tool
