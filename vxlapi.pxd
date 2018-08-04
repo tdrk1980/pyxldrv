@@ -248,3 +248,6 @@ cdef extern from "vxlapi.h":
             s_xl_tag_data          tagData
         
         ctypedef s_xl_event XLevent
+
+        ctypedef char *XLstringType
+        

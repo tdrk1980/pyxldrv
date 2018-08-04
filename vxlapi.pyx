@@ -33,8 +33,10 @@ cdef extern from "vxlapi.h":
     XLstatus xlDeactivateChannel(XLportHandle portHandle, XLaccess accessMask)
 
     XLstatus xlCanTransmit(XLportHandle portHandle, XLaccess accessMask, unsigned int* messageCount, void* pMessage)
-
-    const char *xlGetErrorString(XLstatus err)
+    XLstatus xlReceive(XLportHandle portHandle, unsigned int *pEventCount, XLevent *pEventList)
+    
+    XLstringType xlGetEventString(XLevent* ev)
+    const char* xlGetErrorString(XLstatus err)
 
     XLstatus xlGetApplConfig(char *appName, unsigned int appChannel, unsigned int *pHwType, unsigned int *pHwIndex, unsigned int *pHwChannel, unsigned int busType)
     XLstatus xlSetApplConfig(char *appName, unsigned int appChannel, unsigned int hwType, unsigned int hwIndex, unsigned int hwChannel, unsigned int busType)
@@ -79,7 +81,7 @@ cpdef CanTransmit(XLportHandle portHandle, XLaccess accessMask, list messageCoun
     XL_TRANSMIT_MSG  = 10
 
     memset(&xlEvent, 0, sizeof(xlEvent))
-    xlEvent.tag                 = XL_TRANSMIT_MSG
+    xlEvent.tag                 = <unsigned char>XL_TRANSMIT_MSG
     xlEvent.tagData.msg.id      = 0x123
     xlEvent.tagData.msg.dlc     = 8
     xlEvent.tagData.msg.flags   = 0
@@ -98,6 +100,18 @@ cpdef CanTransmit(XLportHandle portHandle, XLaccess accessMask, list messageCoun
     return status
 
 
+
+cpdef Receive(XLportHandle portHandle, list pEventCount, list pEventList):
+    cdef XLstatus status = 0
+    cdef XLevent xlEvent
+    cdef unsigned int eventCount = 1
+    memset(&xlEvent, 0, sizeof(xlEvent))
+
+    statsus = xlReceive(portHandle, &eventCount, &xlEvent)
+
+    pEventCount[0] = eventCount
+    pEventList[0] = xlGetEventString(&xlEvent)
+    return status
 
 cpdef GetErrorString(XLstatus err):
     return xlGetErrorString(err)
