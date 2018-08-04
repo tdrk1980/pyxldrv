@@ -45,6 +45,29 @@ ret = xl.CloseDriver()
     - Get [Build Tools for Visual Studio 2017](https://www.visualstudio.com/ja/downloads).
 
 
+## DebugView for Windows
+
+For debugging vxlapi.pyd, [DebugView for Windows](https://technet.microsoft.com/en-us/sysinternals/debugview.aspx) can be used. Because DebugView for Windows shows native side(vxlapi.dll) function's status, "debug print" can be reduced.
+
+See XL Driver Library - Description.pdf
+
+> ### 2.5 Additional Information
+> The XL Driver Library supports debug prints which can be enabled in the Vector
+Hardware Configuration tool. In section General information, select Settings and
+double-click on Configuration flags. Enter the required flag (see table below). To
+activate the flags, restart the PC.
+
+|Flags|Supported Bus Type|
+|:---|:---|
+|0x400000|CAN, LIN, DAIO|
+|0x002000|MOST|
+|0x010000|FlexRay|
+
+
+![configuration](./images/configuration_flags.png)
+
+![Debug_View](./images/Debug_View.png)
+
 ## build command
 
 ```
