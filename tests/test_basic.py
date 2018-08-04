@@ -27,13 +27,12 @@ class Test(unittest.TestCase):
     # def doCleanups(self):
     #     print("cleanup")
 
-    def test_open(self):
+    def test_opendriver_close_driver(self):
         print(inspect.getframeinfo(inspect.currentframe())[2])
+
         ret = xl.OpenDriver()
         self.assertEqual(ret, XL_SUCCESS)
 
-    def test_close(self):
-        print(inspect.getframeinfo(inspect.currentframe())[2])
         ret = xl.CloseDriver()
         self.assertEqual(ret, XL_SUCCESS)
     
@@ -92,6 +91,7 @@ class Test(unittest.TestCase):
 
     def test_getchannelmask(self):
         print(inspect.getframeinfo(inspect.currentframe())[2])
+        
         ret = xl.OpenDriver()
         self.assertEqual(ret, XL_SUCCESS)
 
@@ -112,6 +112,7 @@ class Test(unittest.TestCase):
 
     def test_openport_closeport(self):
         print(inspect.getframeinfo(inspect.currentframe())[2])
+        
         ret = xl.OpenDriver()
         self.assertEqual(ret, XL_SUCCESS)
 
