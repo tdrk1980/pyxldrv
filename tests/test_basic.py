@@ -3,9 +3,10 @@
 import unittest
 import inspect
 import vxlapi as xl
+from pprint import pprint
 
+# Constants
 XL_SUCCESS = 0
-
 XL_HWTYPE_VIRTUAL = 1
 
 XL_BUS_TYPE_CAN = 0x00000001
@@ -17,16 +18,8 @@ XL_INVALID_PORTHANDLE  = -1
 XL_ACTIVATE_NONE        = 0 
 XL_ACTIVATE_RESET_CLOCK = 8
 
-class TestBasic(unittest.TestCase):
-    # def setUp(self):
-    #     print("setUp")
-
-    # def tearDown(self):
-    #     print("tearDown")
-
-    # def doCleanups(self):
-    #     print("cleanup")
-
+# python -m unittest tests.test_basic.TestOpenCloseDriver
+class TestOpenCloseDriver(unittest.TestCase):
     def test_opendriver_close_driver(self):
         print(inspect.getframeinfo(inspect.currentframe())[2])
 
@@ -35,12 +28,17 @@ class TestBasic(unittest.TestCase):
 
         status = xl.CloseDriver()
         self.assertEqual(status, XL_SUCCESS)
-    
+
+# python -m unittest tests.test_basic.TestSetGetAppConfig
+class TestSetGetAppConfig(unittest.TestCase):
+    def setUp(self):
+        xl.OpenDriver()
+
+    def tearDown(self):
+        xl.CloseDriver()
+
     def test_setapplconfig_getapplconfig(self):
         print(inspect.getframeinfo(inspect.currentframe())[2])
-
-        status = xl.OpenDriver()
-        self.assertEqual(status, XL_SUCCESS)
 
         # CAN1 -- virtual can bus1.hwch1
         status = xl.SetApplConfig(appName=bytes("pyxldrv".encode()), appChannel=0, pHwType=[XL_HWTYPE_VIRTUAL], pHwIndex=[0], pHwChannel=[0], busType=XL_BUS_TYPE_CAN)
@@ -68,73 +66,93 @@ class TestBasic(unittest.TestCase):
         self.assertEqual(pHwIndex[0], 0)
         self.assertEqual(pHwChannel[0], 1)
 
-        status = xl.CloseDriver()
-        self.assertEqual(status, XL_SUCCESS)
+# python -m unittest tests.test_basic.TestGetDriverConfig
+class TestGetDriverConfig(unittest.TestCase):
+    def setUp(self):
+        xl.OpenDriver()
+
+        self.appName    = bytes("pyxldrv".encode())
+        self.appChannel = 0
+        self.pHwType    = [XL_HWTYPE_VIRTUAL]
+        self.pHwIndex   = [0]
+        self.pHwChannel = [0]
+        self.busType    = XL_BUS_TYPE_CAN
+
+        xl.SetApplConfig(self.appName, self.appChannel, self.pHwType, self.pHwIndex, self.pHwChannel, self.busType)
+        xl.GetApplConfig(self.appName, self.appChannel, self.pHwType, self.pHwIndex, self.pHwChannel, self.busType)
+
+    def tearDown(self):
+        xl.CloseDriver()
 
     def test_getdriverconfig(self):
         print(inspect.getframeinfo(inspect.currentframe())[2])
-        from pprint import pprint
-
-        status = xl.OpenDriver()
-        self.assertEqual(status, XL_SUCCESS)
-
-        status = xl.SetApplConfig(appName=bytes("pyxldrv".encode()), appChannel=0, pHwType=[XL_HWTYPE_VIRTUAL], pHwIndex=[0], pHwChannel=[0], busType=XL_BUS_TYPE_CAN)
-        self.assertEqual(status, XL_SUCCESS)
 
         driverConfig = {}
         status = xl.GetDriverConfig(driverConfig)
         self.assertEqual(status, XL_SUCCESS)
-        pprint(driverConfig)
+        # pprint(driverConfig)
 
-        status = xl.CloseDriver()
-        self.assertEqual(status, XL_SUCCESS)
+# python -m unittest tests.test_basic.TestGetChannelMask
+class TestGetChannelMask(unittest.TestCase):
+    def setUp(self):
+        xl.OpenDriver()
+
+        self.appName    = bytes("pyxldrv".encode())
+        self.appChannel = 0
+        self.pHwType    = [XL_HWTYPE_VIRTUAL]
+        self.pHwIndex   = [0]
+        self.pHwChannel = [0]
+        self.busType    = XL_BUS_TYPE_CAN
+
+        xl.SetApplConfig(self.appName, self.appChannel, self.pHwType, self.pHwIndex, self.pHwChannel, self.busType)
+        xl.GetApplConfig(self.appName, self.appChannel, self.pHwType, self.pHwIndex, self.pHwChannel, self.busType)
+
+    def tearDown(self):
+        xl.CloseDriver()
 
     def test_getchannelmask(self):
         print(inspect.getframeinfo(inspect.currentframe())[2])
         
-        status = xl.OpenDriver()
-        self.assertEqual(status, XL_SUCCESS)
-
-        status = xl.SetApplConfig(appName=bytes("pyxldrv".encode()), appChannel=0, pHwType=[XL_HWTYPE_VIRTUAL], pHwIndex=[0], pHwChannel=[0], busType=XL_BUS_TYPE_CAN)
-        self.assertEqual(status, XL_SUCCESS)
-            
-        pHwType = [0]
-        pHwIndex = [0]
-        pHwChannel = [0]
-        status = xl.GetApplConfig(appName=bytes("pyxldrv".encode()), appChannel=0, pHwType=pHwType, pHwIndex=pHwIndex, pHwChannel=pHwChannel, busType=XL_BUS_TYPE_CAN)
-        self.assertEqual(status, XL_SUCCESS)
-
-        accessMask = xl.GetChannelMask(pHwType[0],pHwIndex[0],pHwChannel[0])
+        accessMask = xl.GetChannelMask(self.pHwType[0], self.pHwIndex[0], self.pHwChannel[0])
         self.assertNotEqual(accessMask,0)
 
-        status = xl.CloseDriver()
-        self.assertEqual(status, XL_SUCCESS)
+# python -m unittest tests.test_basic.TestOpenClosePort
+class TestOpenClosePort(unittest.TestCase):
+    def setUp(self):
+        xl.OpenDriver()
+
+        self.appName    = bytes("pyxldrv".encode())
+        self.appChannel = 0
+        self.pHwType    = [XL_HWTYPE_VIRTUAL]
+        self.pHwIndex   = [0]
+        self.pHwChannel = [0]
+        self.busType    = XL_BUS_TYPE_CAN
+
+        xl.SetApplConfig(self.appName, self.appChannel, self.pHwType, self.pHwIndex, self.pHwChannel, self.busType)
+        xl.GetApplConfig(self.appName, self.appChannel, self.pHwType, self.pHwIndex, self.pHwChannel, self.busType)
+
+        self.accessMask = xl.GetChannelMask(self.pHwType[0],self.pHwIndex[0],self.pHwChannel[0])
+
+    def tearDown(self):
+        xl.CloseDriver()
 
     def test_openport_closeport(self):
         print(inspect.getframeinfo(inspect.currentframe())[2])
+
+        portHandle      = [XL_INVALID_PORTHANDLE]
+        permissionMask  = [self.accessMask]
+        rxQueueSize     = 2^10
+        appName         = self.appName
+        accessMask      = self.accessMask
+        xlInterfaceVersion = XL_INTERFACE_VERSION
+        busType         = self.busType
+
+        status = xl.OpenPort(portHandle, appName, accessMask, permissionMask, rxQueueSize, xlInterfaceVersion, busType)
         
-        status = xl.OpenDriver()
         self.assertEqual(status, XL_SUCCESS)
-
-        status = xl.SetApplConfig(appName=bytes("pyxldrv".encode()), appChannel=0, pHwType=[XL_HWTYPE_VIRTUAL], pHwIndex=[0], pHwChannel=[0], busType=XL_BUS_TYPE_CAN)
-        self.assertEqual(status, XL_SUCCESS)
-            
-        pHwType = [0]
-        pHwIndex = [0]
-        pHwChannel = [0]
-        status = xl.GetApplConfig(appName=bytes("pyxldrv".encode()), appChannel=0, pHwType=pHwType, pHwIndex=pHwIndex, pHwChannel=pHwChannel, busType=XL_BUS_TYPE_CAN)
-        self.assertEqual(status, XL_SUCCESS)
-
-        accessMask = xl.GetChannelMask(pHwType[0],pHwIndex[0],pHwChannel[0])
-        self.assertNotEqual(accessMask,0)
-
-        portHandle = [XL_INVALID_PORTHANDLE]
-        permission_mask = [accessMask]
-        rx_queue_size = 2^10
-        status = xl.OpenPort(portHandle, bytes("pyxldrv".encode()), accessMask, permission_mask, rx_queue_size, XL_INTERFACE_VERSION, XL_BUS_TYPE_CAN)
-        self.assertEqual(status, XL_SUCCESS)
-        self.assertEqual(accessMask, permission_mask[0])
         self.assertNotEqual(portHandle, XL_INVALID_PORTHANDLE)
+        self.assertEqual(permissionMask[0], self.accessMask)
+
 
         status = xl.ClosePort(portHandle[0])
         self.assertEqual(status, XL_SUCCESS)
@@ -142,137 +160,94 @@ class TestBasic(unittest.TestCase):
         status = xl.CloseDriver()
         self.assertEqual(status, XL_SUCCESS)
 
+# python -m unittest tests.test_basic.TestActivateDeactivate
+class TestActivateDeactivate(unittest.TestCase):
+    def setUp(self):
+        xl.OpenDriver()
+
+        self.appName    = bytes("pyxldrv".encode())
+        self.appChannel = 0
+        self.pHwType    = [XL_HWTYPE_VIRTUAL]
+        self.pHwIndex   = [0]
+        self.pHwChannel = [0]
+        self.busType    = XL_BUS_TYPE_CAN
+
+        xl.SetApplConfig(self.appName, self.appChannel, self.pHwType, self.pHwIndex, self.pHwChannel, self.busType)
+        xl.GetApplConfig(self.appName, self.appChannel, self.pHwType, self.pHwIndex, self.pHwChannel, self.busType)
+
+        self.accessMask = xl.GetChannelMask(self.pHwType[0],self.pHwIndex[0],self.pHwChannel[0])
+
+        self.portHandle     = [0]
+        self.permissionMask = [self.accessMask]
+        self.rxQueueSize    = 2^10
+        self.xlInterfaceVersion = XL_INTERFACE_VERSION
+        xl.OpenPort(self.portHandle, self.appName, self.accessMask, self.permissionMask, self.rxQueueSize, self.xlInterfaceVersion, self.busType)
+
+    def tearDown(self):
+        xl.ClosePort(self.portHandle[0])
+        xl.CloseDriver()
 
     def test_activate_deactivate(self):
         print(inspect.getframeinfo(inspect.currentframe())[2])
-        status = xl.OpenDriver()
+
+        portHandle = self.portHandle[0]
+        accessMask = self.accessMask
+        busType    = self.busType
+        flags      = XL_ACTIVATE_RESET_CLOCK
+
+        status = xl.ActivateChannel(portHandle, accessMask, busType, flags)
         self.assertEqual(status, XL_SUCCESS)
 
-        status = xl.SetApplConfig(appName=bytes("pyxldrv".encode()), appChannel=0, pHwType=[XL_HWTYPE_VIRTUAL], pHwIndex=[0], pHwChannel=[0], busType=XL_BUS_TYPE_CAN)
-        self.assertEqual(status, XL_SUCCESS)
-            
-        pHwType = [0]
-        pHwIndex = [0]
-        pHwChannel = [0]
-        status = xl.GetApplConfig(appName=bytes("pyxldrv".encode()), appChannel=0, pHwType=pHwType, pHwIndex=pHwIndex, pHwChannel=pHwChannel, busType=XL_BUS_TYPE_CAN)
+        status = xl.DeactivateChannel(portHandle, accessMask)
         self.assertEqual(status, XL_SUCCESS)
 
-        accessMask = xl.GetChannelMask(pHwType[0],pHwIndex[0],pHwChannel[0])
-        self.assertNotEqual(accessMask,0)
+class TestCanTransmitReceive(unittest.TestCase):
+    def setUp(self):
+        xl.OpenDriver()
 
-        portHandle = [XL_INVALID_PORTHANDLE]
-        permission_mask = [accessMask]
-        rx_queue_size = 2^10
-        status = xl.OpenPort(portHandle, bytes("pyxldrv".encode()), accessMask, permission_mask, rx_queue_size, XL_INTERFACE_VERSION, XL_BUS_TYPE_CAN)
-        self.assertEqual(status, XL_SUCCESS)
-        self.assertNotEqual(portHandle, XL_INVALID_PORTHANDLE)
+        self.pHwType        = [XL_HWTYPE_VIRTUAL]
+        self.pHwIndex       = [0]
+        self.pHwChannel     = [0]
+        self.busType        = XL_BUS_TYPE_CAN
+        self.appName        = bytes("pyxldrv".encode())
+        xl.SetApplConfig(appName=self.appName, appChannel=0, pHwType=self.pHwType, pHwIndex=self.pHwIndex, pHwChannel=self.pHwChannel, busType=self.busType)
+        xl.GetApplConfig(appName=self.appName, appChannel=0, pHwType=self.pHwType, pHwIndex=self.pHwIndex, pHwChannel=self.pHwChannel, busType=self.busType)
 
-        status = xl.ActivateChannel(portHandle[0], accessMask, XL_BUS_TYPE_CAN, XL_ACTIVATE_RESET_CLOCK)
-        self.assertEqual(status, XL_SUCCESS)
+        self.accessMask = 0
+        self.accessMask = xl.GetChannelMask(self.pHwType[0],self.pHwIndex[0],self.pHwChannel[0])
 
-        status = xl.DeactivateChannel(portHandle[0], accessMask)
-        self.assertEqual(status, XL_SUCCESS)
+        self.portHandle     = [0]
+        self.permissionMask = [self.accessMask]
+        self.rxQueueSize    = 2^10
+        self.xlInterfaceVersion = XL_INTERFACE_VERSION
+        xl.OpenPort(self.portHandle, self.appName, self.accessMask, self.permissionMask, self.rxQueueSize, self.xlInterfaceVersion, self.busType)
 
+        self.flags      = XL_ACTIVATE_RESET_CLOCK
+        xl.ActivateChannel(self.portHandle[0], self.accessMask, self.busType, self.flags)
 
-        status = xl.ClosePort(portHandle[0])
-        self.assertEqual(status, XL_SUCCESS)
+    def tearDown(self):
+        xl.DeactivateChannel(self.portHandle[0], self.accessMask)
+        xl.ClosePort(self.portHandle[0])
+        xl.CloseDriver()
 
-        status = xl.CloseDriver()
-        self.assertEqual(status, XL_SUCCESS)
-
-    def test_openport_closeport(self):
-        print(inspect.getframeinfo(inspect.currentframe())[2])
-        
-        status = xl.OpenDriver()
-        self.assertEqual(status, XL_SUCCESS)
-
-        status = xl.SetApplConfig(appName=bytes("pyxldrv".encode()), appChannel=0, pHwType=[XL_HWTYPE_VIRTUAL], pHwIndex=[0], pHwChannel=[0], busType=XL_BUS_TYPE_CAN)
-        self.assertEqual(status, XL_SUCCESS)
-            
-        pHwType = [0]
-        pHwIndex = [0]
-        pHwChannel = [0]
-        status = xl.GetApplConfig(appName=bytes("pyxldrv".encode()), appChannel=0, pHwType=pHwType, pHwIndex=pHwIndex, pHwChannel=pHwChannel, busType=XL_BUS_TYPE_CAN)
-        self.assertEqual(status, XL_SUCCESS)
-
-        accessMask = xl.GetChannelMask(pHwType[0],pHwIndex[0],pHwChannel[0])
-        self.assertNotEqual(accessMask,0)
-
-        portHandle = [XL_INVALID_PORTHANDLE]
-        permission_mask = [accessMask]
-        rx_queue_size = 2^10
-        status = xl.OpenPort(portHandle, bytes("pyxldrv".encode()), accessMask, permission_mask, rx_queue_size, XL_INTERFACE_VERSION, XL_BUS_TYPE_CAN)
-        self.assertEqual(status, XL_SUCCESS)
-        self.assertNotEqual(portHandle, XL_INVALID_PORTHANDLE)
-
-        status = xl.ClosePort(portHandle[0])
-        self.assertEqual(status, XL_SUCCESS)
-
-        status = xl.CloseDriver()
-        self.assertEqual(status, XL_SUCCESS)
-
-class TestCanTransmit(unittest.TestCase):
-    # def setUp(self):
-    #     print("setUp")
-
-    # def tearDown(self):
-    #     print("tearDown")
-
-    # def doCleanups(self):
-    #     print("cleanup")
     def test_cantransmit_receive(self):
         print(inspect.getframeinfo(inspect.currentframe())[2])
-        status = xl.OpenDriver()
-        self.assertEqual(status, XL_SUCCESS)
-
-        status = xl.SetApplConfig(appName=bytes("pyxldrv".encode()), appChannel=0, pHwType=[XL_HWTYPE_VIRTUAL], pHwIndex=[0], pHwChannel=[0], busType=XL_BUS_TYPE_CAN)
-        self.assertEqual(status, XL_SUCCESS)
-            
-        pHwType = [0]
-        pHwIndex = [0]
-        pHwChannel = [0]
-        status = xl.GetApplConfig(appName=bytes("pyxldrv".encode()), appChannel=0, pHwType=pHwType, pHwIndex=pHwIndex, pHwChannel=pHwChannel, busType=XL_BUS_TYPE_CAN)
-        self.assertEqual(status, XL_SUCCESS)
-
-        accessMask = xl.GetChannelMask(pHwType[0],pHwIndex[0],pHwChannel[0])
-        self.assertNotEqual(accessMask,0)
-
-        portHandle = [XL_INVALID_PORTHANDLE]
-        permission_mask = [accessMask]
-        rx_queue_size = 2^10
-        status = xl.OpenPort(portHandle, bytes("pyxldrv".encode()), accessMask, permission_mask, rx_queue_size, XL_INTERFACE_VERSION, XL_BUS_TYPE_CAN)
-        self.assertEqual(status, XL_SUCCESS)
-        self.assertNotEqual(portHandle, XL_INVALID_PORTHANDLE)
-
-        status = xl.ActivateChannel(portHandle[0], accessMask, XL_BUS_TYPE_CAN, XL_ACTIVATE_RESET_CLOCK)
-        self.assertEqual(status, XL_SUCCESS)
 
         message_count = [1]
-        status = xl.CanTransmit(portHandle[0], accessMask, message_count, {"a":1})
+        status = xl.CanTransmit(self.portHandle[0], self.accessMask, message_count, {"a":1})
         self.assertEqual(status, XL_SUCCESS)
 
         eventcount=[1]
         eventstring=[""]
-        status = xl.Receive(portHandle[0],eventcount,eventstring)
+        status = xl.Receive(self.portHandle[0],eventcount,eventstring)
         self.assertEqual(status, XL_SUCCESS)
         self.assertEqual(eventcount[0], 1)
 
         eventcount=[1]
         eventstring=[""]
-        status = xl.Receive(portHandle[0],eventcount,eventstring)
+        status = xl.Receive(self.portHandle[0],eventcount,eventstring)
         self.assertEqual(status, XL_SUCCESS)
         self.assertEqual(eventcount[0], 0)
-
-        status = xl.DeactivateChannel(portHandle[0], accessMask)
-        self.assertEqual(status, XL_SUCCESS)
-
-
-        status = xl.ClosePort(portHandle[0])
-        self.assertEqual(status, XL_SUCCESS)
-
-        status = xl.CloseDriver()
-        self.assertEqual(status, XL_SUCCESS)
-
 
 if __name__ == '__main__':
     unittest.main()
