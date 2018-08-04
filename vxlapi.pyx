@@ -56,7 +56,7 @@ cpdef GetChannelMask(int hwType, int hwIndex, int hwChannel):
 cpdef OpenPort(list portHandle, char* appName, XLaccess accessMask, list permissionMask, unsigned int rxQueueSize, unsigned int xlInterfaceVersion, unsigned int busType):
     cdef XLstatus status = 0
     cdef XLportHandle port_handle = -1 # XL_INVALID_PORTHANDLE
-    cdef XLaccess permission_mask = 0
+    cdef XLaccess permission_mask = permissionMask[0]
 
     status = xlOpenPort(&port_handle, appName, accessMask, &permission_mask, rxQueueSize, xlInterfaceVersion, busType)
     
