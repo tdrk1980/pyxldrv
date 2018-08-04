@@ -10,15 +10,7 @@ class Test(unittest.TestCase):
     def test_popup(self):
         print(inspect.getframeinfo(inspect.currentframe())[2])
 
-        ret = -1
-
-        ret = xl.OpenDriver()
-        self.assertEqual(ret, XL_SUCCESS)
-
         ret = xl.PopupHwConfig()
-        self.assertEqual(ret, XL_SUCCESS)
-
-        ret = xl.CloseDriver()
         self.assertEqual(ret, XL_SUCCESS)
 
 if __name__ == '__main__':
