@@ -1,5 +1,7 @@
 # *-* encoding: utf-8 *-*
 
+from libc.string cimport memset
+
 cdef extern from "vxlapi.h":
     int XL_BUS_TYPE_NONE
     int XL_BUS_TYPE_CAN
@@ -73,20 +75,24 @@ cpdef CanTransmit(XLportHandle portHandle, XLaccess accessMask, list messageCoun
     cdef XLstatus status = 0
     cdef unsigned int message_count = messageCount[0]
     cdef XLevent xlEvent
-    # msg.
-    # xlEvent.tag                 = XL_TRANSMIT_MSG;
-    # xlEvent.tagData.msg.id      = TxID;
-    # xlEvent.tagData.msg.dlc     = 8;
-    # xlEvent.tagData.msg.flags   = 0;
-    # xlEvent.tagData.msg.data[0] = 1;
-    # xlEvent.tagData.msg.data[1] = 2;
-    # xlEvent.tagData.msg.data[2] = 3;
-    # xlEvent.tagData.msg.data[3] = 4;
-    # xlEvent.tagData.msg.data[4] = 5;
-    # xlEvent.tagData.msg.data[5] = 6;
-    # xlEvent.tagData.msg.data[6] = 7;
-    # xlEvent.tagData.msg.data[7] = 8;
-    #status = xlCanTransmit(portHandle, accessMask, &message_count, )
+
+    XL_TRANSMIT_MSG  = 10
+
+    memset(&xlEvent, 0, sizeof(xlEvent))
+    xlEvent.tag                 = XL_TRANSMIT_MSG
+    xlEvent.tagData.msg.id      = 0x123
+    xlEvent.tagData.msg.dlc     = 8
+    xlEvent.tagData.msg.flags   = 0
+    xlEvent.tagData.msg.data[0] = 1
+    xlEvent.tagData.msg.data[1] = 2
+    xlEvent.tagData.msg.data[2] = 3
+    xlEvent.tagData.msg.data[3] = 4
+    xlEvent.tagData.msg.data[4] = 5
+    xlEvent.tagData.msg.data[5] = 6
+    xlEvent.tagData.msg.data[6] = 7
+    xlEvent.tagData.msg.data[7] = 8
+    
+    status = xlCanTransmit(portHandle, accessMask, &message_count, &xlEvent)
     
     messageCount[0] = message_count
     return status

@@ -17,7 +17,7 @@ XL_INVALID_PORTHANDLE  = -1
 XL_ACTIVATE_NONE        = 0 
 XL_ACTIVATE_RESET_CLOCK = 8
 
-class Test(unittest.TestCase):
+class TestBasic(unittest.TestCase):
     # def setUp(self):
     #     print("setUp")
 
@@ -133,6 +133,7 @@ class Test(unittest.TestCase):
         rx_queue_size = 2^10
         ret = xl.OpenPort(port_handle, bytes("pyxldrv".encode()), access_mask, permission_mask, rx_queue_size, XL_INTERFACE_VERSION, XL_BUS_TYPE_CAN)
         self.assertEqual(ret, XL_SUCCESS)
+        self.assertEqual(access_mask, permission_mask[0])
         self.assertNotEqual(port_handle, XL_INVALID_PORTHANDLE)
 
         ret = xl.ClosePort(port_handle[0])
@@ -179,6 +180,87 @@ class Test(unittest.TestCase):
         ret = xl.CloseDriver()
         self.assertEqual(ret, XL_SUCCESS)
 
+    def test_openport_closeport(self):
+        print(inspect.getframeinfo(inspect.currentframe())[2])
+        
+        ret = xl.OpenDriver()
+        self.assertEqual(ret, XL_SUCCESS)
+
+        ret = xl.SetApplConfig(appName=bytes("pyxldrv".encode()), appChannel=0, pHwType=[XL_HWTYPE_VIRTUAL], pHwIndex=[0], pHwChannel=[0], busType=XL_BUS_TYPE_CAN)
+        self.assertEqual(ret, XL_SUCCESS)
+            
+        pHwType = [0]
+        pHwIndex = [0]
+        pHwChannel = [0]
+        ret = xl.GetApplConfig(appName=bytes("pyxldrv".encode()), appChannel=0, pHwType=pHwType, pHwIndex=pHwIndex, pHwChannel=pHwChannel, busType=XL_BUS_TYPE_CAN)
+        self.assertEqual(ret, XL_SUCCESS)
+
+        access_mask = xl.GetChannelMask(pHwType[0],pHwIndex[0],pHwChannel[0])
+        self.assertNotEqual(access_mask,0)
+
+        port_handle = [XL_INVALID_PORTHANDLE]
+        permission_mask = [access_mask]
+        rx_queue_size = 2^10
+        ret = xl.OpenPort(port_handle, bytes("pyxldrv".encode()), access_mask, permission_mask, rx_queue_size, XL_INTERFACE_VERSION, XL_BUS_TYPE_CAN)
+        self.assertEqual(ret, XL_SUCCESS)
+        self.assertNotEqual(port_handle, XL_INVALID_PORTHANDLE)
+
+        ret = xl.ClosePort(port_handle[0])
+        self.assertEqual(ret, XL_SUCCESS)
+
+        ret = xl.CloseDriver()
+        self.assertEqual(ret, XL_SUCCESS)
+
+class TestCanTransmit(unittest.TestCase):
+    # def setUp(self):
+    #     print("setUp")
+
+    # def tearDown(self):
+    #     print("tearDown")
+
+    # def doCleanups(self):
+    #     print("cleanup")
+    def test_cantransmit(self):
+        print(inspect.getframeinfo(inspect.currentframe())[2])
+        ret = xl.OpenDriver()
+        self.assertEqual(ret, XL_SUCCESS)
+
+        ret = xl.SetApplConfig(appName=bytes("pyxldrv".encode()), appChannel=0, pHwType=[XL_HWTYPE_VIRTUAL], pHwIndex=[0], pHwChannel=[0], busType=XL_BUS_TYPE_CAN)
+        self.assertEqual(ret, XL_SUCCESS)
+            
+        pHwType = [0]
+        pHwIndex = [0]
+        pHwChannel = [0]
+        ret = xl.GetApplConfig(appName=bytes("pyxldrv".encode()), appChannel=0, pHwType=pHwType, pHwIndex=pHwIndex, pHwChannel=pHwChannel, busType=XL_BUS_TYPE_CAN)
+        self.assertEqual(ret, XL_SUCCESS)
+
+        access_mask = xl.GetChannelMask(pHwType[0],pHwIndex[0],pHwChannel[0])
+        self.assertNotEqual(access_mask,0)
+
+        port_handle = [XL_INVALID_PORTHANDLE]
+        permission_mask = [access_mask]
+        rx_queue_size = 2^10
+        ret = xl.OpenPort(port_handle, bytes("pyxldrv".encode()), access_mask, permission_mask, rx_queue_size, XL_INTERFACE_VERSION, XL_BUS_TYPE_CAN)
+        self.assertEqual(ret, XL_SUCCESS)
+        self.assertNotEqual(port_handle, XL_INVALID_PORTHANDLE)
+
+        ret = xl.ActivateChannel(port_handle[0], access_mask, XL_BUS_TYPE_CAN, XL_ACTIVATE_RESET_CLOCK)
+        self.assertEqual(ret, XL_SUCCESS)
+
+        message_count = [1]
+        ret = xl.CanTransmit(port_handle[0], access_mask, message_count, {"a":1})
+        self.assertEqual(ret, XL_SUCCESS)
+
+
+        ret = xl.DeactivateChannel(port_handle[0], access_mask)
+        self.assertEqual(ret, XL_SUCCESS)
+
+
+        ret = xl.ClosePort(port_handle[0])
+        self.assertEqual(ret, XL_SUCCESS)
+
+        ret = xl.CloseDriver()
+        self.assertEqual(ret, XL_SUCCESS)
 
 
 if __name__ == '__main__':
