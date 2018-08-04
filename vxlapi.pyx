@@ -38,6 +38,8 @@ cdef extern from "vxlapi.h":
     XLstatus xlSetApplConfig(char *appName, unsigned int appChannel, unsigned int hwType, unsigned int hwIndex, unsigned int hwChannel, unsigned int busType)
     XLstatus xlGetDriverConfig(XLdriverConfig *pDriverConfig)
 
+    XLstatus xlPopupHwConfig(char* callSign, unsigned int waitForFinish)
+
 cpdef OpenDriver():
     return xlOpenDriver()
 
@@ -70,11 +72,26 @@ cpdef DeactivateChannel(XLportHandle portHandle, XLaccess accessMask):
 cpdef CanTransmit(XLportHandle portHandle, XLaccess accessMask, list messageCount, dict pMessage):
     cdef XLstatus status = 0
     cdef unsigned int message_count = messageCount[0]
-    cdef XLevent msg[10]
+    cdef XLevent xlEvent
+    # msg.
+    # xlEvent.tag                 = XL_TRANSMIT_MSG;
+    # xlEvent.tagData.msg.id      = TxID;
+    # xlEvent.tagData.msg.dlc     = 8;
+    # xlEvent.tagData.msg.flags   = 0;
+    # xlEvent.tagData.msg.data[0] = 1;
+    # xlEvent.tagData.msg.data[1] = 2;
+    # xlEvent.tagData.msg.data[2] = 3;
+    # xlEvent.tagData.msg.data[3] = 4;
+    # xlEvent.tagData.msg.data[4] = 5;
+    # xlEvent.tagData.msg.data[5] = 6;
+    # xlEvent.tagData.msg.data[6] = 7;
+    # xlEvent.tagData.msg.data[7] = 8;
     #status = xlCanTransmit(portHandle, accessMask, &message_count, )
     
     messageCount[0] = message_count
     return status
+
+
 
 cpdef GetErrorString(XLstatus err):
     return xlGetErrorString(err)
@@ -245,4 +262,5 @@ def GetDriverConfig(dict pDriverConfig):
 
     return status
 
-
+def PopupHwConfig(char* callSign=NULL, unsigned int waitForFinish=0):
+    return xlPopupHwConfig(callSign, waitForFinish)
