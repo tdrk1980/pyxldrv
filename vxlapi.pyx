@@ -207,6 +207,15 @@ cdef extern from "vxlapi.h":
 
     XLstatus xlPopupHwConfig(char* callSign, unsigned int waitForFinish)
 
+cpdef enum e_XLevent_type:
+    XL_NO_COMMAND               =  0
+    XL_RECEIVE_MSG              =  1
+    XL_CHIP_STATE               =  4
+    XL_TRANSCEIVER              =  6
+    XL_TIMER                    =  8
+    XL_TRANSMIT_MSG             = 10
+    XL_SYNC_PULSE               = 11
+    XL_APPLICATION_NOTIFICATION = 15
 
 
 cpdef OpenDriver():
@@ -244,6 +253,7 @@ cpdef CanTransmit(XLportHandle portHandle, XLaccess accessMask, list messageCoun
     cdef XLevent xlEvent
 
     if messageCount[0] > 0:
+        message_count = messageCount[0]
         memset(&xlEvent, 0, sizeof(XLevent))
         xlEvent.tag                 = <unsigned char>XL_TRANSMIT_MSG
         xlEvent.tagData.msg.id      = 0x123
@@ -558,8 +568,6 @@ XL_A429_EV_RX_ERROR_AVG_BIT_LENGTH = _XL_A429_EV_RX_ERROR_AVG_BIT_LENGTH
 XL_A429_QUEUE_OVERFLOW = _XL_A429_QUEUE_OVERFLOW
 XL_A429_RX_FIFO_QUEUE_SIZE_MAX = _XL_A429_RX_FIFO_QUEUE_SIZE_MAX
 XL_A429_RX_FIFO_QUEUE_SIZE_MIN = _XL_A429_RX_FIFO_QUEUE_SIZE_MIN
-
-
 
 # driver status
 XL_SUCCESS                       = _XL_SUCCESS
