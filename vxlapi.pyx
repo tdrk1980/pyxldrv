@@ -240,27 +240,26 @@ cpdef DeactivateChannel(XLportHandle portHandle, XLaccess accessMask):
 
 cpdef CanTransmit(XLportHandle portHandle, XLaccess accessMask, list messageCount, dict pMessage):
     cdef XLstatus status = 0
-    cdef unsigned int message_count = messageCount[0]
+    cdef unsigned int message_count = 0
     cdef XLevent xlEvent
 
-    XL_TRANSMIT_MSG  = 10
-
-    memset(&xlEvent, 0, sizeof(xlEvent))
-    xlEvent.tag                 = <unsigned char>XL_TRANSMIT_MSG
-    xlEvent.tagData.msg.id      = 0x123
-    xlEvent.tagData.msg.dlc     = 8
-    xlEvent.tagData.msg.flags   = 0
-    xlEvent.tagData.msg.data[0] = 1
-    xlEvent.tagData.msg.data[1] = 2
-    xlEvent.tagData.msg.data[2] = 3
-    xlEvent.tagData.msg.data[3] = 4
-    xlEvent.tagData.msg.data[4] = 5
-    xlEvent.tagData.msg.data[5] = 6
-    xlEvent.tagData.msg.data[6] = 7
-    xlEvent.tagData.msg.data[7] = 8
-    
-    status = xlCanTransmit(portHandle, accessMask, &message_count, &xlEvent)
-    
+    if messageCount[0] > 0:
+        memset(&xlEvent, 0, sizeof(XLevent))
+        xlEvent.tag                 = <unsigned char>XL_TRANSMIT_MSG
+        xlEvent.tagData.msg.id      = 0x123
+        xlEvent.tagData.msg.dlc     = 8
+        xlEvent.tagData.msg.flags   = 0
+        xlEvent.tagData.msg.data[0] = 1
+        xlEvent.tagData.msg.data[1] = 2
+        xlEvent.tagData.msg.data[2] = 3
+        xlEvent.tagData.msg.data[3] = 4
+        xlEvent.tagData.msg.data[4] = 5
+        xlEvent.tagData.msg.data[5] = 6
+        xlEvent.tagData.msg.data[6] = 7
+        xlEvent.tagData.msg.data[7] = 8
+        
+        status = xlCanTransmit(portHandle, accessMask, &message_count, &xlEvent)
+        
     messageCount[0] = message_count
     return status
 
