@@ -5,10 +5,6 @@ import inspect
 import vxlapi as xl
 from pprint import pprint
 
-
-XL_ACTIVATE_NONE        = 0 
-XL_ACTIVATE_RESET_CLOCK = 8
-
 # python -m unittest tests.test_basic.TestOpenCloseDriver
 class TestOpenCloseDriver(unittest.TestCase):
     def test_opendriver_close_driver(self):
@@ -184,7 +180,7 @@ class TestActivateDeactivate(unittest.TestCase):
         portHandle = self.portHandle[0]
         accessMask = self.accessMask
         busType    = self.busType
-        flags      = XL_ACTIVATE_RESET_CLOCK
+        flags      = xl.XL_ACTIVATE_RESET_CLOCK
 
         status = xl.ActivateChannel(portHandle, accessMask, busType, flags)
         self.assertEqual(status, xl.XL_SUCCESS)
@@ -213,7 +209,7 @@ class TestCanTransmitReceive(unittest.TestCase):
         self.xlInterfaceVersion = xl.XL_INTERFACE_VERSION
         xl.OpenPort(self.portHandle, self.appName, self.accessMask, self.permissionMask, self.rxQueueSize, self.xlInterfaceVersion, self.busType)
 
-        self.flags      = XL_ACTIVATE_RESET_CLOCK
+        self.flags      = xl.XL_ACTIVATE_RESET_CLOCK
         xl.ActivateChannel(self.portHandle[0], self.accessMask, self.busType, self.flags)
 
     def tearDown(self):
