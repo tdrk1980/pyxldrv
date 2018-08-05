@@ -1,0 +1,1148 @@
+
+□検索条件  "#define.*"
+検索対象   "asdfadsf.txt"
+フォルダ   C:\Users\y.tdrk\Desktop
+    (サブフォルダを検索しない)
+    (英大文字小文字を区別しない)
+    (正規表現:bregonig.dll Ver.3.06 with Onigmo 5.15.0)
+    (文字コードセットの自動判別)
+    (一致した行を出力)
+
+
+#define _V_XLAPI_H_
+#define _XL_EXPORT_API   __stdcall
+#define _EXPORT_API      __stdcall
+C:\Users\y.tdrk\Desktop\asdfadsf.txt(29,5)  [SJIS]:     #define _XL_EXPORT_DECL   _XL_EXPORT_API
+C:\Users\y.tdrk\Desktop\asdfadsf.txt(30,5)  [SJIS]:     #define _XL_EXPORT_DEF    _XL_EXPORT_API
+C:\Users\y.tdrk\Desktop\asdfadsf.txt(33,5)  [SJIS]:     #define _XL_EXPORT_DECL  __declspec(dllimport) _XL_EXPORT_API
+C:\Users\y.tdrk\Desktop\asdfadsf.txt(34,5)  [SJIS]:     #define _XL_EXPORT_DEF   __declspec(dllimport) _XL_EXPORT_API
+#define DEFPARAMS XLportHandle portHandle, XLaccess accessMask, XLuserHandle userHandle
+#define DEFFRPARAM  XLportHandle portHandle, XLaccess accessMask 
+C:\Users\y.tdrk\Desktop\asdfadsf.txt(50,5)  [SJIS]:     #define DECL_STDXL_FUNC(apiname, apitype, args)    \
+C:\Users\y.tdrk\Desktop\asdfadsf.txt(55,5)  [SJIS]:     #define DECL_STDXL_FUNC(apiname, apitype, args)    \
+C:\Users\y.tdrk\Desktop\asdfadsf.txt(64,3)  [SJIS]:   #define DECL_STDXL_FUNC(apiname, apitype, args)      \
+C:\Users\y.tdrk\Desktop\asdfadsf.txt(66,3)  [SJIS]:   #define IMPL_STDXL_FUNC(apiname, args)               \
+#define XL_BUS_TYPE_NONE            0x00000000
+#define XL_BUS_TYPE_CAN             0x00000001
+#define XL_BUS_TYPE_LIN             0x00000002
+#define XL_BUS_TYPE_FLEXRAY         0x00000004
+#define XL_BUS_TYPE_AFDX            0x00000008 // former BUS_TYPE_BEAN
+#define XL_BUS_TYPE_MOST            0x00000010
+#define XL_BUS_TYPE_DAIO            0x00000040 // IO cab/piggy
+#define XL_BUS_TYPE_J1708           0x00000100
+#define XL_BUS_TYPE_ETHERNET        0x00001000
+#define XL_BUS_TYPE_A429            0x00002000
+#define XL_TRANSCEIVER_TYPE_NONE                 0x0000
+#define XL_TRANSCEIVER_TYPE_CAN_251              0x0001
+#define XL_TRANSCEIVER_TYPE_CAN_252              0x0002
+#define XL_TRANSCEIVER_TYPE_CAN_DNOPTO           0x0003
+#define XL_TRANSCEIVER_TYPE_CAN_SWC_PROTO        0x0005  //!< Prototype. Driver may latch-up.
+#define XL_TRANSCEIVER_TYPE_CAN_SWC              0x0006
+#define XL_TRANSCEIVER_TYPE_CAN_EVA              0x0007
+#define XL_TRANSCEIVER_TYPE_CAN_FIBER            0x0008
+#define XL_TRANSCEIVER_TYPE_CAN_1054_OPTO        0x000B  //!< 1054 with optical isolation
+#define XL_TRANSCEIVER_TYPE_CAN_SWC_OPTO         0x000C  //!< SWC with optical isolation
+#define XL_TRANSCEIVER_TYPE_CAN_B10011S          0x000D  //!< B10011S truck-and-trailer
+#define XL_TRANSCEIVER_TYPE_CAN_1050             0x000E  //!< 1050
+#define XL_TRANSCEIVER_TYPE_CAN_1050_OPTO        0x000F  //!< 1050 with optical isolation
+#define XL_TRANSCEIVER_TYPE_CAN_1041             0x0010  //!< 1041
+#define XL_TRANSCEIVER_TYPE_CAN_1041_OPTO        0x0011  //!< 1041 with optical isolation
+#define XL_TRANSCEIVER_TYPE_CAN_VIRTUAL          0x0016  //!< Virtual CAN Trasceiver for Virtual CAN Bus Driver
+#define XL_TRANSCEIVER_TYPE_LIN_6258_OPTO        0x0017  //!< Vector LINcab 6258opto with transceiver Infineon TLE6258 
+#define XL_TRANSCEIVER_TYPE_LIN_6259_OPTO        0x0019  //!< Vector LINcab 6259opto with transceiver Infineon TLE6259
+#define XL_TRANSCEIVER_TYPE_DAIO_8444_OPTO       0x001D  //!< Vector IOcab 8444  (8 dig.Inp.; 4 dig.Outp.; 4 ana.Inp.; 4 ana.Outp.)
+#define XL_TRANSCEIVER_TYPE_CAN_1041A_OPTO       0x0021  //!< 1041A with optical isolation
+#define XL_TRANSCEIVER_TYPE_LIN_6259_MAG         0x0023  //!< LIN transceiver 6259, with transceiver Infineon TLE6259, magnetically isolated, stress functionality
+#define XL_TRANSCEIVER_TYPE_LIN_7259_MAG         0x0025  //!< LIN transceiver 7259, with transceiver Infineon TLE7259, magnetically isolated, stress functionality
+#define XL_TRANSCEIVER_TYPE_LIN_7269_MAG         0x0027  //!< LIN transceiver 7269, with transceiver Infineon TLE7269, magnetically isolated, stress functionality
+#define XL_TRANSCEIVER_TYPE_CAN_1054_MAG         0x0033  //!< TJA1054, magnetically isolated, with selectable termination resistor (via 4th IO line) 
+#define XL_TRANSCEIVER_TYPE_CAN_251_MAG          0x0035  //!< 82C250/251 or equivalent, magnetically isolated
+#define XL_TRANSCEIVER_TYPE_CAN_1050_MAG         0x0037  //!< TJA1050, magnetically isolated
+#define XL_TRANSCEIVER_TYPE_CAN_1040_MAG         0x0039  //!< TJA1040, magnetically isolated
+#define XL_TRANSCEIVER_TYPE_CAN_1041A_MAG        0x003B  //!< TJA1041A, magnetically isolated
+#define XL_TRANSCEIVER_TYPE_TWIN_CAN_1041A_MAG   0x0080  //!< TWINcab with two TJA1041, magnetically isolated
+#define XL_TRANSCEIVER_TYPE_TWIN_LIN_7269_MAG    0x0081  //!< TWINcab with two 7259, Infineon TLE7259, magnetically isolated, stress functionality
+#define XL_TRANSCEIVER_TYPE_TWIN_CAN_1041AV2_MAG 0x0082  //!< TWINcab with two TJA1041, magnetically isolated
+#define XL_TRANSCEIVER_TYPE_TWIN_CAN_1054_1041A_MAG  0x0083  //!< TWINcab with TJA1054A and TJA1041A with magnetic isolation
+#define XL_TRANSCEIVER_TYPE_PB_CAN_251           0x0101
+#define XL_TRANSCEIVER_TYPE_PB_CAN_1054          0x0103
+#define XL_TRANSCEIVER_TYPE_PB_CAN_251_OPTO      0x0105
+#define XL_TRANSCEIVER_TYPE_PB_CAN_SWC           0x010B
+#define XL_TRANSCEIVER_TYPE_PB_CAN_1054_OPTO     0x0115
+#define XL_TRANSCEIVER_TYPE_PB_CAN_SWC_OPTO      0x0117
+#define XL_TRANSCEIVER_TYPE_PB_CAN_TT_OPTO       0x0119
+#define XL_TRANSCEIVER_TYPE_PB_CAN_1050          0x011B
+#define XL_TRANSCEIVER_TYPE_PB_CAN_1050_OPTO     0x011D
+#define XL_TRANSCEIVER_TYPE_PB_CAN_1041          0x011F
+#define XL_TRANSCEIVER_TYPE_PB_CAN_1041_OPTO     0x0121
+#define XL_TRANSCEIVER_TYPE_PB_LIN_6258_OPTO     0x0129 //!< LIN piggy back with transceiver Infineon TLE6258
+#define XL_TRANSCEIVER_TYPE_PB_LIN_6259_OPTO     0x012B //!< LIN piggy back with transceiver Infineon TLE6259
+#define XL_TRANSCEIVER_TYPE_PB_LIN_6259_MAG      0x012D //!< LIN piggy back with transceiver Infineon TLE6259, magnetically isolated, stress functionality
+#define XL_TRANSCEIVER_TYPE_PB_CAN_1041A_OPTO    0x012F //!< CAN transceiver 1041A
+#define XL_TRANSCEIVER_TYPE_PB_LIN_7259_MAG      0x0131 //!< LIN piggy back with transceiver Infineon TLE7259, magnetically isolated, stress functionality
+#define XL_TRANSCEIVER_TYPE_PB_LIN_7269_MAG      0x0133 //!< LIN piggy back with transceiver Infineon TLE7269, magnetically isolated, stress functionality
+#define XL_TRANSCEIVER_TYPE_PB_CAN_251_MAG       0x0135 //!< 82C250/251 or compatible, magnetically isolated
+#define XL_TRANSCEIVER_TYPE_PB_CAN_1050_MAG      0x0136 //!< TJA 1050, magnetically isolated
+#define XL_TRANSCEIVER_TYPE_PB_CAN_1040_MAG      0x0137 //!< TJA 1040, magnetically isolated
+#define XL_TRANSCEIVER_TYPE_PB_CAN_1041A_MAG     0x0138 //!< TJA 1041A, magnetically isolated
+#define XL_TRANSCEIVER_TYPE_PB_DAIO_8444_OPTO    0x0139 //!< optically isolated IO piggy
+#define XL_TRANSCEIVER_TYPE_PB_CAN_1054_MAG      0x013B //!< TJA1054, magnetically isolated, with selectable termination resistor (via 4th IO line) 
+#define XL_TRANSCEIVER_TYPE_CAN_1051_CAP_FIX     0x013C //!< TJA1051 - fixed transceiver on e.g. 16xx/8970
+#define XL_TRANSCEIVER_TYPE_DAIO_1021_FIX        0x013D //!< Onboard IO of VN1630/VN1640 
+#define XL_TRANSCEIVER_TYPE_LIN_7269_CAP_FIX     0x013E //!< TLE7269 - fixed transceiver on 1611
+#define XL_TRANSCEIVER_TYPE_PB_CAN_1051_CAP      0x013F //!< TJA 1051, capacitive isolated
+#define XL_TRANSCEIVER_TYPE_PB_CAN_SWC_7356_CAP  0x0140 //!< Single Wire NCV7356, capacitive isolated
+#define XL_TRANSCEIVER_TYPE_PB_CAN_1055_CAP      0x0141 //!< TJA1055, capacitive isolated, with selectable termination resistor (via 4th IO line) 
+#define XL_TRANSCEIVER_TYPE_PB_CAN_1057_CAP      0x0142 //!< TJA 1057, capacitive isolated
+#define XL_TRANSCEIVER_TYPE_A429_HOLT8596_FIX    0x0143 //!< Onboard HOLT 8596 TX transceiver on VN0601
+#define XL_TRANSCEIVER_TYPE_A429_HOLT8455_FIX    0x0144 //!< Onboard HOLT 8455 RX transceiver on VN0601
+#define XL_TRANSCEIVER_TYPE_PB_FR_1080           0x0201 //!< TJA 1080
+#define XL_TRANSCEIVER_TYPE_PB_FR_1080_MAG       0x0202 //!< TJA 1080 magnetically isolated piggy
+#define XL_TRANSCEIVER_TYPE_PB_FR_1080A_MAG      0x0203 //!< TJA 1080A magnetically isolated piggy
+#define XL_TRANSCEIVER_TYPE_PB_FR_1082_CAP       0x0204 //!< TJA 1082 capacitive isolated piggy
+#define XL_TRANSCEIVER_TYPE_PB_FRC_1082_CAP      0x0205 //!< TJA 1082 capacitive isolated piggy with CANpiggy form factor
+#define XL_TRANSCEIVER_TYPE_FR_1082_CAP_FIX      0x0206 //!< TJA 1082 capacitive isolated piggy fixed transceiver - e.g. 7610
+#define XL_TRANSCEIVER_TYPE_MOST150_ONBOARD      0x0220 //!< Onboard MOST150 transceiver of VN2640
+#define XL_TRANSCEIVER_TYPE_ETH_BCM54810_FIX        0x0230 //!< Onboard Broadcom Ethernet PHY on VN5610 and VX0312
+#define XL_TRANSCEIVER_TYPE_ETH_AR8031_FIX          0x0231 //!< Onboard Atheros Ethernet PHY
+#define XL_TRANSCEIVER_TYPE_ETH_BCM89810_FIX        0x0232 //!< Onboard Broadcom Ethernet PHY
+#define XL_TRANSCEIVER_TYPE_ETH_TJA1100_FIX         0x0233 //!< Onboard NXP Ethernet PHY
+#define XL_TRANSCEIVER_TYPE_ETH_BCM54810_89811_FIX  0x0234 //!< Onboard Broadcom Ethernet PHYs (e.g. VN5610A - BCM54810: RJ45, BCM89811: DSUB)
+#define XL_TRANSCEIVER_TYPE_PB_DAIO_8642            0x0280 //!< Iopiggy for VN8900
+#define XL_TRANSCEIVER_TYPE_DAIO_AL_ONLY            0x028f //!< virtual piggy type for activation line only (e.g. VN8810ini)
+#define XL_TRANSCEIVER_TYPE_DAIO_1021_FIX_WITH_AL   0x0290 //!< On board IO with Activation Line (e.g. VN5640) 
+#define XL_TRANSCEIVER_TYPE_DAIO_AL_WU              0x0291 //!< virtual piggy type for activation line and WakeUp Line only (e.g. VN5610A)
+#define XL_TRANSCEIVER_LINEMODE_NA               ((unsigned int)0x0000)
+#define XL_TRANSCEIVER_LINEMODE_TWO_LINE         ((unsigned int)0x0001)
+#define XL_TRANSCEIVER_LINEMODE_CAN_H            ((unsigned int)0x0002)
+#define XL_TRANSCEIVER_LINEMODE_CAN_L            ((unsigned int)0x0003)
+#define XL_TRANSCEIVER_LINEMODE_SWC_SLEEP        ((unsigned int)0x0004)  //!< SWC Sleep Mode.
+#define XL_TRANSCEIVER_LINEMODE_SWC_NORMAL       ((unsigned int)0x0005)  //!< SWC Normal Mode.
+#define XL_TRANSCEIVER_LINEMODE_SWC_FAST         ((unsigned int)0x0006)  //!< SWC High-Speed Mode.
+#define XL_TRANSCEIVER_LINEMODE_SWC_WAKEUP       ((unsigned int)0x0007)  //!< SWC Wakeup Mode.
+#define XL_TRANSCEIVER_LINEMODE_SLEEP            ((unsigned int)0x0008)
+#define XL_TRANSCEIVER_LINEMODE_NORMAL           ((unsigned int)0x0009)
+#define XL_TRANSCEIVER_LINEMODE_STDBY            ((unsigned int)0x000a)  //!< Standby for those who support it
+#define XL_TRANSCEIVER_LINEMODE_TT_CAN_H         ((unsigned int)0x000b)  //!< truck & trailer: operating mode single wire using CAN high
+#define XL_TRANSCEIVER_LINEMODE_TT_CAN_L         ((unsigned int)0x000c)  //!< truck & trailer: operating mode single wire using CAN low
+#define XL_TRANSCEIVER_LINEMODE_EVA_00           ((unsigned int)0x000d)  //!< CANcab Eva 
+#define XL_TRANSCEIVER_LINEMODE_EVA_01           ((unsigned int)0x000e)  //!< CANcab Eva 
+#define XL_TRANSCEIVER_LINEMODE_EVA_10           ((unsigned int)0x000f)  //!< CANcab Eva 
+#define XL_TRANSCEIVER_LINEMODE_EVA_11           ((unsigned int)0x0010)  //!< CANcab Eva 
+#define XL_TRANSCEIVER_STATUS_PRESENT            ((unsigned int)0x0001)
+#define XL_TRANSCEIVER_STATUS_POWER_GOOD         ((unsigned int)0x0010)
+#define XL_TRANSCEIVER_STATUS_EXT_POWER_GOOD     ((unsigned int)0x0020)
+#define XL_TRANSCEIVER_STATUS_NOT_SUPPORTED      ((unsigned int)0x0040)
+
+#define XL_RECEIVE_MSG                          ((unsigned short)0x0001)
+#define XL_CHIP_STATE                           ((unsigned short)0x0004)
+#define XL_TRANSCEIVER_INFO                     ((unsigned short)0x0006)
+#define XL_TRANSCEIVER                             (XL_TRANSCEIVER_INFO)
+#define XL_TIMER_EVENT                          ((unsigned short)0x0008)
+#define XL_TIMER                                        (XL_TIMER_EVENT)
+#define XL_TRANSMIT_MSG                         ((unsigned short)0x000A)
+#define XL_SYNC_PULSE                           ((unsigned short)0x000B)
+#define XL_APPLICATION_NOTIFICATION             ((unsigned short)0x000F)  
+#define LIN_MSG                                 ((unsigned short)0x0014)
+#define LIN_ERRMSG                              ((unsigned short)0x0015)
+#define LIN_SYNCERR                             ((unsigned short)0x0016)
+#define LIN_NOANS                               ((unsigned short)0x0017)
+#define LIN_WAKEUP                              ((unsigned short)0x0018)
+#define LIN_SLEEP                               ((unsigned short)0x0019)
+#define LIN_CRCINFO                             ((unsigned short)0x001A)
+#define RECEIVE_DAIO_DATA                       ((unsigned short)0x0020)    //!< D/A IO data message
+#define XL_FR_START_CYCLE                       ((unsigned short)0x0080)
+#define XL_FR_RX_FRAME                          ((unsigned short)0x0081)
+#define XL_FR_TX_FRAME                          ((unsigned short)0x0082)
+#define XL_FR_TXACK_FRAME                       ((unsigned short)0x0083)
+#define XL_FR_INVALID_FRAME                     ((unsigned short)0x0084)
+#define XL_FR_WAKEUP                            ((unsigned short)0x0085)
+#define XL_FR_SYMBOL_WINDOW                     ((unsigned short)0x0086)
+#define XL_FR_ERROR                             ((unsigned short)0x0087)
+C:\Users\y.tdrk\Desktop\asdfadsf.txt(365,3)  [SJIS]:   #define XL_FR_ERROR_POC_MODE                     ((unsigned char)0x01)
+C:\Users\y.tdrk\Desktop\asdfadsf.txt(366,3)  [SJIS]:   #define XL_FR_ERROR_SYNC_FRAMES_BELOWMIN         ((unsigned char)0x02)
+C:\Users\y.tdrk\Desktop\asdfadsf.txt(367,3)  [SJIS]:   #define XL_FR_ERROR_SYNC_FRAMES_OVERLOAD         ((unsigned char)0x03)
+C:\Users\y.tdrk\Desktop\asdfadsf.txt(368,3)  [SJIS]:   #define XL_FR_ERROR_CLOCK_CORR_FAILURE           ((unsigned char)0x04)
+C:\Users\y.tdrk\Desktop\asdfadsf.txt(369,3)  [SJIS]:   #define XL_FR_ERROR_NIT_FAILURE                  ((unsigned char)0x05)
+C:\Users\y.tdrk\Desktop\asdfadsf.txt(370,3)  [SJIS]:   #define XL_FR_ERROR_CC_ERROR                     ((unsigned char)0x06)
+#define XL_FR_STATUS                            ((unsigned short)0x0088)
+#define XL_FR_NM_VECTOR                         ((unsigned short)0x008A)
+#define XL_FR_TRANCEIVER_STATUS                 ((unsigned short)0x008B)
+#define XL_FR_SPY_FRAME                         ((unsigned short)0x008E)
+#define XL_FR_SPY_SYMBOL                        ((unsigned short)0x008F)
+#define XL_MOST_START                                             0x0101
+#define XL_MOST_STOP                                              0x0102
+#define XL_MOST_EVENTSOURCES                                      0x0103
+#define XL_MOST_ALLBYPASS                                         0x0107
+#define XL_MOST_TIMINGMODE                                        0x0108
+#define XL_MOST_FREQUENCY                                         0x0109
+#define XL_MOST_REGISTER_BYTES                                    0x010a
+#define XL_MOST_REGISTER_BITS                                     0x010b
+#define XL_MOST_SPECIAL_REGISTER                                  0x010c
+#define XL_MOST_CTRL_RX_SPY                                       0x010d
+#define XL_MOST_CTRL_RX_OS8104                                    0x010e
+#define XL_MOST_CTRL_TX                                           0x010f
+#define XL_MOST_ASYNC_MSG                                         0x0110
+#define XL_MOST_ASYNC_TX                                          0x0111
+#define XL_MOST_SYNC_ALLOCTABLE                                   0x0112
+#define XL_MOST_SYNC_VOLUME_STATUS                                0x0116
+#define XL_MOST_RXLIGHT                                           0x0117
+#define XL_MOST_TXLIGHT                                           0x0118
+#define XL_MOST_LOCKSTATUS                                        0x0119
+#define XL_MOST_ERROR                                             0x011a
+#define XL_MOST_CTRL_RXBUFFER                                     0x011c
+#define XL_MOST_SYNC_TX_UNDERFLOW                                 0x011d
+#define XL_MOST_SYNC_RX_OVERFLOW                                  0x011e
+#define XL_MOST_CTRL_SYNC_AUDIO                                   0x011f
+#define XL_MOST_SYNC_MUTE_STATUS                                  0x0120
+#define XL_MOST_GENLIGHTERROR                                     0x0121
+#define XL_MOST_GENLOCKERROR                                      0x0122
+#define XL_MOST_TXLIGHT_POWER                                     0x0123
+#define XL_MOST_CTRL_BUSLOAD                                      0x0126
+#define XL_MOST_ASYNC_BUSLOAD                                     0x0127
+#define XL_MOST_CTRL_SYNC_AUDIO_EX                                0x012a
+#define XL_MOST_TIMINGMODE_SPDIF                                  0x012b
+#define XL_MOST_STREAM_STATE                                      0x012c
+#define XL_MOST_STREAM_BUFFER                                     0x012d
+#define XL_START                                ((unsigned short)0x0200)
+#define XL_STOP                                 ((unsigned short)0x0201)
+#define XL_MOST150_EVENT_SOURCE                 ((unsigned short)0x0203)
+#define XL_MOST150_DEVICE_MODE                  ((unsigned short)0x0204)
+#define XL_MOST150_SYNC_ALLOC_INFO              ((unsigned short)0x0205)
+#define XL_MOST150_FREQUENCY                    ((unsigned short)0x0206)
+#define XL_MOST150_SPECIAL_NODE_INFO            ((unsigned short)0x0207)
+#define XL_MOST150_CTRL_RX                      ((unsigned short)0x0208)
+#define XL_MOST150_CTRL_TX_ACK                  ((unsigned short)0x0209)
+#define XL_MOST150_ASYNC_SPY                    ((unsigned short)0x020A)
+#define XL_MOST150_ASYNC_RX                     ((unsigned short)0x020B)
+#define XL_MOST150_SYNC_VOLUME_STATUS           ((unsigned short)0x020D)
+#define XL_MOST150_TX_LIGHT                     ((unsigned short)0x020E)
+#define XL_MOST150_RXLIGHT_LOCKSTATUS           ((unsigned short)0x020F)
+#define XL_MOST150_ERROR                        ((unsigned short)0x0210)
+#define XL_MOST150_CONFIGURE_RX_BUFFER          ((unsigned short)0x0211)
+#define XL_MOST150_CTRL_SYNC_AUDIO              ((unsigned short)0x0212)
+#define XL_MOST150_SYNC_MUTE_STATUS             ((unsigned short)0x0213)
+#define XL_MOST150_LIGHT_POWER                  ((unsigned short)0x0214)
+#define XL_MOST150_GEN_LIGHT_ERROR              ((unsigned short)0x0215)
+#define XL_MOST150_GEN_LOCK_ERROR               ((unsigned short)0x0216)
+#define XL_MOST150_CTRL_BUSLOAD                 ((unsigned short)0x0217)
+#define XL_MOST150_ASYNC_BUSLOAD                ((unsigned short)0x0218)
+#define XL_MOST150_ETHERNET_RX                  ((unsigned short)0x0219)
+#define XL_MOST150_SYSTEMLOCK_FLAG              ((unsigned short)0x021A)
+#define XL_MOST150_SHUTDOWN_FLAG                ((unsigned short)0x021B)
+#define XL_MOST150_CTRL_SPY                     ((unsigned short)0x021C)
+#define XL_MOST150_ASYNC_TX_ACK                 ((unsigned short)0x021D)
+#define XL_MOST150_ETHERNET_SPY                 ((unsigned short)0x021E)
+#define XL_MOST150_ETHERNET_TX_ACK              ((unsigned short)0x021F)
+#define XL_MOST150_SPDIFMODE                    ((unsigned short)0x0220)
+#define XL_MOST150_ECL_LINE_CHANGED             ((unsigned short)0x0222)
+#define XL_MOST150_ECL_TERMINATION_CHANGED      ((unsigned short)0x0223)
+#define XL_MOST150_NW_STARTUP                   ((unsigned short)0x0224)
+#define XL_MOST150_NW_SHUTDOWN                  ((unsigned short)0x0225)
+#define XL_MOST150_STREAM_STATE                 ((unsigned short)0x0226)
+#define XL_MOST150_STREAM_TX_BUFFER             ((unsigned short)0x0227)
+#define XL_MOST150_STREAM_RX_BUFFER             ((unsigned short)0x0228)
+#define XL_MOST150_STREAM_TX_LABEL              ((unsigned short)0x0229)
+#define XL_MOST150_STREAM_TX_UNDERFLOW          ((unsigned short)0x022B)
+#define XL_MOST150_GEN_BYPASS_STRESS            ((unsigned short)0x022C)
+#define XL_MOST150_ECL_SEQUENCE                 ((unsigned short)0x022D)
+#define XL_MOST150_ECL_GLITCH_FILTER            ((unsigned short)0x022E)
+#define XL_MOST150_SSO_RESULT                   ((unsigned short)0x022F)
+#define XL_CAN_EV_TAG_RX_OK                     ((unsigned short)0x0400)
+#define XL_CAN_EV_TAG_RX_ERROR                  ((unsigned short)0x0401)
+#define XL_CAN_EV_TAG_TX_ERROR                  ((unsigned short)0x0402)
+#define XL_CAN_EV_TAG_TX_REQUEST                ((unsigned short)0x0403)
+#define XL_CAN_EV_TAG_TX_OK                     ((unsigned short)0x0404)
+#define XL_CAN_EV_TAG_CHIP_STATE                ((unsigned short)0x0409)
+#define XL_CAN_EV_TAG_TX_MSG                    ((unsigned short)0x0440)
+#define XL_ETH_EVENT_TAG_FRAMERX                    ((unsigned short)0x0500)  //Event data type T_XL_ETH_DATAFRAME_RX
+#define XL_ETH_EVENT_TAG_FRAMERX_ERROR              ((unsigned short)0x0501)  //Event data type T_XL_ETH_DATAFRAME_RX_ERROR
+#define XL_ETH_EVENT_TAG_FRAMETX_ERROR              ((unsigned short)0x0506)  //Event data type T_XL_ETH_DATAFRAME_TX_ERROR
+#define XL_ETH_EVENT_TAG_FRAMETX_ERROR_SWITCH       ((unsigned short)0x0507)  //Event data type T_XL_ETH_DATAFRAME_TX_ERR_SW
+#define XL_ETH_EVENT_TAG_FRAMETX_ACK                ((unsigned short)0x0510)  //Event data type T_XL_ETH_DATAFRAME_TXACK
+#define XL_ETH_EVENT_TAG_FRAMETX_ACK_SWITCH         ((unsigned short)0x0511)  //Event data type T_XL_ETH_DATAFRAME_TXACK_SW
+#define XL_ETH_EVENT_TAG_FRAMETX_ACK_OTHER_APP      ((unsigned short)0x0513)  //Event data type T_XL_ETH_DATAFRAME_TXACK_OTHERAPP
+#define XL_ETH_EVENT_TAG_FRAMETX_ERROR_OTHER_APP    ((unsigned short)0x0514)  //Event data type T_XL_ETH_DATAFRAME_TX_ERR_OTHERAPP
+#define XL_ETH_EVENT_TAG_CHANNEL_STATUS             ((unsigned short)0x0520)  //Event data type T_XL_ETH_CHANNEL_STATUS
+#define XL_ETH_EVENT_TAG_CONFIGRESULT               ((unsigned short)0x0530)  //Event data type T_XL_ETH_CONFIG_RESULT
+#define XL_ETH_EVENT_TAG_LOSTEVENT                  ((unsigned short)0x05fe)  //Indication that one or more intended events could not be generated. Event data type T_XL_ETH_LOSTEVENT
+#define XL_ETH_EVENT_TAG_ERROR                      ((unsigned short)0x05ff)  //Generic error
+#define XL_A429_EV_TAG_TX_OK                    ((unsigned short)0x0600)
+#define XL_A429_EV_TAG_TX_ERR                   ((unsigned short)0x0601)
+#define XL_A429_EV_TAG_RX_OK                    ((unsigned short)0x0608)
+#define XL_A429_EV_TAG_RX_ERR                   ((unsigned short)0x0609)
+#define XL_A429_EV_TAG_BUS_STATISTIC            ((unsigned short)0x060F)
+#define XL_NOTIFY_REASON_CHANNEL_ACTIVATION                   1 
+#define XL_NOTIFY_REASON_CHANNEL_DEACTIVATION                 2 
+#define XL_NOTIFY_REASON_PORT_CLOSED                          3 
+#define XL_SYNC_PULSE_EXTERNAL                             0x00 
+#define XL_SYNC_PULSE_OUR                                  0x01 
+#define XL_SYNC_PULSE_OUR_SHARED                           0x02 
+
+
+
+#define XL_LIN_MASTER                           (unsigned int) 01 //!< channel is a LIN master
+#define XL_LIN_SLAVE                            (unsigned int) 02 //!< channel is a LIN slave
+#define XL_LIN_VERSION_1_3                      (unsigned int) 0x01 //!< LIN version 1.3
+#define XL_LIN_VERSION_2_0                      (unsigned int) 0x02 //!< LIN version 2.0
+#define XL_LIN_VERSION_2_1                      (unsigned int) 0x03 //!< LIN version 2.1
+#define XL_LIN_CALC_CHECKSUM                    (unsigned short) 0x100 //!< flag for automatic 'classic' checksum calculation
+#define XL_LIN_CALC_CHECKSUM_ENHANCED           (unsigned short) 0x200 //!< flag for automatic 'enhanced' checksum calculation
+#define XL_LIN_SET_SILENT                       (unsigned int) 0x01 //!< set hardware into sleep mode
+#define XL_LIN_SET_WAKEUPID                     (unsigned int) 0x03 //!< set hardware into sleep mode and send a request at wake-up
+#define XL_LIN_CHECKSUM_CLASSIC                 (unsigned char) 0x00 //!< Use classic CRC 
+#define XL_LIN_CHECKSUM_ENHANCED                (unsigned char) 0x01 //!< Use enhanced CRC
+#define XL_LIN_CHECKSUM_UNDEFINED               (unsigned char) 0xff //!< Set the checksum calculation to undefined.
+#define XL_LIN_STAYALIVE                        (unsigned char) 0x00 //!< flag if nothing changes
+#define XL_LIN_SET_SLEEPMODE                    (unsigned char) 0x01 //!< flag if the hardware is set into the sleep mode
+#define XL_LIN_COMESFROM_SLEEPMODE              (unsigned char) 0x02 //!< flag if the hardware comes from the sleep mode
+#define XL_LIN_WAKUP_INTERNAL                   (unsigned char) 0x01 //!< flag to signal a internal WAKEUP (event)
+#define XL_LIN_UNDEFINED_DLC                    (unsigned char) 0xff //!< set the DLC to undefined
+#define XL_LIN_SLAVE_ON                         (unsigned char) 0xff //!< switch on the LIN slave           
+#define XL_LIN_SLAVE_OFF                        (unsigned char) 0x00 //!< switch off the LIN slave
+#define MAX_MSG_LEN 8
+                                                   
+#define XL_CAN_EXT_MSG_ID             0x80000000                                                 
+#define XL_CAN_MSG_FLAG_ERROR_FRAME   0x01
+#define XL_CAN_MSG_FLAG_OVERRUN       0x02           //!< Overrun in Driver or CAN Controller, 
+#define XL_CAN_MSG_FLAG_NERR          0x04           //!< Line Error on Lowspeed
+#define XL_CAN_MSG_FLAG_WAKEUP        0x08           //!< High Voltage Message on Single Wire CAN
+#define XL_CAN_MSG_FLAG_REMOTE_FRAME  0x10
+#define XL_CAN_MSG_FLAG_RESERVED_1    0x20
+#define XL_CAN_MSG_FLAG_TX_COMPLETED  0x40           //!< Message Transmitted
+#define XL_CAN_MSG_FLAG_TX_REQUEST    0x80           //!< Transmit Message stored into Controller
+#define XL_CAN_MSG_FLAG_SRR_BIT_DOM 0x0200           //!< SRR bit in CAN message is dominant
+#define XL_EVENT_FLAG_OVERRUN         0x01           //!< Used in XLevent.flags 
+#define XL_LIN_MSGFLAG_TX             XL_CAN_MSG_FLAG_TX_COMPLETED   //!< LIN TX flag
+#define XL_LIN_MSGFLAG_CRCERROR       0x81                           //!< Wrong LIN CRC
+#define XL_DAIO_DATA_GET                     0x8000
+#define XL_DAIO_DATA_VALUE_DIGITAL           0x0001
+#define XL_DAIO_DATA_VALUE_ANALOG            0x0002
+#define XL_DAIO_DATA_PWM                     0x0010
+#define XL_DAIO_MODE_PULSE                   0x0020  // generates pulse in values of PWM 
+#define XL_CHIPSTAT_BUSOFF              0x01
+#define XL_CHIPSTAT_ERROR_PASSIVE       0x02
+#define XL_CHIPSTAT_ERROR_WARNING       0x04
+#define XL_CHIPSTAT_ERROR_ACTIVE        0x08
+#define XL_TRANSCEIVER_EVENT_NONE                 0
+#define XL_TRANSCEIVER_EVENT_INSERTED             1  //!< cable was inserted
+#define XL_TRANSCEIVER_EVENT_REMOVED              2  //!< cable was removed
+#define XL_TRANSCEIVER_EVENT_STATE_CHANGE         3  //!< transceiver state changed
+#define XL_OUTPUT_MODE_SILENT                     0  //!< switch CAN trx into default silent mode
+#define XL_OUTPUT_MODE_NORMAL                     1  //!< switch CAN trx into normal mode
+#define XL_OUTPUT_MODE_TX_OFF                     2  //!< switch CAN trx into silent mode with tx pin off
+#define XL_OUTPUT_MODE_SJA_1000_SILENT            3  //!< switch CAN trx into SJA1000 silent mode
+#define XL_TRANSCEIVER_EVENT_ERROR                1
+#define XL_TRANSCEIVER_EVENT_CHANGED              2
+#define DriverNotifyMessageName  "VectorCanDriverChangeNotifyMessage"
+#define XL_CHANNEL_MASK(x) (1I64<<(x))
+#define XL_MAX_APPNAME          32
+#define XL_MAX_LENGTH                  31
+#define XL_CONFIG_MAX_CHANNELS         64
+
+#define XL_BUS_COMPATIBLE_CAN                XL_BUS_TYPE_CAN
+#define XL_BUS_COMPATIBLE_LIN                XL_BUS_TYPE_LIN
+#define XL_BUS_COMPATIBLE_FLEXRAY            XL_BUS_TYPE_FLEXRAY
+#define XL_BUS_COMPATIBLE_MOST               XL_BUS_TYPE_MOST
+#define XL_BUS_COMPATIBLE_DAIO               XL_BUS_TYPE_DAIO          //io cab/piggy
+#define XL_BUS_COMPATIBLE_J1708              XL_BUS_TYPE_J1708
+#define XL_BUS_COMPATIBLE_ETHERNET           XL_BUS_TYPE_ETHERNET
+#define XL_BUS_COMPATIBLE_A429               XL_BUS_TYPE_A429
+#define XL_BUS_ACTIVE_CAP_CAN                (XL_BUS_COMPATIBLE_CAN<<16)
+#define XL_BUS_ACTIVE_CAP_LIN                (XL_BUS_COMPATIBLE_LIN<<16)
+#define XL_BUS_ACTIVE_CAP_FLEXRAY            (XL_BUS_COMPATIBLE_FLEXRAY<<16)
+#define XL_BUS_ACTIVE_CAP_MOST               (XL_BUS_COMPATIBLE_MOST<<16)
+#define XL_BUS_ACTIVE_CAP_DAIO               (XL_BUS_COMPATIBLE_DAIO<<16)
+#define XL_BUS_ACTIVE_CAP_J1708              (XL_BUS_COMPATIBLE_J1708<<16)
+#define XL_BUS_ACTIVE_CAP_ETHERNET           (XL_BUS_COMPATIBLE_ETHERNET<<16)
+#define XL_BUS_ACTIVE_CAP_A429               (XL_BUS_COMPATIBLE_A429<<16)
+#define XL_BUS_NAME_NONE            ""
+#define XL_BUS_NAME_CAN             "CAN"
+#define XL_BUS_NAME_LIN             "LIN"
+#define XL_BUS_NAME_FLEXRAY         "FlexRay"
+#define XL_BUS_NAME_STREAM          "Stream"
+#define XL_BUS_NAME_MOST            "MOST"
+#define XL_BUS_NAME_DAIO            "DAIO"
+#define XL_BUS_NAME_HWSYNC_KEYPAD   "HWSYNC_KEYPAD"
+#define XL_BUS_NAME_J1708           "J1708"
+#define XL_BUS_NAME_KLINE           "K-Line"
+#define XL_BUS_NAME_ETHERNET        "Ethernet"
+#define XL_BUS_NAME_AFDX            "AFDX"
+#define XL_BUS_NAME_A429            "ARINC429"
+#define XL_CAN_STD 01                                  //!< flag for standard ID's
+#define XL_CAN_EXT 02                                  //!< flag for extended ID's                            
+#define  XL_BUS_PARAMS_MOST_SPEED_GRADE_25    0x01
+#define  XL_BUS_PARAMS_MOST_SPEED_GRADE_150   0x02
+
+
+#define XL_CONNECTION_INFO_USB_UNKNOWN    0
+#define XL_CONNECTION_INFO_USB_FULLSPEED  1    
+#define XL_CONNECTION_INFO_USB_HIGHSPEED  2
+#define XL_CONNECTION_INFO_USB_SUPERSPEED 3
+#define XL_FPGA_CORE_TYPE_NONE                        0
+#define XL_FPGA_CORE_TYPE_CAN                         1
+#define XL_FPGA_CORE_TYPE_LIN                         2
+#define XL_FPGA_CORE_TYPE_LIN_RX                      3
+
+#define XL_SPECIAL_DEVICE_STAT_FPGA_UPDATE_DONE    0x01             //!< automatic driver FPGA flashing done
+#define XL_DAIO_DIGITAL_ENABLED                 0x00000001  // digital port is enabled
+#define XL_DAIO_DIGITAL_INPUT                   0x00000002  // digital port is input, otherwise it is an output
+#define XL_DAIO_DIGITAL_TRIGGER                 0x00000004  // digital port is trigger
+#define XL_DAIO_ANALOG_ENABLED                  0x00000001  // analog port is enabled
+#define XL_DAIO_ANALOG_INPUT                    0x00000002  // analog port is input, otherwise it is an output
+#define XL_DAIO_ANALOG_TRIGGER                  0x00000004  // analog port is trigger
+#define XL_DAIO_ANALOG_RANGE_32V                0x00000008  // analog port is in range 0..32,768V, otherwise 0..8,192V
+#define XL_DAIO_TRIGGER_MODE_NONE               0x00000000  // no trigger configured
+#define XL_DAIO_TRIGGER_MODE_DIGITAL            0x00000001  // trigger on preconfigured digital lines
+#define XL_DAIO_TRIGGER_MODE_ANALOG_ASCENDING   0x00000002  // trigger on input 3 ascending
+#define XL_DAIO_TRIGGER_MODE_ANALOG_DESCENDING  0x00000004  // trigger on input 3 ascending
+#define XL_DAIO_TRIGGER_MODE_ANALOG             (XL_DAIO_TRIGGER_MODE_ANALOG_ASCENDING | \
+#define XL_DAIO_TRIGGER_LEVEL_NONE                       0  // no trigger level is defined
+#define XL_DAIO_POLLING_NONE                             0  // periodic measurement is disabled 
+#define XL_SET_TIMESYNC_NO_CHANGE    (unsigned long)  0
+#define XL_SET_TIMESYNC_ON           (unsigned long)  1
+#define XL_SET_TIMESYNC_OFF          (unsigned long)  2
+#define XLuserHandle               unsigned short
+#define MOST_ALLOC_TABLE_SIZE                    64   // size of channel alloctaion table + 4Bytes (MPR, MDR; ?, ?)
+#define XL_IPv4 4
+#define XL_IPv6 6
+#define XL_MAX_REMOTE_DEVICE_INFO 16
+#define XL_ALL_REMOTE_DEVICES     0xFFFFFFFF
+#define XL_MAX_REMOTE_ALIAS_SIZE  64
+#define XL_REMOTE_OFFLINE           1
+#define XL_REMOTE_ONLINE            2
+#define XL_REMOTE_BUSY              3
+#define XL_REMOTE_CONNECION_REFUSED 4
+#define XL_REMOTE_ADD_PERMANENT           0x0
+#define XL_REMOTE_ADD_TEMPORARY           0x1
+#define XL_REMOTE_REGISTER_NONE           0x0
+#define XL_REMOTE_REGISTER_CONNECT        0x1
+#define XL_REMOTE_REGISTER_TEMP_CONNECT   0x2
+#define XL_REMOTE_DISCONNECT_NONE         0x0
+#define XL_REMOTE_DISCONNECT_REMOVE_ENTRY 0x1
+#define XL_REMOTE_DEVICE_AVAILABLE        0x00000001  // the device is present
+#define XL_REMOTE_DEVICE_CONFIGURED       0x00000002  // the device has a configuration entry in registry
+#define XL_REMOTE_DEVICE_CONNECTED        0x00000004  // the device is connected too this client
+#define XL_REMOTE_DEVICE_ENABLED          0x00000008  // the driver should open a connection to this client
+#define XL_REMOTE_DEVICE_BUSY             0x00000010  // the device is used by another client
+#define XL_REMOTE_DEVICE_TEMP_CONFIGURED  0x00000020  // the device is temporary configured, it has not entry in registry
+#define XL_REMOTE_NO_NET_SEARCH      0
+#define XL_REMOTE_NET_SEARCH         1
+#define XL_REMOTE_DEVICE_TYPE_UNKNOWN     0
+#define XL_REMOTE_DEVICE_TYPE_VN8900      1
+#define XL_REMOTE_DEVICE_TYPE_STANDARD_PC 2
+#define XL_REMOTE_DEVICE_TYPE_VX          3
+#define XL_REMOTE_DEVICE_TYPE_VN8800      4
+#define XL_CHANNEL_FLAG_TIME_SYNC_RUNNING        0x00000001
+#define XL_CHANNEL_FLAG_NO_HWSYNC_SUPPORT        0x00000400 //Device is not capable of hardware-based time synchronization via Sync-line
+#define XL_CHANNEL_FLAG_SPDIF_CAPABLE            0x00004000 
+#define XL_CHANNEL_FLAG_CANFD_BOSCH_SUPPORT      0x20000000
+#define XL_CHANNEL_FLAG_CANFD_ISO_SUPPORT        0x80000000
+#define RX_FIFO_MOST_QUEUE_SIZE_MAX                  1048576
+#define RX_FIFO_MOST_QUEUE_SIZE_MIN                  8192
+#define XL_MOST_SOURCE_ASYNC_SPY                     0x8000
+#define XL_MOST_SOURCE_ASYNC_RX                      0x1000
+#define XL_MOST_SOURCE_ASYNC_TX                      0x0800
+#define XL_MOST_SOURCE_CTRL_OS8104A                  0x0400
+#define XL_MOST_SOURCE_CTRL_SPY                      0x0100
+#define XL_MOST_SOURCE_ALLOC_TABLE                   0x0080
+#define XL_MOST_SOURCE_SYNC_RC_OVER                  0x0040
+#define XL_MOST_SOURCE_SYNC_TX_UNDER                 0x0020
+#define XL_MOST_SOURCE_SYNCLINE                      0x0010
+#define XL_MOST_SOURCE_ASYNC_RX_FIFO_OVER            0x0008
+#define XL_MOST_OS8104_TX_LOCK_ERROR             0x00000001
+#define XL_MOST_OS8104_SPDIF_LOCK_ERROR          0x00000002
+#define XL_MOST_OS8104_ASYNC_BUFFER_FULL         0x00000003
+#define XL_MOST_OS8104_ASYNC_CRC_ERROR           0x00000004
+#define XL_MOST_ASYNC_TX_UNDERRUN                0x00000005
+#define XL_MOST_CTRL_TX_UNDERRUN                 0x00000006
+#define XL_MOST_MCU_TS_CMD_QUEUE_UNDERRUN        0x00000007
+#define XL_MOST_MCU_TS_CMD_QUEUE_OVERRUN         0x00000008
+#define XL_MOST_CMD_TX_UNDERRUN                  0x00000009
+#define XL_MOST_SYNCPULSE_ERROR                  0x0000000A
+#define XL_MOST_OS8104_CODING_ERROR              0x0000000B
+#define XL_MOST_ERROR_UNKNOWN_COMMAND            0x0000000C
+#define XL_MOST_ASYNC_RX_OVERFLOW_ERROR          0x0000000D
+#define XL_MOST_FPGA_TS_FIFO_OVERFLOW            0x0000000E
+#define XL_MOST_SPY_OVERFLOW_ERROR               0x0000000F
+#define XL_MOST_CTRL_TYPE_QUEUE_OVERFLOW         0x00000010
+#define XL_MOST_ASYNC_TYPE_QUEUE_OVERFLOW        0x00000011
+#define XL_MOST_CTRL_UNKNOWN_TYPE                0x00000012
+#define XL_MOST_CTRL_QUEUE_UNDERRUN              0x00000013
+#define XL_MOST_ASYNC_UNKNOWN_TYPE               0x00000014
+#define XL_MOST_ASYNC_QUEUE_UNDERRUN             0x00000015
+#define XL_MOST_DEMANDED_START                   0x00000001
+#define XL_MOST_RX_DATA_SIZE                           1028
+#define XL_MOST_TS_DATA_SIZE                             12
+#define XL_MOST_RX_ELEMENT_HEADER_SIZE                   32
+#define XL_MOST_CTRL_RX_SPY_SIZE                         36
+#define XL_MOST_CTRL_RX_OS8104_SIZE                      28
+#define XL_MOST_SPECIAL_REGISTER_CHANGE_SIZE             20
+#define XL_MOST_ERROR_EV_SIZE_4                           4  // dwords
+#define XL_MOST_ERROR_EV_SIZE                            16  // bytes
+#define XL_MOST_DEVICE_CASE_LINE_IN                       0
+#define XL_MOST_DEVICE_CASE_LINE_OUT                      1
+#define XL_MOST_DEVICE_SPDIF_IN                           7
+#define XL_MOST_DEVICE_SPDIF_OUT                          8
+#define XL_MOST_DEVICE_SPDIF_IN_OUT_SYNC                 11
+#define XL_MOST_SPDIF_LOCK_OFF                            0
+#define XL_MOST_SPDIF_LOCK_ON                             1
+#define XL_MOST_NO_MUTE                                   0
+#define XL_MOST_MUTE                                      1
+#define XL_MOST_VN2600                                 0x01
+#define XL_MOST_OS8104A                                0x02
+#define XL_MOST_OS8104B                                0x04
+#define XL_MOST_SPY                                    0x08
+#define XL_MOST_MODE_DEACTIVATE                           0
+#define XL_MOST_MODE_ACTIVATE                             1
+#define XL_MOST_MODE_FORCE_DEACTIVATE                     2
+#define XL_MOST_RX_BUFFER_CLEAR_ONCE                      2
+#define XL_MOST_TIMING_SLAVE                              0
+#define XL_MOST_TIMING_MASTER                             1
+#define XL_MOST_TIMING_SLAVE_SPDIF_MASTER                 2
+#define XL_MOST_TIMING_SLAVE_SPDIF_SLAVE                  3
+#define XL_MOST_TIMING_MASTER_SPDIF_MASTER                4
+#define XL_MOST_TIMING_MASTER_SPDIF_SLAVE                 5
+#define XL_MOST_TIMING_MASTER_FROM_SPDIF_SLAVE            6
+#define XL_MOST_FREQUENCY_44100                           0
+#define XL_MOST_FREQUENCY_48000                           1
+#define XL_MOST_FREQUENCY_ERROR                           2
+#define XL_MOST_LIGHT_OFF                                 0
+#define XL_MOST_LIGHT_FORCE_ON                            1   // unmodulated on
+#define XL_MOST_LIGHT_MODULATED                           2   // modulated light
+#define XL_MOST_LIGHT_FULL                                100
+#define XL_MOST_LIGHT_3DB                                 50
+#define XL_MOST_UNLOCK                                    5
+#define XL_MOST_LOCK                                      6
+#define XL_MOST_STATE_UNKNOWN                             9
+#define XL_MOST_TX_WHILE_UNLOCKED                0x80000000  
+#define XL_MOST_TX_TIMEOUT                       0x40000000  
+#define XL_MOST_DIRECTION_RX                              0
+#define XL_MOST_DIRECTION_TX                              1
+#define XL_MOST_NO_QUEUE_OVERFLOW                    0x0000 // No rx-queue overflow occured
+#define XL_MOST_QUEUE_OVERFLOW                       0x8000 // Overflow of rx-queue in firmware when trying to add a rx-event
+#define XL_MOST_COMMAND_FAILED                       0x4000
+#define XL_MOST_INTERNAL_OVERFLOW                    0x2000 // Overflow of command-timestamp-queue in firmware
+#define XL_MOST_MEASUREMENT_NOT_ACTIVE               0x1000
+#define XL_MOST_QUEUE_OVERFLOW_ASYNC                 0x0800 // Overflow of async rx-queue in firmware when trying to add a packet
+#define XL_MOST_QUEUE_OVERFLOW_CTRL                  0x0400 // Overflow of rx-queue in firmware when trying to add a message
+#define XL_MOST_NOT_SUPPORTED                        0x0200
+#define XL_MOST_QUEUE_OVERFLOW_DRV                   0x0100 // Overflow occured when trying to add an event to application rx-queue 
+#define XL_MOST_NA_CHANGED                           0x0001 // node address changed 
+#define XL_MOST_GA_CHANGED                           0x0002 // group address changed 
+#define XL_MOST_APA_CHANGED                          0x0004 // alternative packet address changed 
+#define XL_MOST_NPR_CHANGED                          0x0008 // node position register changed 
+#define XL_MOST_MPR_CHANGED                          0x0010 // max position register changed 
+#define XL_MOST_NDR_CHANGED                          0x0020 // node delay register changed 
+#define XL_MOST_MDR_CHANGED                          0x0040 // max delay register changed 
+#define XL_MOST_SBC_CHANGED                          0x0080 // 
+#define XL_MOST_XTIM_CHANGED                         0x0100 // 
+#define XL_MOST_XRTY_CHANGED                         0x0200 // 
+#define XL_MOST_bGA                                    0x89  // Group Address
+#define XL_MOST_bNAH                                   0x8A  // Node Address High
+#define XL_MOST_bNAL                                   0x8B  // Node Address Low
+#define XL_MOST_bSDC2                                  0x8C  // Source Data Control 2
+#define XL_MOST_bSDC3                                  0x8D  // Source Data Control 3
+#define XL_MOST_bCM2                                   0x8E  // Clock Manager 2
+#define XL_MOST_bNDR                                   0x8F  // Node Delay
+#define XL_MOST_bMPR                                   0x90  // Maximum Position
+#define XL_MOST_bMDR                                   0x91  // Maximum Delay
+#define XL_MOST_bCM4                                   0x93  // Clock Manager 4
+#define XL_MOST_bSBC                                   0x96  // Synchronous Bandwidth Control
+#define XL_MOST_bXSR2                                  0x97  // Transceiver Status 2
+#define XL_MOST_bRTYP                                  0xA0  // Receive Message Type
+#define XL_MOST_bRSAH                                  0xA1  // Source Address High
+#define XL_MOST_bRSAL                                  0xA2  // Source Address Low
+#define XL_MOST_bRCD0                                  0xA3  // Receive Control Data 0 --> bRCD16 = bRCD0+16
+#define XL_MOST_bXTIM                                  0xBE  // Transmit Retry Time
+#define XL_MOST_bXRTY                                  0xBF  // Transmit Retries
+#define XL_MOST_bXPRI                                  0xC0  // Transmit Priority
+#define XL_MOST_bXTYP                                  0xC1  // Transmit Message Type
+#define XL_MOST_bXTAH                                  0xC2  // Target Address High
+#define XL_MOST_bXTAL                                  0xC3  // Target Address Low
+#define XL_MOST_bXCD0                                  0xC4  // Transmit Control Data 0 --> bXCD16 = bXCD0+16
+#define XL_MOST_bXTS                                   0xD5  // Transmit Transfer Status
+#define XL_MOST_bPCTC                                  0xE2  // Packet Control
+#define XL_MOST_bPCTS                                  0xE3  // Packet Status
+#define XL_MOST_SPY_RX_STATUS_NO_LIGHT                 0x01
+#define XL_MOST_SPY_RX_STATUS_NO_LOCK                  0x02
+#define XL_MOST_SPY_RX_STATUS_BIPHASE_ERROR            0x04
+#define XL_MOST_SPY_RX_STATUS_MESSAGE_LENGTH_ERROR     0x08
+#define XL_MOST_SPY_RX_STATUS_PARITY_ERROR             0x10
+#define XL_MOST_SPY_RX_STATUS_FRAME_LENGTH_ERROR       0x20
+#define XL_MOST_SPY_RX_STATUS_PREAMBLE_TYPE_ERROR      0x40
+#define XL_MOST_SPY_RX_STATUS_CRC_ERROR                0x80
+#define XL_MOST_ASYNC_NO_ERROR                         0x00
+#define XL_MOST_ASYNC_SBC_ERROR                        0x0C
+#define XL_MOST_ASYNC_NEXT_STARTS_TO_EARLY             0x0D
+#define XL_MOST_ASYNC_TO_LONG                          0x0E
+#define XL_MOST_ASYNC_UNLOCK                           0x0F // unlock occured within receiption of packet
+#define SYNC_PULSE_EXTERNAL                            0x00 
+#define SYNC_PULSE_OUR                                 0x01 
+#define XL_MOST_CTRL_TYPE_NORMAL                       0x00
+#define XL_MOST_CTRL_TYPE_REMOTE_READ                  0x01
+#define XL_MOST_CTRL_TYPE_REMOTE_WRITE                 0x02
+#define XL_MOST_CTRL_TYPE_RESOURCE_ALLOCATE            0x03
+#define XL_MOST_CTRL_TYPE_RESOURCE_DEALLOCATE          0x04
+#define XL_MOST_CTRL_TYPE_GET_SOURCE                   0x05
+#define XL_MOST_BUSLOAD_COUNTER_TYPE_NONE              0x00
+#define XL_MOST_BUSLOAD_COUNTER_TYPE_1_BYTE            0x01
+#define XL_MOST_BUSLOAD_COUNTER_TYPE_2_BYTE            0x02
+#define XL_MOST_BUSLOAD_COUNTER_TYPE_3_BYTE            0x03
+#define XL_MOST_BUSLOAD_COUNTER_TYPE_4_BYTE            0x04
+#define XL_MOST_STATESEL_LIGHTLOCK                   0x0001
+#define XL_MOST_STATESEL_REGISTERBUNCH1              0x0002 
+#define XL_MOST_STATESEL_BYPASSTIMING                0x0004
+#define XL_MOST_STATESEL_REGISTERBUNCH2              0x0008
+#define XL_MOST_STATESEL_REGISTERBUNCH3              0x0010
+#define XL_MOST_STATESEL_VOLUMEMUTE                  0x0020
+#define XL_MOST_STATESEL_EVENTSOURCE                 0x0040
+#define XL_MOST_STATESEL_RXBUFFERMODE                0x0080
+#define XL_MOST_STATESEL_ALLOCTABLE                  0x0100
+#define XL_MOST_STATESEL_SUPERVISOR_LOCKSTATUS       0x0200
+#define XL_MOST_STATESEL_SUPERVISOR_MESSAGE          0x0400
+#define XL_MOST_STREAM_RX_DATA                             0 // RX streaming: MOST -> PC
+#define XL_MOST_STREAM_TX_DATA                             1 // TX streaming: PC -> MOST
+#define XL_MOST_STREAM_ADD_FRAME_HEADER                    1 // only for RX: additionally the orig. TS + status information are reported
+#define XL_MOST_STREAM_STATE_CLOSED                     0x01
+#define XL_MOST_STREAM_STATE_OPENED                     0x02
+#define XL_MOST_STREAM_STATE_STARTED                    0x03
+#define XL_MOST_STREAM_STATE_STOPPED                    0x04
+#define XL_MOST_STREAM_STATE_START_PENDING              0x05 // waiting for result from hw
+#define XL_MOST_STREAM_STATE_STOP_PENDING               0x06 // waiting for result from hw
+#define XL_MOST_STREAM_STATE_UNKNOWN                    0xFF 
+#define XL_MOST_STREAM_ACTIVATE                            0
+#define XL_MOST_STREAM_DEACTIVATE                          1
+#define XL_MOST_STREAM_INVALID_HANDLE                      0  
+#define XL_MOST_STREAM_LATENCY_VERY_LOW                    0
+#define XL_MOST_STREAM_LATENCY_LOW                         1
+#define XL_MOST_STREAM_LATENCY_MEDIUM                      2
+#define XL_MOST_STREAM_LATENCY_HIGH                        3
+#define XL_MOST_STREAM_LATENCY_VERY_HIGH                   4
+#define XL_MOST_STREAM_ERR_NO_ERROR                     0x00
+#define XL_MOST_STREAM_ERR_INVALID_HANDLE               0x01
+#define XL_MOST_STREAM_ERR_NO_MORE_BUFFERS_AVAILABLE    0x02
+#define XL_MOST_STREAM_ERR_ANY_BUFFER_LOCKED            0x03
+#define XL_MOST_STREAM_ERR_WRITE_RE_FAILED              0x04
+#define XL_MOST_STREAM_ERR_STREAM_ALREADY_STARTED       0x05
+#define XL_MOST_STREAM_ERR_TX_BUFFER_UNDERRUN           0x06
+#define XL_MOST_STREAM_ERR_RX_BUFFER_OVERFLOW           0x07
+#define XL_MOST_STREAM_ERR_INSUFFICIENT_RESOURCES       0x08
+#define XL_MOST_EVENT_HEADER_SIZE                                                          32 
+#define XL_MOST_EVENT_MAX_DATA_SIZE                                                      1024 
+#define XL_MOST_EVENT_MAX_SIZE      (XL_MOST_EVENT_HEADER_SIZE + XL_MOST_EVENT_MAX_DATA_SIZE) 
+#define XL_FR_MAX_DATA_LENGTH                                 254
+#define XL_FR_CHANNEL_CFG_STATUS_INIT_APP_PRESENT   ((unsigned int) 0x01) 
+#define XL_FR_CHANNEL_CFG_STATUS_CHANNEL_ACTIVATED  ((unsigned int) 0x02) 
+#define XL_FR_CHANNEL_CFG_STATUS_VALID_CLUSTER_CFG  ((unsigned int) 0x04) 
+#define XL_FR_CHANNEL_CFG_STATUS_VALID_CFG_MODE     ((unsigned int) 0x08) 
+#define XL_FR_CHANNEL_CFG_MODE_SYNCHRONOUS                             1 
+#define XL_FR_CHANNEL_CFG_MODE_COMBINED                                2 
+#define XL_FR_CHANNEL_CFG_MODE_ASYNCHRONOUS                            3 
+#define XL_FR_MODE_NORMAL                                    0x00 //!< setup the VN3000 (eRay) normal operation mode. (default mode)
+#define XL_FR_MODE_COLD_NORMAL                               0x04 //!< setup the VN3000 (Fujitsu) normal operation mode. (default mode)
+#define XL_FR_MODE_NONE                                      0x00 //!< for normal use
+#define XL_FR_MODE_WAKEUP                                    0x01 //!< for wakeup
+#define XL_FR_MODE_COLDSTART_LEADING                         0x02 //!< Coldstart path initiating the schedule synchronization
+#define XL_FR_MODE_COLDSTART_FOLLOWING                       0x03 //!< Coldstart path joining other coldstart nodes
+#define XL_FR_MODE_WAKEUP_AND_COLDSTART_LEADING              0x04 //!< Send Wakeup and Coldstart path initiating the schedule synchronization
+#define XL_FR_MODE_WAKEUP_AND_COLDSTART_FOLLOWING            0x05 //!< Send Wakeup and Coldstart path joining other coldstart nodes
+#define XL_FR_SYMBOL_MTS                                     0x01 //!< defines a MTS (Media Access Test Symbol)
+#define XL_FR_SYMBOL_CAS                                     0x02 //!< defines a CAS (Collision Avoidance Symbol)
+#define XL_FR_TRANSCEIVER_MODE_SLEEP                         0x01
+#define XL_FR_TRANSCEIVER_MODE_NORMAL                        0x02
+#define XL_FR_TRANSCEIVER_MODE_RECEIVE_ONLY                  0x03
+#define XL_FR_TRANSCEIVER_MODE_STANDBY                       0x04
+#define XL_FR_SYNC_PULSE_EXTERNAL          XL_SYNC_PULSE_EXTERNAL 
+#define XL_FR_SYNC_PULSE_OUR                    XL_SYNC_PULSE_OUR
+#define XL_FR_SYNC_PULSE_OUR_SHARED      XL_SYNC_PULSE_OUR_SHARED 
+#define XL_FR_SPY_MODE_ASYNCHRONOUS                          0x01
+#define XL_FR_FILTER_PASS                        0x00000000       //!< maching frame passes the filter
+#define XL_FR_FILTER_BLOCK                       0x00000001       //!< maching frame is blocked
+#define XL_FR_FILTER_TYPE_DATA                   0x00000001       //!< specifies a data frame
+#define XL_FR_FILTER_TYPE_NF                     0x00000002       //!< specifies a null frame in an used cycle
+#define XL_FR_FILTER_TYPE_FILLUP_NF              0x00000004       //!< specifies a null frame in an unused cycle
+#define XL_FR_FILTER_CHANNEL_A                   0x00000001       //!< specifies FlexRay channel A for the PC
+#define XL_FR_FILTER_CHANNEL_B                   0x00000002       //!< specifies FlexRay channel B for the PC
+#define XL_FR_CHANNEL_A                               ((unsigned short)0x01)
+#define XL_FR_CHANNEL_B                               ((unsigned short)0x02)
+#define XL_FR_CHANNEL_AB ((unsigned short)(XL_FR_CHANNEL_A|XL_FR_CHANNEL_B))
+#define XL_FR_CC_COLD_A                               ((unsigned short)0x04) //!< second CC channel A to initiate the coldstart
+#define XL_FR_CC_COLD_B                               ((unsigned short)0x08) //!< second CC channel B to initiate the coldstart
+#define XL_FR_CC_COLD_AB ((unsigned short)(XL_FR_CC_COLD_A|XL_FR_CC_COLD_B))
+#define XL_FR_SPY_CHANNEL_A                           ((unsigned short)0x10) //!< Spy mode flags
+#define XL_FR_SPY_CHANNEL_B                           ((unsigned short)0x20) //!< Spy mode flags
+#define XL_FR_QUEUE_OVERFLOW                        ((unsigned short)0x0100) //!< driver queue overflow  
+#define XL_FR_FRAMEFLAG_STARTUP                   ((unsigned short) 0x0001)   //!< indicates a startup frame
+#define XL_FR_FRAMEFLAG_SYNC                      ((unsigned short) 0x0002)   //!< indicates a sync frame
+#define XL_FR_FRAMEFLAG_NULLFRAME                 ((unsigned short) 0x0004)   //!< indicates a nullframe
+#define XL_FR_FRAMEFLAG_PAYLOAD_PREAMBLE          ((unsigned short) 0x0008)   //!< indicates a present payload preamble bit
+#define XL_FR_FRAMEFLAG_FR_RESERVED               ((unsigned short) 0x0010)   //!< reserved by Flexray protocol
+#define XL_FR_FRAMEFLAG_REQ_TXACK                 ((unsigned short) 0x0020)   //!< used for Tx events only 
+#define XL_FR_FRAMEFLAG_TXACK_SS                  XL_FR_FRAMEFLAG_REQ_TXACK   //!< indicates TxAck of SingleShot; used for TxAck events only 
+#define XL_FR_FRAMEFLAG_RX_UNEXPECTED             XL_FR_FRAMEFLAG_REQ_TXACK   //!< indicates unexpected Rx frame; used for Rx events only 
+#define XL_FR_FRAMEFLAG_NEW_DATA_TX               ((unsigned short) 0x0040)   //!< flag used with TxAcks to indicate first TxAck after data update 
+#define XL_FR_FRAMEFLAG_DATA_UPDATE_LOST          ((unsigned short) 0x0080)   //!< flag used with TxAcks indicating that data update has been lost 
+#define XL_FR_FRAMEFLAG_SYNTAX_ERROR              ((unsigned short) 0x0200) 
+#define XL_FR_FRAMEFLAG_CONTENT_ERROR             ((unsigned short) 0x0400) 
+#define XL_FR_FRAMEFLAG_SLOT_BOUNDARY_VIOLATION   ((unsigned short) 0x0800) 
+#define XL_FR_FRAMEFLAG_TX_CONFLICT               ((unsigned short) 0x1000) 
+#define XL_FR_FRAMEFLAG_EMPTY_SLOT                ((unsigned short) 0x2000) 
+#define XL_FR_FRAMEFLAG_FRAME_TRANSMITTED         ((unsigned short) 0x8000)   //!< Only used with TxAcks: Frame has been transmitted. If not set after transmission, an error has occurred.
+#define XL_FR_SPY_FRAMEFLAG_FRAMING_ERROR             ((unsigned char)0x01)
+#define XL_FR_SPY_FRAMEFLAG_HEADER_CRC_ERROR          ((unsigned char)0x02)
+#define XL_FR_SPY_FRAMEFLAG_FRAME_CRC_ERROR           ((unsigned char)0x04)
+#define XL_FR_SPY_FRAMEFLAG_BUS_ERROR                 ((unsigned char)0x08)
+#define XL_FR_SPY_FRAMEFLAG_FRAME_CRC_NEW_LAYOUT ((unsigned int)0x80000000)
+#define XL_FR_TX_MODE_CYCLIC                          ((unsigned char)0x01)   //!< 'normal' cyclic mode
+#define XL_FR_TX_MODE_SINGLE_SHOT                     ((unsigned char)0x02)   //!< sends only a single shot
+#define XL_FR_TX_MODE_NONE                            ((unsigned char)0xff)   //!< switch off TX
+#define XL_FR_PAYLOAD_INCREMENT_8BIT                  ((unsigned char)   8)   
+#define XL_FR_PAYLOAD_INCREMENT_16BIT                 ((unsigned char)  16) 
+#define XL_FR_PAYLOAD_INCREMENT_32BIT                 ((unsigned char)  32) 
+#define XL_FR_PAYLOAD_INCREMENT_NONE                  ((unsigned char)   0) 
+#define XL_FR_STATUS_DEFAULT_CONFIG                          0x00 //!< indicates the actual state of the POC in operation control 
+#define XL_FR_STATUS_READY                                   0x01 //!< ...
+#define XL_FR_STATUS_NORMAL_ACTIVE                           0x02 //!< ...
+#define XL_FR_STATUS_NORMAL_PASSIVE                          0x03 //!< ...
+#define XL_FR_STATUS_HALT                                    0x04 //!< ...
+#define XL_FR_STATUS_MONITOR_MODE                            0x05 //!< ...
+#define XL_FR_STATUS_CONFIG                                  0x0f //!< ...
+#define XL_FR_STATUS_WAKEUP_STANDBY                          0x10 //!< indicates the actual state of the POC in the wakeup path 
+#define XL_FR_STATUS_WAKEUP_LISTEN                           0x11 //!< ...
+#define XL_FR_STATUS_WAKEUP_SEND                             0x12 //!< ...
+#define XL_FR_STATUS_WAKEUP_DETECT                           0x13 //!< ...
+#define XL_FR_STATUS_STARTUP_PREPARE                         0x20 //!< indicates the actual state of the POC in the startup path 
+#define XL_FR_STATUS_COLDSTART_LISTEN                        0x21 //!< ...
+#define XL_FR_STATUS_COLDSTART_COLLISION_RESOLUTION          0x22 //!< ...
+#define XL_FR_STATUS_COLDSTART_CONSISTENCY_CHECK             0x23 //!< ...
+#define XL_FR_STATUS_COLDSTART_GAP                           0x24 //!< ...
+#define XL_FR_STATUS_COLDSTART_JOIN                          0x25 //!< ...
+#define XL_FR_STATUS_INTEGRATION_COLDSTART_CHECK             0x26 //!< ...
+#define XL_FR_STATUS_INTEGRATION_LISTEN                      0x27 //!< ... 
+#define XL_FR_STATUS_INTEGRATION_CONSISTENCY_CHECK           0x28 //!< ...
+#define XL_FR_STATUS_INITIALIZE_SCHEDULE                     0x29 //!< ...
+#define XL_FR_STATUS_ABORT_STARTUP                           0x2a //!< ...
+#define XL_FR_STATUS_STARTUP_SUCCESS                         0x2b //!< ...
+#define XL_FR_ERROR_POC_ACTIVE                               0x00 //!< Indicates the actual error mode of the POC: active (green)
+#define XL_FR_ERROR_POC_PASSIVE                              0x01 //!< Indicates the actual error mode of the POC: passive (yellow)
+#define XL_FR_ERROR_POC_COMM_HALT                            0x02 //!< Indicates the actual error mode of the POC: comm-halt (red)
+#define XL_FR_ERROR_NIT_SENA                                0x100 //!< Syntax Error during NIT Channel A
+#define XL_FR_ERROR_NIT_SBNA                                0x200 //!< Slot Boundary Violation during NIT Channel B
+#define XL_FR_ERROR_NIT_SENB                                0x400 //!< Syntax Error during NIT Channel A
+#define XL_FR_ERROR_NIT_SBNB                                0x800 //!< Slot Boundary Violation during NIT Channel B
+#define XL_FR_ERROR_MISSING_OFFSET_CORRECTION          0x00000001 //!< Set if no sync frames were received. -> no offset correction possible.
+#define XL_FR_ERROR_MAX_OFFSET_CORRECTION_REACHED      0x00000002 //!< Set if max. offset correction limit is reached.   
+#define XL_FR_ERROR_MISSING_RATE_CORRECTION            0x00000004 //!< Set if no even/odd sync frames were received -> no rate correction possible.
+#define XL_FR_ERROR_MAX_RATE_CORRECTION_REACHED        0x00000008 //!< Set if max. rate correction limit is reached.	
+#define XL_FR_ERROR_CC_PERR                            0x00000040 //!< Parity Error, data from MHDS (internal ERay error)
+#define XL_FR_ERROR_CC_IIBA                            0x00000200 //!< Illegal Input Buffer Access (internal ERay error)  
+#define XL_FR_ERROR_CC_IOBA                            0x00000400 //!< Illegal Output Buffer Access (internal ERay error)
+#define XL_FR_ERROR_CC_MHF                             0x00000800 //!< Message Handler Constraints Flag data from MHDF (internal ERay error)
+#define XL_FR_ERROR_CC_EDA                             0x00010000 //!< Error Detection on channel A, data from ACS
+#define XL_FR_ERROR_CC_LTVA                            0x00020000 //!< Latest Transmit Violation on channel A
+#define XL_FR_ERROR_CC_TABA                            0x00040000 //!< Transmit Across Boundary on Channel A
+#define XL_FR_ERROR_CC_EDB                             0x01000000 //!< Error Detection on channel B, data from ACS
+#define XL_FR_ERROR_CC_LTVB                            0x02000000 //!< Latest Transmit Violation on channel B    
+#define XL_FR_ERROR_CC_TABB                            0x04000000 //!< Transmit Across Boundary on Channel B
+#define XL_FR_WAKEUP_UNDEFINED                               0x00 //!< No wakeup attempt since CONFIG state was left. (e.g. when a wakeup pattern A|B is received)
+#define XL_FR_WAKEUP_RECEIVED_HEADER                         0x01 //!< Frame header without coding violation received. 
+#define XL_FR_WAKEUP_RECEIVED_WUP                            0x02 //!< Wakeup pattern on the configured wakeup channel received.
+#define XL_FR_WAKEUP_COLLISION_HEADER                        0x03 //!< Detected collision during wakeup pattern transmission received. 
+#define XL_FR_WAKEUP_COLLISION_WUP                           0x04 //!< Collision during wakeup pattern transmission received.
+#define XL_FR_WAKEUP_COLLISION_UNKNOWN                       0x05 //!< Set when the CC stops wakeup.
+#define XL_FR_WAKEUP_TRANSMITTED                             0x06 //!< Completed the transmission of the wakeup pattern.
+#define XL_FR_WAKEUP_EXTERNAL_WAKEUP                         0x07 //!< wakeup comes from external
+#define XL_FR_WAKEUP_WUP_RECEIVED_WITHOUT_WUS_TX             0x10 //!< wakeupt pattern received from flexray bus
+#define XL_FR_WAKEUP_RESERVED                                0xFF
+#define XL_FR_SYMBOL_STATUS_SESA                             0x01 //!< Syntax Error in Symbol Window Channel A
+#define XL_FR_SYMBOL_STATUS_SBSA                             0x02 //!< Slot Boundary Violation in Symbol Window Channel A 
+#define XL_FR_SYMBOL_STATUS_TCSA                             0x04 //!< Transmission Conflict in Symbol Window Channel A
+#define XL_FR_SYMBOL_STATUS_SESB                             0x08 //!< Syntax Error in Symbol Window Channel B
+#define XL_FR_SYMBOL_STATUS_SBSB                             0x10 //!< Slot Boundary Violation in Symbol Window Channel B 
+#define XL_FR_SYMBOL_STATUS_TCSB                             0x20 //!< Transmission Conflict in Symbol Window Channel B
+#define XL_FR_SYMBOL_STATUS_MTSA                             0x40 //!< MTS received in Symbol Window Channel A
+#define XL_FR_SYMBOL_STATUS_MTSB                             0x80 //!< MTS received in Symbol Window Channel B
+#define XL_FR_RX_EVENT_HEADER_SIZE       32 
+#define XL_FR_MAX_EVENT_SIZE            512  
+#define XL_DAIO_PORT_TYPE_MASK_DIGITAL       0x01
+#define XL_DAIO_PORT_TYPE_MASK_ANALOG        0x02
+#define XL_DAIO_TRIGGER_TYPE_CYCLIC          0x01
+#define XL_DAIO_TRIGGER_TYPE_PORT            0x02
+#define XL_DAIO_TRIGGER_TYPE_RISING          0x01
+#define XL_DAIO_TRIGGER_TYPE_FALLING         0x02
+#define XL_DAIO_TRIGGER_TYPE_BOTH            0x03
+#define XL_DAIO_PORT_DIGITAL_IN              0x00
+#define XL_DAIO_PORT_DIGITAL_PUSHPULL        0x01
+#define XL_DAIO_PORT_DIGITAL_OPENDRAIN       0x02
+#define XL_DAIO_PORT_DIGITAL_IN_OUT          0x06 //(only for WakeUp line)
+#define XL_DAIO_PORT_ANALOG_IN               0x00
+#define XL_DAIO_PORT_ANALOG_OUT              0x01
+#define XL_DAIO_PORT_ANALOG_DIFF             0x02
+#define XL_DAIO_PORT_ANALOG_OFF              0x03
+#define XL_DAIO_DO_LEVEL_0V                  0
+#define XL_DAIO_DO_LEVEL_5V                  5
+#define XL_DAIO_DO_LEVEL_12V                 12
+#define XL_DAIO_PORT_MASK_DIGITAL_D0         0x01
+#define XL_DAIO_PORT_MASK_DIGITAL_D1         0x02
+#define XL_DAIO_PORT_MASK_DIGITAL_D2         0x04
+#define XL_DAIO_PORT_MASK_DIGITAL_D3         0x08
+#define XL_DAIO_PORT_MASK_DIGITAL_D4         0x10
+#define XL_DAIO_PORT_MASK_DIGITAL_D5         0x20
+#define XL_DAIO_PORT_MASK_DIGITAL_D6         0x40
+#define XL_DAIO_PORT_MASK_DIGITAL_D7         0x80
+#define XL_DAIO_PORT_MASK_ANALOG_A0          0x01
+#define XL_DAIO_PORT_MASK_ANALOG_A1          0x02
+#define XL_DAIO_PORT_MASK_ANALOG_A2          0x04
+#define XL_DAIO_PORT_MASK_ANALOG_A3          0x08
+#define XL_DAIO_EVT_ID_DIGITAL               XL_DAIO_PORT_TYPE_MASK_DIGITAL
+#define XL_DAIO_EVT_ID_ANALOG                XL_DAIO_PORT_TYPE_MASK_ANALOG
+#define XL_ETH_EVENT_SIZE_HEADER       (unsigned short) 32
+#define XL_ETH_EVENT_SIZE_MAX          (unsigned int) 2048
+#define XL_ETH_RX_FIFO_QUEUE_SIZE_MAX  (unsigned int) (8*1024*1024)  //!< Maximum size of ethernet receive queue: 8 MByte
+#define XL_ETH_RX_FIFO_QUEUE_SIZE_MIN  (unsigned int) (64*1024)      //!< Minimum size of ethernet receive queue: 64 KByte
+#define XL_ETH_PAYLOAD_SIZE_MAX        (unsigned int) 1500 // maximum payload length for sending an ethernet packet
+#define XL_ETH_PAYLOAD_SIZE_MIN        (unsigned int)   46 // minimum payload length for sending an ethernet packet (42 octets with VLAN tag present)
+#define XL_ETH_RAW_FRAME_SIZE_MAX      (unsigned int) 1600 // maximum buffer size for storing a "raw" Ethernet frame (including VLAN tags, if present)
+#define XL_ETH_CONNECTOR_RJ45          (unsigned short) 0x0001
+#define XL_ETH_CONNECTOR_DSUB          (unsigned short) 0x0002
+#define XL_ETH_PHY_IEEE                (unsigned short) 0x0004
+#define XL_ETH_PHY_BROADR              (unsigned short) 0x0008
+#define XL_ETH_FRAME_BYPASSED          (unsigned short) 0x0010 // For Rx and RxError events
+#define XL_ETH_QUEUE_OVERFLOW          (unsigned short) 0x0100
+#define XL_ETH_BYPASS_QUEUE_OVERFLOW   (unsigned short) 0x8000 //MAC bypass queue full condition occurred, one or more packets dropped
+#define XL_ETH_MACADDR_OCTETS          6                     
+#define XL_ETH_ETHERTYPE_OCTETS        2
+#define XL_ETH_VLANTAG_OCTETS          4
+#define XL_ETH_MODE_SPEED_AUTO_100         2    /* Set connection speed set to 100 Mbps via auto-negotiation */
+#define XL_ETH_MODE_SPEED_AUTO_1000        4    /* Set connection speed to 1000 Mbps via auto-negotiation */
+#define XL_ETH_MODE_SPEED_AUTO_100_1000    5    /* Set connection speed automatically to either 100 or 1000 Mbps */
+#define XL_ETH_MODE_SPEED_FIXED_100        8    /* Set connection speed to 100 Mbps. Auto-negotiation disabled. */
+#define XL_ETH_MODE_DUPLEX_DONT_CARE       0    /* Used for BroadR-Reach since only full duplex mode possible. */
+#define XL_ETH_MODE_DUPLEX_AUTO            1    /* Duplex mode set via auto-negotiation. Requires connection speed set to an "auto" value. Only for IEEE 802.3*/
+#define XL_ETH_MODE_DUPLEX_FULL            3    /* Full duplex mode. Only for IEEE 802.3 */
+#define XL_ETH_MODE_CONNECTOR_RJ45         1    /* Using RJ-45 connector */
+#define XL_ETH_MODE_CONNECTOR_DSUB         2    /* Using D-Sub connector */
+#define XL_ETH_MODE_PHY_IEEE_802_3         1    /* Set IEEE 802.3 */
+#define XL_ETH_MODE_PHY_BROADR_REACH       2    /* Set BroadR-Reach */
+#define XL_ETH_MODE_CLOCK_DONT_CARE        0    /* Used for IEEE 802.3 100 and 10 MBit */
+#define XL_ETH_MODE_CLOCK_AUTO             1    /* Clock mode set automatically via auto-negotiation. Only for 1000Base-T if speed mode is one of the "auto" modes */
+#define XL_ETH_MODE_CLOCK_MASTER           2    /* Clock mode is master. Only for 1000Base-T or BroadR-Reach */
+#define XL_ETH_MODE_CLOCK_SLAVE            3    /* Clock mode is slave. Only for 1000Base-T or BroadR-Reach */
+#define XL_ETH_MODE_MDI_AUTO               1    /* Perform MDI auto detection */
+#define XL_ETH_MODE_MDI_STRAIGHT           2    /* Direct MDI (connected to switch) */
+#define XL_ETH_MODE_MDI_CROSSOVER          3    /* Crossover MDI (connected to endpoint) */
+#define XL_ETH_MODE_BR_PAIR_DONT_CARE      0    /* Used for IEEE 802.3 */
+#define XL_ETH_MODE_BR_PAIR_1PAIR          1    /* BR 1-pair connection. Only for BroadR-Reach */
+#define XL_ETH_STATUS_LINK_UNKNOWN         0    /* The link state could not be determined (e.g. lost connection to board) */
+#define XL_ETH_STATUS_LINK_DOWN            1    /* Link is down (no cable attached, no configuration set, configuration does not match) */
+#define XL_ETH_STATUS_LINK_UP              2    /* Link is up */
+#define XL_ETH_STATUS_LINK_ERROR           4    /* Link is in error state (e.g. auto-negotiation failed) */
+#define XL_ETH_STATUS_SPEED_UNKNOWN        0    /* Connection speed could not be determined (e.g. during auto-negotiation or if link down) */
+#define XL_ETH_STATUS_SPEED_100            2    /* Link speed is 100 Mbps */
+#define XL_ETH_STATUS_SPEED_1000           3    /* Link speed is 1000 Mbps */
+#define XL_ETH_STATUS_DUPLEX_UNKNOWN       0    /* Duplex mode could not be determined (e.g. during auto-negotiation or if link down) */
+#define XL_ETH_STATUS_DUPLEX_FULL          2    /* Full duplex mode */
+#define XL_ETH_STATUS_MDI_UNKNOWN          0    /* MDI mode could not be determined  (e.g. during auto-negotiation or if link down) */
+#define XL_ETH_STATUS_MDI_STRAIGHT         1    /* Direct MDI */
+#define XL_ETH_STATUS_MDI_CROSSOVER        2    /* Crossover MDI */
+#define XL_ETH_STATUS_CONNECTOR_RJ45       1    /* Using RJ-45 connector */
+#define XL_ETH_STATUS_CONNECTOR_DSUB       2    /* Using D-Sub connector */
+#define XL_ETH_STATUS_PHY_UNKNOWN          0    /* PHY is currently uhknown (e.g. if link is down) */
+#define XL_ETH_STATUS_PHY_IEEE_802_3       1    /* PHY is IEEE 802.3 */
+#define XL_ETH_STATUS_PHY_BROADR_REACH     2    /* PHY is BroadR-Reach */
+#define XL_ETH_STATUS_CLOCK_DONT_CARE      0    /* Clock mode not relevant. Only for IEEE 802.3 100/10 MBit */
+#define XL_ETH_STATUS_CLOCK_MASTER         1    /* Clock mode is master. Only for 1000Base-T or BroadR-Reach */
+#define XL_ETH_STATUS_CLOCK_SLAVE          2    /* Clock mode is slave. Only for 1000Base-T or BroadR-Reach */
+#define XL_ETH_STATUS_BR_PAIR_DONT_CARE    0    /* No BR pair available. Only for IEEE 802.3 1000/100/10 MBit */
+#define XL_ETH_STATUS_BR_PAIR_1PAIR        1    /* BR 1-pair connection. Only for BroadR-Reach */
+#define XL_ETH_RX_ERROR_INVALID_LENGTH     ((unsigned int) 0x00000001) /* Invalid length error. Set when the receive frame has an invalid length as defined by IEEE802.3 */
+#define XL_ETH_RX_ERROR_INVALID_CRC        ((unsigned int) 0x00000002) /* CRC error. Set when frame is received with CRC-32 error but valid length */
+#define XL_ETH_RX_ERROR_PHY_ERROR          ((unsigned int) 0x00000004) /* Corrupted receive frame caused by a PHY error */
+#define XL_ETH_DATAFRAME_FLAGS_USE_SOURCE_MAC   (unsigned int) 0x00000001 /* Use the given source MAC address (not set by hardware) */
+#define XL_ETH_BYPASS_INACTIVE                  0   /* Bypass inactive (default state) */
+#define XL_ETH_BYPASS_PHY                       1   /* Bypass active via PHY loop */
+#define XL_ETH_BYPASS_MACCORE                   2   /* Bypass active via L2 switch (using MAC cores) */
+#define XL_ETH_TX_ERROR_BYPASS_ENABLED      1   /* Bypass activated */
+#define XL_ETH_TX_ERROR_NO_LINK             2   /* No Link */
+#define XL_ETH_TX_ERROR_PHY_NOT_CONFIGURED  3   /* PHY not yet configured */
+#define XL_ETH_TX_ERROR_INVALID_LENGTH      7   /* Frame with invalid length transmitted */
+#define XL_MOST150_RX_EVENT_HEADER_SIZE       (unsigned short) 32
+#define XL_MOST150_MAX_EVENT_DATA_SIZE        (unsigned int) 2048
+#define MOST150_SYNC_ALLOC_INFO_SIZE          (unsigned int) 372
+#define XL_MOST150_CTRL_PAYLOAD_MAX_SIZE          (unsigned short) 45
+#define XL_MOST150_ASYNC_PAYLOAD_MAX_SIZE         (unsigned short) 1524 // maximum valid length (s. INIC User Manual)
+#define XL_MOST150_ETHERNET_PAYLOAD_MAX_SIZE      (unsigned short) 1506 // maximum valid length (s. INIC User Manual)
+#define XL_MOST150_ASYNC_SEND_PAYLOAD_MAX_SIZE    (unsigned short) 1600 // maximum length for sending a MDP
+#define XL_MOST150_ETHERNET_SEND_PAYLOAD_MAX_SIZE (unsigned short) 1600 // maximum length for sending a MEP
+#define XL_MOST150_VN2640                         (unsigned short) 0x0001  //!< common VN2640 event
+#define XL_MOST150_INIC                           (unsigned short) 0x0002  //!< event was generated by INIC
+#define XL_MOST150_SPY                            (unsigned short) 0x0004  //!< event was generated by spy
+#define XL_MOST150_QUEUE_OVERFLOW                 (unsigned short) 0x0100  //!< queue overflow occured (some events are lost)
+#define XL_MOST150_SOURCE_SPECIAL_NODE     (unsigned int) 0x00000001
+#define XL_MOST150_SOURCE_SYNC_ALLOC_INFO  (unsigned int) 0x00000004
+#define XL_MOST150_SOURCE_CTRL_SPY         (unsigned int) 0x00000008
+#define XL_MOST150_SOURCE_ASYNC_SPY        (unsigned int) 0x00000010
+#define XL_MOST150_SOURCE_ETH_SPY          (unsigned int) 0x00000020
+#define XL_MOST150_SOURCE_SHUTDOWN_FLAG    (unsigned int) 0x00000040
+#define XL_MOST150_SOURCE_SYSTEMLOCK_FLAG  (unsigned int) 0x00000080
+#define XL_MOST150_SOURCE_LIGHTLOCK_SPY    (unsigned int) 0x00000200
+#define XL_MOST150_SOURCE_LIGHTLOCK_INIC   (unsigned int) 0x00000400
+#define XL_MOST150_SOURCE_ECL_CHANGE       (unsigned int) 0x00000800
+#define XL_MOST150_SOURCE_LIGHT_STRESS     (unsigned int) 0x00001000
+#define XL_MOST150_SOURCE_LOCK_STRESS      (unsigned int) 0x00002000
+#define XL_MOST150_SOURCE_BUSLOAD_CTRL     (unsigned int) 0x00004000
+#define XL_MOST150_SOURCE_BUSLOAD_ASYNC    (unsigned int) 0x00008000
+#define XL_MOST150_SOURCE_CTRL_MLB         (unsigned int) 0x00010000
+#define XL_MOST150_SOURCE_ASYNC_MLB        (unsigned int) 0x00020000
+#define XL_MOST150_SOURCE_ETH_MLB          (unsigned int) 0x00040000
+#define XL_MOST150_SOURCE_TXACK_MLB        (unsigned int) 0x00080000
+#define XL_MOST150_SOURCE_STREAM_UNDERFLOW (unsigned int) 0x00100000
+#define XL_MOST150_SOURCE_STREAM_OVERFLOW  (unsigned int) 0x00200000
+#define XL_MOST150_SOURCE_STREAM_RX_DATA   (unsigned int) 0x00400000
+#define XL_MOST150_SOURCE_ECL_SEQUENCE     (unsigned int) 0x00800000
+#define XL_MOST150_DEVICEMODE_SLAVE                     (unsigned char) 0x00
+#define XL_MOST150_DEVICEMODE_MASTER                    (unsigned char) 0x01
+#define XL_MOST150_DEVICEMODE_STATIC_MASTER             (unsigned char) 0x03
+#define XL_MOST150_DEVICEMODE_RETIMED_BYPASS_SLAVE      (unsigned char) 0x04
+#define XL_MOST150_DEVICEMODE_RETIMED_BYPASS_MASTER     (unsigned char) 0x05
+#define XL_MOST150_FREQUENCY_44100                       (unsigned int) 0x00000000
+#define XL_MOST150_FREQUENCY_48000                       (unsigned int) 0x00000001
+#define XL_MOST150_FREQUENCY_ERROR                       (unsigned int) 0x00000002
+#define XL_MOST150_NA_CHANGED                            (unsigned int) 0x00000001
+#define XL_MOST150_GA_CHANGED                            (unsigned int) 0x00000002
+#define XL_MOST150_NPR_CHANGED                           (unsigned int) 0x00000004
+#define XL_MOST150_MPR_CHANGED                           (unsigned int) 0x00000008
+#define XL_MOST150_SBC_CHANGED                           (unsigned int) 0x00000010
+#define XL_MOST150_CTRL_RETRY_PARAMS_CHANGED             (unsigned int) 0x00000060
+#define XL_MOST150_ASYNC_RETRY_PARAMS_CHANGED            (unsigned int) 0x00000180
+#define XL_MOST150_MAC_ADDR_CHANGED                      (unsigned int) 0x00000200
+#define XL_MOST150_NPR_SPY_CHANGED                       (unsigned int) 0x00000400
+#define XL_MOST150_MPR_SPY_CHANGED                       (unsigned int) 0x00000800
+#define XL_MOST150_SBC_SPY_CHANGED                       (unsigned int) 0x00001000
+#define XL_MOST150_INIC_NISTATE_CHANGED                  (unsigned int) 0x00002000
+#define XL_MOST150_SPECIAL_NODE_MASK_CHANGED             (unsigned int) 0x00003FFF
+#define XL_MOST150_CTRL_RETRY_TIME_MIN                   (unsigned int) 3  // Time Unit: 16 MOST Frames
+#define XL_MOST150_CTRL_RETRY_TIME_MAX                   (unsigned int) 31
+#define XL_MOST150_CTRL_SEND_ATTEMPT_MIN                 (unsigned int) 1
+#define XL_MOST150_CTRL_SEND_ATTEMPT_MAX                 (unsigned int) 16
+#define XL_MOST150_ASYNC_RETRY_TIME_MIN                  (unsigned int) 0  // Time Unit: 1 MOST Frame
+#define XL_MOST150_ASYNC_RETRY_TIME_MAX                  (unsigned int) 255
+#define XL_MOST150_ASYNC_SEND_ATTEMPT_MIN                (unsigned int) 1  // For both MDP and MEP
+#define XL_MOST150_ASYNC_SEND_ATTEMPT_MAX                (unsigned int) 16
+#define XL_MOST150_INIC_NISTATE_NET_OFF                  (unsigned int) 0x00000000
+#define XL_MOST150_INIC_NISTATE_NET_INIT                 (unsigned int) 0x00000001
+#define XL_MOST150_INIC_NISTATE_NET_RBD                  (unsigned int) 0x00000002
+#define XL_MOST150_INIC_NISTATE_NET_ON                   (unsigned int) 0x00000003
+#define XL_MOST150_INIC_NISTATE_NET_RBD_RESULT           (unsigned int) 0x00000004
+#define XL_MOST150_TX_OK                                 (unsigned int) 0x00000001
+#define XL_MOST150_TX_FAILED_FORMAT_ERROR                (unsigned int) 0x00000002
+#define XL_MOST150_TX_FAILED_NETWORK_OFF                 (unsigned int) 0x00000004
+#define XL_MOST150_TX_FAILED_TIMEOUT                     (unsigned int) 0x00000005
+#define XL_MOST150_TX_FAILED_WRONG_TARGET                (unsigned int) 0x00000008
+#define XL_MOST150_TX_OK_ONE_SUCCESS                     (unsigned int) 0x00000009
+#define XL_MOST150_TX_FAILED_BAD_CRC                     (unsigned int) 0x0000000C
+#define XL_MOST150_TX_FAILED_RECEIVER_BUFFER_FULL        (unsigned int) 0x0000000E
+#define XL_MOST150_VALID_DATALENANNOUNCED                (unsigned int) 0x00000001
+#define XL_MOST150_VALID_SOURCEADDRESS                   (unsigned int) 0x00000002
+#define XL_MOST150_VALID_TARGETADDRESS                   (unsigned int) 0x00000004
+#define XL_MOST150_VALID_PACK                            (unsigned int) 0x00000008
+#define XL_MOST150_VALID_CACK                            (unsigned int) 0x00000010
+#define XL_MOST150_VALID_PINDEX                          (unsigned int) 0x00000020
+#define XL_MOST150_VALID_PRIORITY                        (unsigned int) 0x00000040
+#define XL_MOST150_VALID_CRC                             (unsigned int) 0x00000080
+#define XL_MOST150_VALID_CRCCALCULATED                   (unsigned int) 0x00000100
+#define XL_MOST150_VALID_MESSAGE                         (unsigned int) 0x80000000
+#define XL_MOST150_PACK_OK                               (unsigned int) 0x00000004
+#define XL_MOST150_PACK_BUFFER_FULL                      (unsigned int) 0x00000001
+#define XL_MOST150_PACK_NO_RESPONSE                      (unsigned int) 0x00000000 // maybe spy before receiver
+#define XL_MOST150_CACK_OK                               (unsigned int) 0x00000004
+#define XL_MOST150_CACK_CRC_ERROR                        (unsigned int) 0x00000001
+#define XL_MOST150_CACK_NO_RESPONSE                      (unsigned int) 0x00000000 // maybe spy before receiver
+#define XL_MOST150_ASYNC_INVALID_RX_LENGTH               (unsigned int) 0x00008000 // flag indicating a received MDP with length > XL_MOST150_ASYNC_PAYLOAD_MAX_SIZE
+#define XL_MOST150_ETHERNET_INVALID_RX_LENGTH            (unsigned int) 0x80000000 // flag indicating a received MEP with length > XL_MOST150_ETHERNET_PAYLOAD_MAX_SIZE
+#define XL_MOST150_LIGHT_OFF                             (unsigned int) 0x00000000
+#define XL_MOST150_LIGHT_FORCE_ON                        (unsigned int) 0x00000001
+#define XL_MOST150_LIGHT_MODULATED                       (unsigned int) 0x00000002
+#define XL_MOST150_LIGHT_ON_UNLOCK                       (unsigned int) 0x00000003
+#define XL_MOST150_LIGHT_ON_LOCK                         (unsigned int) 0x00000004
+#define XL_MOST150_LIGHT_ON_STABLE_LOCK                  (unsigned int) 0x00000005
+#define XL_MOST150_LIGHT_ON_CRITICAL_UNLOCK              (unsigned int) 0x00000006
+#define XL_MOST150_ERROR_ASYNC_TX_ACK_HANDLE             (unsigned int) 0x00000001
+#define XL_MOST150_ERROR_ETH_TX_ACK_HANDLE               (unsigned int) 0x00000002
+#define XL_MOST150_RX_BUFFER_TYPE_CTRL                   (unsigned int) 0x00000001
+#define XL_MOST150_RX_BUFFER_TYPE_ASYNC                  (unsigned int) 0x00000002
+#define XL_MOST150_RX_BUFFER_NORMAL_MODE                 (unsigned int) 0x00000000
+#define XL_MOST150_RX_BUFFER_BLOCK_MODE                  (unsigned int) 0x00000001
+#define XL_MOST150_DEVICE_LINE_IN                        (unsigned int) 0x00000000
+#define XL_MOST150_DEVICE_LINE_OUT                       (unsigned int) 0x00000001
+#define XL_MOST150_DEVICE_SPDIF_IN                       (unsigned int) 0x00000002
+#define XL_MOST150_DEVICE_SPDIF_OUT                      (unsigned int) 0x00000003
+#define XL_MOST150_DEVICE_ALLOC_BANDWIDTH                (unsigned int) 0x00000004
+#define XL_MOST150_DEVICE_MODE_OFF                       (unsigned int) 0x00000000
+#define XL_MOST150_DEVICE_MODE_ON                        (unsigned int) 0x00000001
+#define XL_MOST150_DEVICE_MODE_OFF_BYPASS_CLOSED         (unsigned int) 0x00000002
+#define XL_MOST150_DEVICE_MODE_OFF_NOT_IN_NETON          (unsigned int) 0x00000003
+#define XL_MOST150_DEVICE_MODE_OFF_NO_MORE_RESOURCES     (unsigned int) 0x00000004
+#define XL_MOST150_DEVICE_MODE_OFF_NOT_ENOUGH_FREE_BW    (unsigned int) 0x00000005
+#define XL_MOST150_DEVICE_MODE_OFF_DUE_TO_NET_OFF        (unsigned int) 0x00000006
+#define XL_MOST150_DEVICE_MODE_OFF_DUE_TO_CFG_NOT_OK     (unsigned int) 0x00000007
+#define XL_MOST150_DEVICE_MODE_OFF_COMMUNICATION_ERROR   (unsigned int) 0x00000008
+#define XL_MOST150_DEVICE_MODE_OFF_STREAM_CONN_ERROR     (unsigned int) 0x00000009
+#define XL_MOST150_DEVICE_MODE_OFF_CL_ALREADY_USED       (unsigned int) 0x0000000A
+#define XL_MOST150_DEVICE_MODE_CL_NOT_ALLOCATED          (unsigned int) 0x000000FF
+#define XL_MOST150_ALLOC_BANDWIDTH_NUM_CL_MAX            10
+#define XL_MOST150_CL_DEALLOC_ALL                        (unsigned int) 0x00000FFF
+#define XL_MOST150_VOLUME_MIN                            (unsigned int) 0x00000000
+#define XL_MOST150_VOLUME_MAX                            (unsigned int) 0x000000FF
+#define XL_MOST150_NO_MUTE                               (unsigned int) 0x00000000
+#define XL_MOST150_MUTE                                  (unsigned int) 0x00000001
+#define XL_MOST150_LIGHT_FULL                            (unsigned int) 0x00000064
+#define XL_MOST150_LIGHT_3DB                             (unsigned int) 0x00000032
+#define XL_MOST150_SYSTEMLOCK_FLAG_NOT_SET               (unsigned int) 0x00000000
+#define XL_MOST150_SYSTEMLOCK_FLAG_SET                   (unsigned int) 0x00000001
+#define XL_MOST150_SHUTDOWN_FLAG_NOT_SET                 (unsigned int) 0x00000000
+#define XL_MOST150_SHUTDOWN_FLAG_SET                     (unsigned int) 0x00000001
+#define XL_MOST150_ECL_LINE_LOW                          (unsigned int) 0x00000000
+#define XL_MOST150_ECL_LINE_HIGH                         (unsigned int) 0x00000001
+#define XL_MOST150_ECL_LINE_PULL_UP_NOT_ACTIVE           (unsigned int) 0x00000000
+#define XL_MOST150_ECL_LINE_PULL_UP_ACTIVE               (unsigned int) 0x00000001
+#define XL_MOST150_ECL_SEQ_NUM_STATES_MAX               200
+#define XL_MOST150_ECL_SEQ_DURATION_MIN                  1      // -> 100 ｵs
+#define XL_MOST150_ECL_SEQ_DURATION_MAX                  655350 // -> 65535 ms
+#define XL_MOST150_ECL_GLITCH_FILTER_MIN                 50      // -> 50 ｵs
+#define XL_MOST150_ECL_GLITCH_FILTER_MAX                 50000   // -> 50 ms
+#define XL_MOST150_MODE_DEACTIVATED                       0
+#define XL_MOST150_MODE_ACTIVATED                         1
+#define XL_MOST150_BUSLOAD_TYPE_DATA_PACKET               0
+#define XL_MOST150_BUSLOAD_TYPE_ETHERNET_PACKET           1
+#define XL_MOST150_BUSLOAD_COUNTER_TYPE_NONE              0x00
+#define XL_MOST150_BUSLOAD_COUNTER_TYPE_1_BYTE            0x01
+#define XL_MOST150_BUSLOAD_COUNTER_TYPE_2_BYTE            0x02
+#define XL_MOST150_BUSLOAD_COUNTER_TYPE_3_BYTE            0x03
+#define XL_MOST150_BUSLOAD_COUNTER_TYPE_4_BYTE            0x04
+#define XL_MOST150_SPDIF_MODE_SLAVE                      (unsigned int) 0x00000000
+#define XL_MOST150_SPDIF_MODE_MASTER                     (unsigned int) 0x00000001
+#define XL_MOST150_SPDIF_ERR_NO_ERROR                    (unsigned int) 0x00000000
+#define XL_MOST150_SPDIF_ERR_HW_COMMUNICATION            (unsigned int) 0x00000001
+#define XL_MOST150_STARTUP_NO_ERROR                      (unsigned int) 0x00000000
+#define XL_MOST150_STARTUP_NO_ERRORINFO                  (unsigned int) 0xFFFFFFFF
+#define XL_MOST150_SHUTDOWN_NO_ERROR                     (unsigned int) 0x00000000
+#define XL_MOST150_SHUTDOWN_NO_ERRORINFO                 (unsigned int) 0xFFFFFFFF
+#define XL_MOST150_STREAM_RX_DATA                        0 // RX streaming: MOST -> PC
+#define XL_MOST150_STREAM_TX_DATA                        1 // TX streaming: PC -> MOST
+#define XL_MOST150_STREAM_INVALID_HANDLE                 0  
+#define XL_MOST150_STREAM_STATE_CLOSED                   0x01
+#define XL_MOST150_STREAM_STATE_OPENED                   0x02
+#define XL_MOST150_STREAM_STATE_STARTED                  0x03
+#define XL_MOST150_STREAM_STATE_STOPPED                  0x04
+#define XL_MOST150_STREAM_STATE_START_PENDING            0x05 // waiting for result from hw
+#define XL_MOST150_STREAM_STATE_STOP_PENDING             0x06 // waiting for result from hw
+#define XL_MOST150_STREAM_STATE_OPEN_PENDING             0x07 // waiting for result from hw
+#define XL_MOST150_STREAM_STATE_CLOSE_PENDING            0x08 // waiting for result from hw
+#define XL_MOST150_STREAM_TX_BYTES_PER_FRAME_MIN         1
+#define XL_MOST150_STREAM_TX_BYTES_PER_FRAME_MAX         152
+#define XL_MOST150_STREAM_RX_NUM_CL_MAX                  8
+#define XL_MOST150_STREAM_CL_MIN                         (unsigned int) 0x000C
+#define XL_MOST150_STREAM_CL_MAX                         (unsigned int) 0x017F
+#define XL_MOST150_STREAM_STATE_ERROR_NO_ERROR           0
+#define XL_MOST150_STREAM_STATE_ERROR_NOT_ENOUGH_BW      1
+#define XL_MOST150_STREAM_STATE_ERROR_NET_OFF            2
+#define XL_MOST150_STREAM_STATE_ERROR_CONFIG_NOT_OK      3
+#define XL_MOST150_STREAM_STATE_ERROR_CL_DISAPPEARED     4
+#define XL_MOST150_STREAM_STATE_ERROR_INIC_SC_ERROR      5
+#define XL_MOST150_STREAM_STATE_ERROR_DEVICEMODE_BYPASS  6
+#define XL_MOST150_STREAM_STATE_ERROR_NISTATE_NOT_NETON  7
+#define XL_MOST150_STREAM_STATE_ERROR_INIC_BUSY          8
+#define XL_MOST150_STREAM_STATE_ERROR_CL_MISSING         9
+#define XL_MOST150_STREAM_STATE_ERROR_NUM_BYTES_MISMATCH 10
+#define XL_MOST150_STREAM_STATE_ERROR_INIC_COMMUNICATION 11
+#define XL_MOST150_STREAM_BUFFER_ERROR_NO_ERROR          0
+#define XL_MOST150_STREAM_BUFFER_ERROR_NOT_ENOUGH_DATA   1
+#define XL_MOST150_STREAM_BUFFER_TX_FIFO_CLEARED         2
+#define XL_MOST150_STREAM_BUFFER_ERROR_STOP_BY_APP       1
+#define XL_MOST150_STREAM_BUFFER_ERROR_MOST_SIGNAL_OFF   2
+#define XL_MOST150_STREAM_BUFFER_ERROR_UNLOCK            3
+#define XL_MOST150_STREAM_BUFFER_ERROR_CL_MISSING        4
+#define XL_MOST150_STREAM_BUFFER_ERROR_ALL_CL_MISSING    5
+#define XL_MOST150_STREAM_BUFFER_ERROR_OVERFLOW          128 // overflow bit
+#define XL_MOST150_STREAM_LATENCY_VERY_LOW               0
+#define XL_MOST150_STREAM_LATENCY_LOW                    1
+#define XL_MOST150_STREAM_LATENCY_MEDIUM                 2
+#define XL_MOST150_STREAM_LATENCY_HIGH                   3
+#define XL_MOST150_STREAM_LATENCY_VERY_HIGH              4
+#define XL_MOST150_BYPASS_STRESS_TIME_MIN                10
+#define XL_MOST150_BYPASS_STRESS_TIME_MAX                65535
+#define XL_MOST150_BYPASS_STRESS_STOPPED                 0
+#define XL_MOST150_BYPASS_STRESS_STARTED                 1
+#define XL_MOST150_BYPASS_STRESS_STOPPED_LIGHT_OFF       2
+#define XL_MOST150_BYPASS_STRESS_STOPPED_DEVICE_MODE     3
+#define XL_MOST150_SSO_RESULT_NO_RESULT                  (unsigned int) 0x00000000
+#define XL_MOST150_SSO_RESULT_NO_FAULT_SAVED             (unsigned int) 0x00000001
+#define XL_MOST150_SSO_RESULT_SUDDEN_SIGNAL_OFF          (unsigned int) 0x00000002
+#define XL_MOST150_SSO_RESULT_CRITICAL_UNLOCK            (unsigned int) 0x00000003
+#define XL_CAN_MAX_DATA_LEN                  64
+#define XL_CANFD_RX_EVENT_HEADER_SIZE        32 
+#define XL_CANFD_MAX_EVENT_SIZE              128
+#define CANFD_GET_NUM_DATABYTES(dlc, edl, rtr)   \
+#define XL_CAN_TXMSG_FLAG_EDL                0x0001    // extended data length
+#define XL_CAN_TXMSG_FLAG_BRS                0x0002    // baud rate switch
+#define XL_CAN_TXMSG_FLAG_RTR                0x0010    // remote transmission request
+#define XL_CAN_TXMSG_FLAG_HIGHPRIO           0x0080    // high priority message - clears all send buffers - then transmits
+#define XL_CAN_TXMSG_FLAG_WAKEUP             0x0200    // generate a wakeup message
+#define XL_CAN_RXMSG_FLAG_EDL                0x0001    // extended data length
+#define XL_CAN_RXMSG_FLAG_BRS                0x0002    // baud rate switch
+#define XL_CAN_RXMSG_FLAG_ESI                0x0004    // error state indicator
+#define XL_CAN_RXMSG_FLAG_RTR                0x0010    // remote transmission request
+#define XL_CAN_RXMSG_FLAG_EF                 0x0200    // error frame (only posssible in XL_CAN_EV_TX_REQUEST/XL_CAN_EV_TX_REMOVED)
+#define XL_CAN_RXMSG_FLAG_ARB_LOST           0x0400    // Arbitration Lost
+#define XL_CAN_RXMSG_FLAG_WAKEUP             0x2000    // high voltage message on single wire CAN
+#define XL_CAN_RXMSG_FLAG_TE                 0x4000    // 1: transceiver error detected
+#define XL_CAN_ERRC_BIT_ERROR              1 
+#define XL_CAN_ERRC_FORM_ERROR             2
+#define XL_CAN_ERRC_STUFF_ERROR            3
+#define XL_CAN_ERRC_OTHER_ERROR            4
+#define XL_CAN_ERRC_CRC_ERROR              5
+#define XL_CAN_ERRC_ACK_ERROR              6
+#define XL_CAN_ERRC_NACK_ERROR             7
+#define XL_CAN_ERRC_OVLD_ERROR             8
+#define XL_CAN_ERRC_EXCPT_ERROR            9
+#define XL_CAN_QUEUE_OVERFLOW          0x100
+#define RX_FIFO_CANFD_QUEUE_SIZE_MAX                         524288   // 0,5 MByte
+#define RX_FIFO_CANFD_QUEUE_SIZE_MIN                         8192     // 8 kByte
+#define XL_A429_MSG_CHANNEL_DIR_TX                  0x01
+#define XL_A429_MSG_CHANNEL_DIR_RX                  0x02
+#define XL_A429_MSG_BITRATE_SLOW_MIN               10500
+#define XL_A429_MSG_BITRATE_SLOW_MAX               16000
+#define XL_A429_MSG_BITRATE_FAST_MIN               90000
+#define XL_A429_MSG_BITRATE_FAST_MAX              110000
+#define XL_A429_MSG_GAP_4BIT                          32
+#define XL_A429_MSG_BITRATE_RX_MIN                 10000
+#define XL_A429_MSG_BITRATE_RX_MAX                120000
+#define XL_A429_MSG_AUTO_BAUDRATE_DISABLED             0
+#define XL_A429_MSG_AUTO_BAUDRATE_ENABLED              1
+#define XL_A429_MSG_FLAG_ON_REQUEST           0x00000001
+#define XL_A429_MSG_FLAG_CYCLIC               0x00000002
+#define XL_A429_MSG_FLAG_DELETE_CYCLIC        0x00000004
+#define	XL_A429_MSG_CYCLE_MAX                 0x3FFFFFFF
+#define	XL_A429_MSG_GAP_DEFAULT                        0 // get minGap config from set channel params
+#define	XL_A429_MSG_GAP_MAX                   0x000FFFFF
+#define XL_A429_MSG_PARITY_DEFAULT                     0 // get parity config from set channel params
+#define XL_A429_MSG_PARITY_DISABLED                    1 // tx: get parity config from transmit data - rx: check disabled
+#define XL_A429_MSG_PARITY_ODD                         2
+#define XL_A429_MSG_PARITY_EVEN                        3
+#define XL_A429_EV_TX_MSG_CTRL_ON_REQUEST              0
+#define XL_A429_EV_TX_MSG_CTRL_CYCLIC                  1
+#define XL_A429_EV_TX_ERROR_ACCESS_DENIED              0
+#define XL_A429_EV_TX_ERROR_TRANSMISSION_ERROR         1
+#define XL_A429_EV_RX_ERROR_GAP_VIOLATION              0
+#define XL_A429_EV_RX_ERROR_PARITY                     1
+#define	XL_A429_EV_RX_ERROR_BITRATE_LOW                2
+#define XL_A429_EV_RX_ERROR_BITRATE_HIGH               3
+#define XL_A429_EV_RX_ERROR_FRAME_FORMAT               4
+#define	XL_A429_EV_RX_ERROR_CODING_RZ                  5
+#define	XL_A429_EV_RX_ERROR_DUTY_FACTOR                6
+#define	XL_A429_EV_RX_ERROR_AVG_BIT_LENGTH             7
+#define XL_A429_QUEUE_OVERFLOW                     0x100
+#define XL_A429_RX_FIFO_QUEUE_SIZE_MAX            524288 // 0,5 MByte
+#define XL_A429_RX_FIFO_QUEUE_SIZE_MIN              8192 // 8 kByte
