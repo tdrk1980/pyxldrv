@@ -10,9 +10,6 @@ XL_SUCCESS = 0
 XL_HWTYPE_VIRTUAL = 1
 
 # XL_BUS_TYPE_CAN = 0x00000001
-XL_INTERFACE_VERSION_V3 = 3
-XL_INTERFACE_VERSION_V4 = 4 # XL_INTERFACE_VERSION_V4 for MOST,CAN FD, Ethernet, FlexRay, ARINC429
-XL_INTERFACE_VERSION = XL_INTERFACE_VERSION_V3 # XL_INTERFACE_VERSION for CAN, LIN, DAIO.
 XL_INVALID_PORTHANDLE  = -1
 
 XL_ACTIVATE_NONE        = 0 
@@ -144,7 +141,7 @@ class TestOpenClosePort(unittest.TestCase):
         rxQueueSize     = 2^10
         appName         = self.appName
         accessMask      = self.accessMask
-        xlInterfaceVersion = XL_INTERFACE_VERSION
+        xlInterfaceVersion = xl.XL_INTERFACE_VERSION
         busType         = self.busType
 
         status = xl.OpenPort(portHandle, appName, accessMask, permissionMask, rxQueueSize, xlInterfaceVersion, busType)
@@ -180,7 +177,7 @@ class TestActivateDeactivate(unittest.TestCase):
         self.portHandle     = [0]
         self.permissionMask = [self.accessMask]
         self.rxQueueSize    = 2^10
-        self.xlInterfaceVersion = XL_INTERFACE_VERSION
+        self.xlInterfaceVersion = xl.XL_INTERFACE_VERSION
         xl.OpenPort(self.portHandle, self.appName, self.accessMask, self.permissionMask, self.rxQueueSize, self.xlInterfaceVersion, self.busType)
 
     def tearDown(self):
@@ -219,7 +216,7 @@ class TestCanTransmitReceive(unittest.TestCase):
         self.portHandle     = [0]
         self.permissionMask = [self.accessMask]
         self.rxQueueSize    = 2^10
-        self.xlInterfaceVersion = XL_INTERFACE_VERSION
+        self.xlInterfaceVersion = xl.XL_INTERFACE_VERSION
         xl.OpenPort(self.portHandle, self.appName, self.accessMask, self.permissionMask, self.rxQueueSize, self.xlInterfaceVersion, self.busType)
 
         self.flags      = XL_ACTIVATE_RESET_CLOCK
