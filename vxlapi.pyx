@@ -109,8 +109,6 @@ cdef extern from "vxlapi.h":
     int _XL_A429_RX_FIFO_QUEUE_SIZE_MAX          "XL_A429_RX_FIFO_QUEUE_SIZE_MAX"
     int _XL_A429_RX_FIFO_QUEUE_SIZE_MIN          "XL_A429_RX_FIFO_QUEUE_SIZE_MIN"
 
-
-
     int _XL_SUCCESS                        "XL_SUCCESS"
     int _XL_PENDING                        "XL_PENDING"
     int _XL_ERR_QUEUE_IS_EMPTY             "XL_ERR_QUEUE_IS_EMPTY"
@@ -186,6 +184,20 @@ cdef extern from "vxlapi.h":
     int _XL_ACTIVATE_NONE         "XL_ACTIVATE_NONE"
     int _XL_ACTIVATE_RESET_CLOCK  "XL_ACTIVATE_RESET_CLOCK"
 
+    int _XL_CAN_EXT_MSG_ID              "XL_CAN_EXT_MSG_ID"
+    int _XL_CAN_MSG_FLAG_ERROR_FRAME    "XL_CAN_MSG_FLAG_ERROR_FRAME"
+    int _XL_CAN_MSG_FLAG_OVERRUN        "XL_CAN_MSG_FLAG_OVERRUN"
+    int _XL_CAN_MSG_FLAG_NERR           "XL_CAN_MSG_FLAG_NERR"
+    int _XL_CAN_MSG_FLAG_WAKEUP         "XL_CAN_MSG_FLAG_WAKEUP"
+    int _XL_CAN_MSG_FLAG_REMOTE_FRAME   "XL_CAN_MSG_FLAG_REMOTE_FRAME"
+    int _XL_CAN_MSG_FLAG_RESERVED_1     "XL_CAN_MSG_FLAG_RESERVED_1"
+    int _XL_CAN_MSG_FLAG_TX_COMPLETED   "XL_CAN_MSG_FLAG_TX_COMPLETED"
+    int _XL_CAN_MSG_FLAG_TX_REQUEST     "XL_CAN_MSG_FLAG_TX_REQUEST"
+    int _XL_CAN_MSG_FLAG_SRR_BIT_DOM    "XL_CAN_MSG_FLAG_SRR_BIT_DOM"
+    int _XL_EVENT_FLAG_OVERRUN          "XL_EVENT_FLAG_OVERRUN"
+    int _XL_LIN_MSGFLAG_TX              "XL_LIN_MSGFLAG_TX"
+    int _XL_LIN_MSGFLAG_CRCERROR        "XL_LIN_MSGFLAG_CRCERROR"
+
     XLstatus xlOpenDriver()
     XLstatus xlCloseDriver()
 
@@ -249,29 +261,24 @@ cpdef ActivateChannel(XLportHandle portHandle, XLaccess accessMask, unsigned int
 cpdef DeactivateChannel(XLportHandle portHandle, XLaccess accessMask):
     return xlDeactivateChannel(portHandle, accessMask)
 
-cpdef CanTransmit(XLportHandle portHandle, XLaccess accessMask, list messageCount, dict pMessage):
+cpdef CanTransmit(XLportHandle portHandle, XLaccess accessMask, list messageCount, list pMessage):
     cdef XLstatus status = 0
     cdef unsigned int message_count = 0
-    cdef XLevent xlEvent
+    cdef XLevent *pxlEvent = NULL
 
-    if messageCount[0] > 0:
-        message_count = messageCount[0]
-        memset(&xlEvent, 0, sizeof(XLevent))
-        xlEvent.tag                 = <unsigned char>XL_TRANSMIT_MSG
-        xlEvent.tagData.msg.id      = 0x123
-        xlEvent.tagData.msg.dlc     = 8
-        xlEvent.tagData.msg.flags   = 0
-        xlEvent.tagData.msg.data[0] = 1
-        xlEvent.tagData.msg.data[1] = 2
-        xlEvent.tagData.msg.data[2] = 3
-        xlEvent.tagData.msg.data[3] = 4
-        xlEvent.tagData.msg.data[4] = 5
-        xlEvent.tagData.msg.data[5] = 6
-        xlEvent.tagData.msg.data[6] = 7
-        xlEvent.tagData.msg.data[7] = 8
-        
-        status = xlCanTransmit(portHandle, accessMask, &message_count, &xlEvent)
-        
+    message_count = len(pMessage)
+    if message_count > 0:
+        pxlEvent = <XLevent *> malloc(sizeof(XLevent) * message_count)
+        memset(pxlEvent, 0, sizeof(XLevent) * message_count)
+        for i, msg in enumerate(pMessage):
+            pxlEvent[i].tag                 = <unsigned char >XL_TRANSMIT_MSG
+            pxlEvent[i].tagData.msg.flags   = <unsigned short>msg["flags"]
+            pxlEvent[i].tagData.msg.id      = <unsigned long >msg["id"]
+            pxlEvent[i].tagData.msg.dlc     = <unsigned short>msg["dlc"]
+            for j, b in enumerate(msg["data"]):
+                pxlEvent[i].tagData.msg.data[j] = b
+        status = xlCanTransmit(portHandle, accessMask, &message_count, pxlEvent)
+        free(pxlEvent)
     messageCount[0] = message_count
     return status
 
@@ -646,3 +653,17 @@ XL_ERR_ETH_FILTER_TOO_COMPLEX    = _XL_ERR_ETH_FILTER_TOO_COMPLEX
 
 XL_ACTIVATE_NONE        = _XL_ACTIVATE_NONE
 XL_ACTIVATE_RESET_CLOCK = _XL_ACTIVATE_RESET_CLOCK
+
+XL_CAN_EXT_MSG_ID            = _XL_CAN_EXT_MSG_ID
+XL_CAN_MSG_FLAG_ERROR_FRAME  = _XL_CAN_MSG_FLAG_ERROR_FRAME
+XL_CAN_MSG_FLAG_OVERRUN      = _XL_CAN_MSG_FLAG_OVERRUN
+XL_CAN_MSG_FLAG_NERR         = _XL_CAN_MSG_FLAG_NERR
+XL_CAN_MSG_FLAG_WAKEUP       = _XL_CAN_MSG_FLAG_WAKEUP
+XL_CAN_MSG_FLAG_REMOTE_FRAME = _XL_CAN_MSG_FLAG_REMOTE_FRAME
+XL_CAN_MSG_FLAG_RESERVED_1   = _XL_CAN_MSG_FLAG_RESERVED_1
+XL_CAN_MSG_FLAG_TX_COMPLETED = _XL_CAN_MSG_FLAG_TX_COMPLETED
+XL_CAN_MSG_FLAG_TX_REQUEST   = _XL_CAN_MSG_FLAG_TX_REQUEST
+XL_CAN_MSG_FLAG_SRR_BIT_DOM  = _XL_CAN_MSG_FLAG_SRR_BIT_DOM
+XL_EVENT_FLAG_OVERRUN        = _XL_EVENT_FLAG_OVERRUN
+XL_LIN_MSGFLAG_TX            = _XL_LIN_MSGFLAG_TX
+XL_LIN_MSGFLAG_CRCERROR      = _XL_LIN_MSGFLAG_CRCERROR

@@ -267,20 +267,6 @@
 #define XL_LIN_SLAVE_ON                         (unsigned char) 0xff //!< switch on the LIN slave           
 #define XL_LIN_SLAVE_OFF                        (unsigned char) 0x00 //!< switch off the LIN slave
 #define MAX_MSG_LEN 8
-                                                   
-#define XL_CAN_EXT_MSG_ID             0x80000000                                                 
-#define XL_CAN_MSG_FLAG_ERROR_FRAME   0x01
-#define XL_CAN_MSG_FLAG_OVERRUN       0x02           //!< Overrun in Driver or CAN Controller, 
-#define XL_CAN_MSG_FLAG_NERR          0x04           //!< Line Error on Lowspeed
-#define XL_CAN_MSG_FLAG_WAKEUP        0x08           //!< High Voltage Message on Single Wire CAN
-#define XL_CAN_MSG_FLAG_REMOTE_FRAME  0x10
-#define XL_CAN_MSG_FLAG_RESERVED_1    0x20
-#define XL_CAN_MSG_FLAG_TX_COMPLETED  0x40           //!< Message Transmitted
-#define XL_CAN_MSG_FLAG_TX_REQUEST    0x80           //!< Transmit Message stored into Controller
-#define XL_CAN_MSG_FLAG_SRR_BIT_DOM 0x0200           //!< SRR bit in CAN message is dominant
-#define XL_EVENT_FLAG_OVERRUN         0x01           //!< Used in XLevent.flags 
-#define XL_LIN_MSGFLAG_TX             XL_CAN_MSG_FLAG_TX_COMPLETED   //!< LIN TX flag
-#define XL_LIN_MSGFLAG_CRCERROR       0x81                           //!< Wrong LIN CRC
 #define XL_DAIO_DATA_GET                     0x8000
 #define XL_DAIO_DATA_VALUE_DIGITAL           0x0001
 #define XL_DAIO_DATA_VALUE_ANALOG            0x0002

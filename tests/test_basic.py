@@ -188,6 +188,7 @@ class TestActivateDeactivate(unittest.TestCase):
         status = xl.DeactivateChannel(portHandle, accessMask)
         self.assertEqual(status, xl.XL_SUCCESS)
 
+# python -m unittest tests.test_basic.TestCanTransmitReceive
 class TestCanTransmitReceive(unittest.TestCase):
     def setUp(self):
         xl.OpenDriver()
@@ -220,21 +221,26 @@ class TestCanTransmitReceive(unittest.TestCase):
     def test_cantransmit_receive(self):
         print(inspect.getframeinfo(inspect.currentframe())[2])
 
-        message_count = [1]
-        status = xl.CanTransmit(self.portHandle[0], self.accessMask, message_count, {"a":1})
+        msgs = []
+        msgs.append({"flags":0, "id":0x321, "dlc":8, "data":bytearray([0x12,0x34,0x56,0x78,0x9A,0xBC,0xDE,0xF0])})
+        msgs.append({"flags":0, "id":0x123, "dlc":3, "data":bytearray([0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF])})
+        message_count = [len(msgs)]
+
+        status = xl.CanTransmit(self.portHandle[0], self.accessMask, message_count, msgs)
         self.assertEqual(status, xl.XL_SUCCESS)
 
         eventcount=[1]
         eventstring=[""]
         status = xl.Receive(self.portHandle[0],eventcount,eventstring)
+        print(eventstring)
         self.assertEqual(status, xl.XL_SUCCESS)
-        self.assertEqual(eventcount[0], 1)
 
         eventcount=[1]
         eventstring=[""]
         status = xl.Receive(self.portHandle[0],eventcount,eventstring)
+        print(eventstring)
         self.assertEqual(status, xl.XL_SUCCESS)
-        self.assertEqual(eventcount[0], 0)
+        # self.assertEqual(eventcount[0], 0)
 
 if __name__ == '__main__':
     unittest.main()
