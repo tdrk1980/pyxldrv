@@ -9,7 +9,7 @@ from pprint import pprint
 XL_SUCCESS = 0
 XL_HWTYPE_VIRTUAL = 1
 
-XL_BUS_TYPE_CAN = 0x00000001
+# XL_BUS_TYPE_CAN = 0x00000001
 XL_INTERFACE_VERSION_V3 = 3
 XL_INTERFACE_VERSION_V4 = 4 # XL_INTERFACE_VERSION_V4 for MOST,CAN FD, Ethernet, FlexRay, ARINC429
 XL_INTERFACE_VERSION = XL_INTERFACE_VERSION_V3 # XL_INTERFACE_VERSION for CAN, LIN, DAIO.
@@ -41,26 +41,26 @@ class TestSetGetAppConfig(unittest.TestCase):
         print(inspect.getframeinfo(inspect.currentframe())[2])
 
         # CAN1 -- virtual can bus1.hwch1
-        status = xl.SetApplConfig(appName=bytes("pyxldrv".encode()), appChannel=0, pHwType=[XL_HWTYPE_VIRTUAL], pHwIndex=[0], pHwChannel=[0], busType=XL_BUS_TYPE_CAN)
+        status = xl.SetApplConfig(appName=bytes("pyxldrv".encode()), appChannel=0, pHwType=[XL_HWTYPE_VIRTUAL], pHwIndex=[0], pHwChannel=[0], busType=xl.XL_BUS_TYPE_CAN)
         self.assertEqual(status, XL_SUCCESS)
 
         pHwType = [0xff]
         pHwIndex = [0xff]
         pHwChannel = [0xff]
-        status = xl.GetApplConfig(appName=bytes("pyxldrv".encode()), appChannel=0, pHwType=pHwType, pHwIndex=pHwIndex, pHwChannel=pHwChannel, busType=XL_BUS_TYPE_CAN)
+        status = xl.GetApplConfig(appName=bytes("pyxldrv".encode()), appChannel=0, pHwType=pHwType, pHwIndex=pHwIndex, pHwChannel=pHwChannel, busType=xl.XL_BUS_TYPE_CAN)
         self.assertEqual(status, XL_SUCCESS)
         self.assertEqual(pHwType[0], XL_HWTYPE_VIRTUAL)
         self.assertEqual(pHwIndex[0], 0)
         self.assertEqual(pHwChannel[0], 0)
 
         # CAN2 -- virtual can bus1.hwch2
-        status = xl.SetApplConfig(appName=bytes("pyxldrv".encode()), appChannel=1, pHwType=[XL_HWTYPE_VIRTUAL], pHwIndex=[0], pHwChannel=[1], busType=XL_BUS_TYPE_CAN)
+        status = xl.SetApplConfig(appName=bytes("pyxldrv".encode()), appChannel=1, pHwType=[XL_HWTYPE_VIRTUAL], pHwIndex=[0], pHwChannel=[1], busType=xl.XL_BUS_TYPE_CAN)
         self.assertEqual(status, XL_SUCCESS)
 
         pHwType = [0xff]
         pHwIndex = [0xff]
         pHwChannel = [0xff]
-        status = xl.GetApplConfig(appName=bytes("pyxldrv".encode()), appChannel=1, pHwType=pHwType, pHwIndex=pHwIndex, pHwChannel=pHwChannel, busType=XL_BUS_TYPE_CAN)
+        status = xl.GetApplConfig(appName=bytes("pyxldrv".encode()), appChannel=1, pHwType=pHwType, pHwIndex=pHwIndex, pHwChannel=pHwChannel, busType=xl.XL_BUS_TYPE_CAN)
         self.assertEqual(status, XL_SUCCESS)
         self.assertEqual(pHwType[0], XL_HWTYPE_VIRTUAL)
         self.assertEqual(pHwIndex[0], 0)
@@ -76,7 +76,7 @@ class TestGetDriverConfig(unittest.TestCase):
         self.pHwType    = [XL_HWTYPE_VIRTUAL]
         self.pHwIndex   = [0]
         self.pHwChannel = [0]
-        self.busType    = XL_BUS_TYPE_CAN
+        self.busType    = xl.XL_BUS_TYPE_CAN
 
         xl.SetApplConfig(self.appName, self.appChannel, self.pHwType, self.pHwIndex, self.pHwChannel, self.busType)
         xl.GetApplConfig(self.appName, self.appChannel, self.pHwType, self.pHwIndex, self.pHwChannel, self.busType)
@@ -102,7 +102,7 @@ class TestGetChannelMask(unittest.TestCase):
         self.pHwType    = [XL_HWTYPE_VIRTUAL]
         self.pHwIndex   = [0]
         self.pHwChannel = [0]
-        self.busType    = XL_BUS_TYPE_CAN
+        self.busType    = xl.XL_BUS_TYPE_CAN
 
         xl.SetApplConfig(self.appName, self.appChannel, self.pHwType, self.pHwIndex, self.pHwChannel, self.busType)
         xl.GetApplConfig(self.appName, self.appChannel, self.pHwType, self.pHwIndex, self.pHwChannel, self.busType)
@@ -126,7 +126,7 @@ class TestOpenClosePort(unittest.TestCase):
         self.pHwType    = [XL_HWTYPE_VIRTUAL]
         self.pHwIndex   = [0]
         self.pHwChannel = [0]
-        self.busType    = XL_BUS_TYPE_CAN
+        self.busType    = xl.XL_BUS_TYPE_CAN
 
         xl.SetApplConfig(self.appName, self.appChannel, self.pHwType, self.pHwIndex, self.pHwChannel, self.busType)
         xl.GetApplConfig(self.appName, self.appChannel, self.pHwType, self.pHwIndex, self.pHwChannel, self.busType)
@@ -170,7 +170,7 @@ class TestActivateDeactivate(unittest.TestCase):
         self.pHwType    = [XL_HWTYPE_VIRTUAL]
         self.pHwIndex   = [0]
         self.pHwChannel = [0]
-        self.busType    = XL_BUS_TYPE_CAN
+        self.busType    = xl.XL_BUS_TYPE_CAN
 
         xl.SetApplConfig(self.appName, self.appChannel, self.pHwType, self.pHwIndex, self.pHwChannel, self.busType)
         xl.GetApplConfig(self.appName, self.appChannel, self.pHwType, self.pHwIndex, self.pHwChannel, self.busType)
@@ -208,7 +208,7 @@ class TestCanTransmitReceive(unittest.TestCase):
         self.pHwType        = [XL_HWTYPE_VIRTUAL]
         self.pHwIndex       = [0]
         self.pHwChannel     = [0]
-        self.busType        = XL_BUS_TYPE_CAN
+        self.busType        = xl.XL_BUS_TYPE_CAN
         self.appName        = bytes("pyxldrv".encode())
         xl.SetApplConfig(appName=self.appName, appChannel=0, pHwType=self.pHwType, pHwIndex=self.pHwIndex, pHwChannel=self.pHwChannel, busType=self.busType)
         xl.GetApplConfig(appName=self.appName, appChannel=0, pHwType=self.pHwType, pHwIndex=self.pHwIndex, pHwChannel=self.pHwChannel, busType=self.busType)

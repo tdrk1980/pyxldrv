@@ -3,19 +3,68 @@
 from libc.string cimport memset
 
 cdef extern from "vxlapi.h":
-    int XL_BUS_TYPE_NONE
-    int XL_BUS_TYPE_CAN
-    int XL_BUS_TYPE_LIN
-    int XL_BUS_TYPE_FLEXRAY
-    int XL_BUS_TYPE_AFDX
-    int XL_BUS_TYPE_MOST
-    int XL_BUS_TYPE_DAIO
-    int XL_BUS_TYPE_J1708
-    int XL_BUS_TYPE_ETHERNET
-    int XL_BUS_TYPE_A429
 
-    int XL_BUS_PARAMS_CANOPMODE_CAN20
-    int XL_BUS_PARAMS_CANOPMODE_CANFD
+    int _XL_HWTYPE_NONE                    "XL_HWTYPE_NONE"
+    int _XL_HWTYPE_VIRTUAL                 "XL_HWTYPE_VIRTUAL"
+    int _XL_HWTYPE_CANCARDX                "XL_HWTYPE_CANCARDX"
+    int _XL_HWTYPE_CANAC2PCI               "XL_HWTYPE_CANAC2PCI"
+    int _XL_HWTYPE_CANCARDY                "XL_HWTYPE_CANCARDY"
+    int _XL_HWTYPE_CANCARDXL               "XL_HWTYPE_CANCARDXL"
+    int _XL_HWTYPE_CANCASEXL               "XL_HWTYPE_CANCASEXL"
+    int _XL_HWTYPE_CANCASEXL_LOG_OBSOLETE  "XL_HWTYPE_CANCASEXL_LOG_OBSOLETE"
+    int _XL_HWTYPE_CANBOARDXL              "XL_HWTYPE_CANBOARDXL"
+    int _XL_HWTYPE_CANBOARDXL_PXI          "XL_HWTYPE_CANBOARDXL_PXI"
+    int _XL_HWTYPE_VN2600                  "XL_HWTYPE_VN2600"
+    int _XL_HWTYPE_VN2610                  "XL_HWTYPE_VN2610"
+    int _XL_HWTYPE_VN3300                  "XL_HWTYPE_VN3300"
+    int _XL_HWTYPE_VN3600                  "XL_HWTYPE_VN3600"
+    int _XL_HWTYPE_VN7600                  "XL_HWTYPE_VN7600"
+    int _XL_HWTYPE_CANCARDXLE              "XL_HWTYPE_CANCARDXLE"
+    int _XL_HWTYPE_VN8900                  "XL_HWTYPE_VN8900"
+    int _XL_HWTYPE_VN8950                  "XL_HWTYPE_VN8950"
+    int _XL_HWTYPE_VN2640                  "XL_HWTYPE_VN2640"
+    int _XL_HWTYPE_VN1610                  "XL_HWTYPE_VN1610"
+    int _XL_HWTYPE_VN1630                  "XL_HWTYPE_VN1630"
+    int _XL_HWTYPE_VN1640                  "XL_HWTYPE_VN1640"
+    int _XL_HWTYPE_VN8970                  "XL_HWTYPE_VN8970"
+    int _XL_HWTYPE_VN1611                  "XL_HWTYPE_VN1611"
+    int _XL_HWTYPE_VN5610                  "XL_HWTYPE_VN5610"
+    int _XL_HWTYPE_VN7570                  "XL_HWTYPE_VN7570"
+    int _XL_HWTYPE_IPCLIENT                "XL_HWTYPE_IPCLIENT"
+    int _XL_HWTYPE_IPSERVER                "XL_HWTYPE_IPSERVER"
+    int _XL_HWTYPE_VX1121                  "XL_HWTYPE_VX1121"
+    int _XL_HWTYPE_VX1131                  "XL_HWTYPE_VX1131"
+    int _XL_HWTYPE_VT6204                  "XL_HWTYPE_VT6204"
+    int _XL_HWTYPE_VN1630_LOG              "XL_HWTYPE_VN1630_LOG"
+    int _XL_HWTYPE_VN7610                  "XL_HWTYPE_VN7610"
+    int _XL_HWTYPE_VN7572                  "XL_HWTYPE_VN7572"
+    int _XL_HWTYPE_VN8972                  "XL_HWTYPE_VN8972"
+    int _XL_HWTYPE_VN0601                  "XL_HWTYPE_VN0601"
+    int _XL_HWTYPE_VX0312                  "XL_HWTYPE_VX0312"
+    int _XL_HWTYPE_VN8800                  "XL_HWTYPE_VN8800"
+    int _XL_HWTYPE_IPCL8800                "XL_HWTYPE_IPCL8800"
+    int _XL_HWTYPE_IPSRV8800               "XL_HWTYPE_IPSRV8800"
+    int _XL_HWTYPE_CSMCAN                  "XL_HWTYPE_CSMCAN"
+    int _XL_HWTYPE_VN5610A                 "XL_HWTYPE_VN5610A"
+    int _XL_HWTYPE_VN7640                  "XL_HWTYPE_VN7640"
+    int _XL_MAX_HWTYPE                     "XL_MAX_HWTYPE"
+
+
+    int _XL_BUS_TYPE_NONE      "XL_BUS_TYPE_NONE"
+    int _XL_BUS_TYPE_CAN       "XL_BUS_TYPE_CAN"
+    int _XL_BUS_TYPE_LIN       "XL_BUS_TYPE_LIN"
+    int _XL_BUS_TYPE_FLEXRAY   "XL_BUS_TYPE_FLEXRAY"
+    int _XL_BUS_TYPE_AFDX      "XL_BUS_TYPE_AFDX"
+    int _XL_BUS_TYPE_MOST      "XL_BUS_TYPE_MOST"
+    int _XL_BUS_TYPE_DAIO      "XL_BUS_TYPE_DAIO"
+    int _XL_BUS_TYPE_J1708     "XL_BUS_TYPE_J1708"
+    int _XL_BUS_TYPE_ETHERNET  "XL_BUS_TYPE_ETHERNET"
+    int _XL_BUS_TYPE_A429      "XL_BUS_TYPE_A429"
+
+
+    int _XL_BUS_PARAMS_CANOPMODE_CAN20  "XL_BUS_PARAMS_CANOPMODE_CAN20"
+    int _XL_BUS_PARAMS_CANOPMODE_CANFD  "XL_BUS_PARAMS_CANOPMODE_CANFD"
+
 
     int XL_A429_MSG_CHANNEL_DIR_TX
     int XL_A429_MSG_CHANNEL_DIR_RX
@@ -43,6 +92,8 @@ cdef extern from "vxlapi.h":
     XLstatus xlGetDriverConfig(XLdriverConfig *pDriverConfig)
 
     XLstatus xlPopupHwConfig(char* callSign, unsigned int waitForFinish)
+
+
 
 cpdef OpenDriver():
     return xlOpenDriver()
@@ -284,3 +335,66 @@ def GetDriverConfig(dict pDriverConfig):
 
 def PopupHwConfig(char* callSign=NULL, unsigned int waitForFinish=0):
     return xlPopupHwConfig(callSign, waitForFinish)
+
+
+# HwType
+XL_HWTYPE_NONE                   = _XL_HWTYPE_NONE
+XL_HWTYPE_VIRTUAL                = _XL_HWTYPE_VIRTUAL
+XL_HWTYPE_CANCARDX               = _XL_HWTYPE_CANCARDX
+XL_HWTYPE_CANAC2PCI              = _XL_HWTYPE_CANAC2PCI
+XL_HWTYPE_CANCARDY               = _XL_HWTYPE_CANCARDY
+XL_HWTYPE_CANCARDXL              = _XL_HWTYPE_CANCARDXL
+XL_HWTYPE_CANCASEXL              = _XL_HWTYPE_CANCASEXL
+XL_HWTYPE_CANCASEXL_LOG_OBSOLETE = _XL_HWTYPE_CANCASEXL_LOG_OBSOLETE
+XL_HWTYPE_CANBOARDXL             = _XL_HWTYPE_CANBOARDXL
+XL_HWTYPE_CANBOARDXL_PXI         = _XL_HWTYPE_CANBOARDXL_PXI
+XL_HWTYPE_VN2600                 = _XL_HWTYPE_VN2600
+XL_HWTYPE_VN2610                 = _XL_HWTYPE_VN2610
+XL_HWTYPE_VN3300                 = _XL_HWTYPE_VN3300
+XL_HWTYPE_VN3600                 = _XL_HWTYPE_VN3600
+XL_HWTYPE_VN7600                 = _XL_HWTYPE_VN7600
+XL_HWTYPE_CANCARDXLE             = _XL_HWTYPE_CANCARDXLE
+XL_HWTYPE_VN8900                 = _XL_HWTYPE_VN8900
+XL_HWTYPE_VN8950                 = _XL_HWTYPE_VN8950
+XL_HWTYPE_VN2640                 = _XL_HWTYPE_VN2640
+XL_HWTYPE_VN1610                 = _XL_HWTYPE_VN1610
+XL_HWTYPE_VN1630                 = _XL_HWTYPE_VN1630
+XL_HWTYPE_VN1640                 = _XL_HWTYPE_VN1640
+XL_HWTYPE_VN8970                 = _XL_HWTYPE_VN8970
+XL_HWTYPE_VN1611                 = _XL_HWTYPE_VN1611
+XL_HWTYPE_VN5610                 = _XL_HWTYPE_VN5610
+XL_HWTYPE_VN7570                 = _XL_HWTYPE_VN7570
+XL_HWTYPE_IPCLIENT               = _XL_HWTYPE_IPCLIENT
+XL_HWTYPE_IPSERVER               = _XL_HWTYPE_IPSERVER
+XL_HWTYPE_VX1121                 = _XL_HWTYPE_VX1121
+XL_HWTYPE_VX1131                 = _XL_HWTYPE_VX1131
+XL_HWTYPE_VT6204                 = _XL_HWTYPE_VT6204
+XL_HWTYPE_VN1630_LOG             = _XL_HWTYPE_VN1630_LOG
+XL_HWTYPE_VN7610                 = _XL_HWTYPE_VN7610
+XL_HWTYPE_VN7572                 = _XL_HWTYPE_VN7572
+XL_HWTYPE_VN8972                 = _XL_HWTYPE_VN8972
+XL_HWTYPE_VN0601                 = _XL_HWTYPE_VN0601
+XL_HWTYPE_VX0312                 = _XL_HWTYPE_VX0312
+XL_HWTYPE_VN8800                 = _XL_HWTYPE_VN8800
+XL_HWTYPE_IPCL8800               = _XL_HWTYPE_IPCL8800
+XL_HWTYPE_IPSRV8800              = _XL_HWTYPE_IPSRV8800
+XL_HWTYPE_CSMCAN                 = _XL_HWTYPE_CSMCAN
+XL_HWTYPE_VN5610A                = _XL_HWTYPE_VN5610A
+XL_HWTYPE_VN7640                 = _XL_HWTYPE_VN7640
+XL_MAX_HWTYPE                    = _XL_MAX_HWTYPE
+
+# BusType
+XL_BUS_TYPE_NONE = _XL_BUS_TYPE_NONE
+XL_BUS_TYPE_CAN = _XL_BUS_TYPE_CAN
+XL_BUS_TYPE_LIN = _XL_BUS_TYPE_LIN
+XL_BUS_TYPE_FLEXRAY = _XL_BUS_TYPE_FLEXRAY
+XL_BUS_TYPE_AFDX = _XL_BUS_TYPE_AFDX
+XL_BUS_TYPE_MOST = _XL_BUS_TYPE_MOST
+XL_BUS_TYPE_DAIO = _XL_BUS_TYPE_DAIO
+XL_BUS_TYPE_J1708 = _XL_BUS_TYPE_J1708
+XL_BUS_TYPE_ETHERNET = _XL_BUS_TYPE_ETHERNET
+XL_BUS_TYPE_A429 = _XL_BUS_TYPE_A429
+
+# defines for XLbusParams::data::can/canFD::canOpMode
+XL_BUS_PARAMS_CANOPMODE_CAN20 = _XL_BUS_PARAMS_CANOPMODE_CAN20
+XL_BUS_PARAMS_CANOPMODE_CANFD = _XL_BUS_PARAMS_CANOPMODE_CANFD
