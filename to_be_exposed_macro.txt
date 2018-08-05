@@ -1072,3 +1072,4 @@
 #define XL_CAN_QUEUE_OVERFLOW          0x100
 #define RX_FIFO_CANFD_QUEUE_SIZE_MAX                         524288   // 0,5 MByte
 #define RX_FIFO_CANFD_QUEUE_SIZE_MIN                         8192     // 8 kByte
+ 
