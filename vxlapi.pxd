@@ -251,12 +251,3 @@ cdef extern from "vxlapi.h":
 
         ctypedef char *XLstringType
         
-        enum e_XLevent_type:
-            XL_NO_COMMAND               =  0
-            XL_RECEIVE_MSG              =  1
-            XL_CHIP_STATE               =  4
-            XL_TRANSCEIVER              =  6
-            XL_TIMER                    =  8
-            XL_TRANSMIT_MSG             = 10
-            XL_SYNC_PULSE               = 11
-            XL_APPLICATION_NOTIFICATION = 15

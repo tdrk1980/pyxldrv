@@ -1,6 +1,8 @@
 # *-* encoding: utf-8 *-*
 
 from libc.string cimport memset
+from libc.stdlib cimport malloc, free
+
 
 cdef extern from "vxlapi.h":
 
