@@ -211,6 +211,7 @@ cdef extern from "vxlapi.h":
 
     XLstatus xlCanTransmit(XLportHandle portHandle, XLaccess accessMask, unsigned int* messageCount, void* pMessage)
     XLstatus xlReceive(XLportHandle portHandle, unsigned int *pEventCount, XLevent *pEventList)
+    XLstatus xlReceive(XLportHandle portHandle, XLhandle pXlHandle, int queueLevel)
     
     XLstringType xlGetEventString(XLevent* ev)
     const char* xlGetErrorString(XLstatus err)
@@ -266,7 +267,7 @@ cpdef CanTransmit(XLportHandle portHandle, XLaccess accessMask, list messageCoun
     cdef unsigned int message_count = 0
     cdef XLevent *pxlEvent = NULL
 
-    message_count = len(pMessage)
+    message_count = <unsigned int>len(pMessage)
     if message_count > 0:
         pxlEvent = <XLevent *> malloc(sizeof(XLevent) * message_count)
         memset(pxlEvent, 0, sizeof(XLevent) * message_count)

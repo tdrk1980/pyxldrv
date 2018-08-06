@@ -15,6 +15,8 @@ cdef extern from "vxlapi.h":
         ctypedef unsigned long long XLuint64
         ctypedef XLuint64 XLaccess
         ctypedef long XLportHandle
+        ctypedef void* HANDLE
+        ctypedef HANDLE XLhandle
     
         struct st_can:
             unsigned int    bitRate
