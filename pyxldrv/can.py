@@ -2,6 +2,7 @@
 import vxlapi as xl
 import chardet
 import win32event
+import time
 
 
 class Can:
@@ -100,47 +101,104 @@ class Can:
             # t.b.d logging warning
             pass
 
-    def send(self,*, id, data, flags=None,dlc=None):
-
+    def send(self,*, id, data, flags=None, dlc=None):
+        ret = True
         msgs = [{"flags":0, "id":id, "dlc":len(data), "data":bytearray(data)}]
         messageCount = [len(msgs)]
 
         status = xl.CanTransmit(self.portHandle[0], self.accessMask, messageCount, msgs)
         if status != xl.XL_SUCCESS:
             self.last_error = status
-        return (status, messageCount)
-
-    def recv_nonblock(self):
-        pEventCount = [1]
-        pEventList = [{}]
-        status = xl.Receive(self.portHandle[0],pEventCount, pEventList)
-        if status != (xl.XL_SUCCESS or xl.XL_ERR_QUEUE_IS_EMPTY):
-            self.last_error = status
-        return (status, pEventList[0])
-
-    def recv(self, *, milliseconds=1000):
-        print("recv_wait start")
-        ret = win32event.WaitForSingleObject(self.xlHandle[0], milliseconds)
-        if ret == win32event.WAIT_OBJECT_0:
-            print("win32event.WAIT_OBJECT_0")
-        if ret == win32event.WAIT_ABANDONED:
-            print("win32event.WAIT_ABANDONED")
-        if ret == win32event.WAIT_TIMEOUT:
-            print("win32event.WAIT_TIMEOUT")
-        print("recv_wait end")
+            ret = False
         return ret
 
-    def burst_send(self, *, msgs):
-        messageCount = [len(msgs)]
-        status = xl.CanTransmit(self.portHandle[0], self.accessMask, messageCount, msgs)
-        return (status, messageCount)
+    def _recv_nonblock(self):
+        pEventCount = [1]
+        pEventList = [{}]
+        status = xl.Receive(self.portHandle[0], pEventCount, pEventList)
+        return (status, pEventList[0])
 
-    def decode_bin(self,bin):
+    def recv(self, *, timeout_sec=-1, t_WaitForSingleObject_msec=100):
+        ret = False
+        can_id = None
+        dlc    = None
+        data   = []
+        start = time.time()
+        while True:
+            
+            if timeout_sec < 0:
+                # wait forever
+                pass
+            if timeout_sec == 0:
+                # non_block
+                pass
+            elif timeout_sec > 0:
+                # with timeout
+                elapsed = time.time() - start
+                if elapsed > (timeout_sec * 1000):
+                    break
+            ret_win32 = win32event.WaitForSingleObject(self.xlHandle[0], t_WaitForSingleObject_msec)
+            if ret_win32 == win32event.WAIT_OBJECT_0:
+                # rx msg event occured
+                status, xlevent = can._recv_nonblock()
+                if status == xl.XL_SUCCESS:
+                    if xlevent["tag"] == xl.XL_RECEIVE_MSG:
+                        msg_flags = xlevent["tagData"]["msg"]["flags"]
+                        if msg_flags == 0:
+                            can_id = xlevent["tagData"]["msg"]["id"]
+                            dlc    = xlevent["tagData"]["msg"]["dlc"]
+                            data   = xlevent["tagData"]["msg"]["data"]
+                            ret = True
+                            break
+                        else:
+                            # self._parse_msg_flags(msg_flags)
+                            pass
+                else:
+                    # self.last_error = status
+                    pass
+
+            elif ret_win32 == win32event.WAIT_TIMEOUT:
+                pass
+            else:
+                # e.g. ret_win32 == win32event.WAIT_ABANDONED:
+                break
+        return (ret, can_id, dlc, data)
+
+    def get_last_error(self):
+        return self._decode_bin(xl.GetErrorString(self.last_error))
+
+    def _decode_bin(self,bin):
         return bin.decode(chardet.detect(bin)["encoding"])
 
-    def get_last_error_string(self):
-        return self.decode_bin(xl.GetErrorString(self.last_error))
+    def _parse_msg_flags(self, msg_flags):
+        #define XL_CAN_MSG_FLAG_ERROR_FRAME   0x01
+        #define XL_CAN_MSG_FLAG_OVERRUN       0x02           //!< Overrun in Driver or CAN Controller, previous msgs have been lost.
+        #define XL_CAN_MSG_FLAG_NERR          0x04           //!< Line Error on Lowspeed
+        #define XL_CAN_MSG_FLAG_WAKEUP        0x08           //!< High Voltage Message on Single Wire CAN
+        #define XL_CAN_MSG_FLAG_REMOTE_FRAME  0x10
+        #define XL_CAN_MSG_FLAG_RESERVED_1    0x20
+        #define XL_CAN_MSG_FLAG_TX_COMPLETED  0x40           //!< Message Transmitted
+        #define XL_CAN_MSG_FLAG_TX_REQUEST    0x80           //!< Transmit Message stored into Controller
+        #define XL_CAN_MSG_FLAG_SRR_BIT_DOM 0x0200           //!< SRR bit in CAN message is dominant
 
+        # for logging
+        if msg_flags & xl.XL_CAN_MSG_FLAG_ERROR_FRAME:
+            pass
+        if msg_flags & xl.XL_CAN_MSG_FLAG_NERR:
+            pass
+        if msg_flags & xl.XL_CAN_MSG_FLAG_WAKEUP:
+            pass
+        if msg_flags & xl.XL_CAN_MSG_FLAG_REMOTE_FRAME:
+            pass
+        if msg_flags & xl.XL_CAN_MSG_FLAG_RESERVED_1:
+            pass
+        if msg_flags & xl.XL_CAN_MSG_FLAG_TX_COMPLETED:
+            pass
+        if msg_flags & xl.XL_CAN_MSG_FLAG_TX_REQUEST:
+            pass
+        if msg_flags & xl.XL_CAN_MSG_FLAG_SRR_BIT_DOM:
+            pass
+        
 if __name__ == "__main__":
     import time
     # xl.PopupHwConfig()
@@ -148,7 +206,7 @@ if __name__ == "__main__":
 
     can = Can()
 
-    if True:
+    if False:
         data=[0x12]*8
         status = 0
         messageCount = 0
@@ -168,8 +226,9 @@ if __name__ == "__main__":
             #=> 256 0 [256] @ XL_HWTYPE_VIRTUAL
 
 
+    ret = can.send(id=0x0, data=[0])
     start = time.time()
-    ret = can.recv(milliseconds=1000)
+    ret, can_id, dlc, data = can.recv(timeout_sec=1)
     elapsed_time = time.time() - start
 
 
@@ -179,19 +238,7 @@ if __name__ == "__main__":
 
         start = time.time()
         cycle_num = 1_000_000
-        for i in range(cycle_num):
-            status, xlevent = can.recv_nonblock()
-            if xlevent["tag"] == xl.XL_RECEIVE_MSG:
-                msg_flags = xlevent["tagData"]["msg"]["flags"]
-                if msg_flags == 0:
-                    data = xlevent["tagData"]["msg"]["data"]
-                    can_id = xlevent["tagData"]["msg"]["id"]
-                    # print(f"{status}, {can_id:03x}, {data}") 
-                elif msg_flags & (xl.XL_CAN_MSG_FLAG_TX_COMPLETED|xl.XL_CAN_MSG_FLAG_TX_REQUEST):
-                    # print("tx completed or request = 0x{:02x}".format(xlevent["tagData"]["msg"]["flags"]))
-                    pass
-                else:
-                    print("overrun??", xlevent["tagData"]["msg"]["flags"])
+
         elapsed_time = time.time() - start
         print(f"receive {cycle_num} times => " + str(elapsed_time) + "[msec]")
 
