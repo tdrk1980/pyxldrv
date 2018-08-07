@@ -106,9 +106,29 @@ class Can:
             # t.b.d logging warning
             pass
 
-    def send(self,*, can_id, data, flags=None, dlc=None):
+    def send(self, *, can_id, data, use_flags=0, use_dlc=None):
         ret = True
-        msgs = [{"flags":0, "id":can_id, "dlc":len(data), "data":bytearray(data)}]
+
+        # dlc = 0-8 even if use_dlc is set.
+        dlc = None
+        if  use_dlc and use_dlc <= 8:
+            dlc = use_dlc
+        else:
+            if len(data) <= 8:
+                dlc = len(data)
+            else:
+                # t.b.d logging warning
+                dlc = 8
+
+        # the size of data is 0-8byte.
+        data_buf = [0]*8
+        for i in range(dlc):
+            data_buf[i] = data[i]
+
+        # flags
+        flags = use_flags
+        
+        msgs = [{"flags":flags, "id":can_id, "dlc":dlc, "data":bytearray(data_buf)}]
         messageCount = [len(msgs)]
 
         status = xl.CanTransmit(self.portHandle[0], self.accessMask, messageCount, msgs)
@@ -161,7 +181,7 @@ class Can:
                             ch = xlevent["chanIndex"]
                             can_id = xlevent["tagData"]["msg"]["id"]
                             dlc    = xlevent["tagData"]["msg"]["dlc"]
-                            data   = xlevent["tagData"]["msg"]["data"]
+                            data   = xlevent["tagData"]["msg"]["data"][:dlc]
                             ret = True
                             break
                         else:
@@ -224,7 +244,7 @@ def recv_task():
         ret, timestamp, ch, can_id, dlc, data = can.recv(timeout_sec=3)
         if ret == True:
             data = " ".join(map(lambda d:f"{d:02X}",data))
-            print(f"{timestamp:.08} {ch:2} {can_id:03x} {dlc} Data:{data}")
+            print(f"{timestamp:.8f} {ch:2} {can_id:03x} {dlc} Data:{data}")
         else:
             break
     print("recv_task - end")
@@ -232,13 +252,18 @@ def recv_task():
 
 if __name__ == "__main__":
     # xl.PopupHwConfig()
-    # executor = ThreadPoolExecutor(max_workers=1)
+    
     from concurrent.futures import ThreadPoolExecutor, ProcessPoolExecutor
     executor = ProcessPoolExecutor(max_workers=1)
+    # executor = ThreadPoolExecutor(max_workers=1)
     executor.submit(recv_task)
 
     time.sleep(1)
 
-    for i in range(100000):
-        Can().send(can_id=0x123, data=[0,1,2,3])
+    for i in range(10):
+        Can().send(can_id=0x123, data=[])
+        Can().send(can_id=0x123, data=[0]*12, use_dlc=0)
+        Can().send(can_id=0x123, data=[0]*12)
         time.sleep(0.001)
+    
+    executor.shutdown()
