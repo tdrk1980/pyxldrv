@@ -94,103 +94,6 @@ class Can:
         status = xl.ClosePort(self.portHandle[0])
         if status != xl.XL_SUCCESS:
             # t.b.d logging warning
-            pass# *-* encoding: utf-8 *-*
-import vxlapi as xl
-import chardet
-from concurrent.futures import ThreadPoolExecutor
-import win32event
-import time
-
-
-class Can:
-    def __init__(self, *, appName="pyxldrv", appChannel=0, HwType=xl.XL_HWTYPE_VIRTUAL, HwIndex=0, HwChannel=0, rxQueueSize=2^10, busType=xl.XL_BUS_TYPE_CAN, flags=xl.XL_ACTIVATE_RESET_CLOCK, queueLevel=1):
-        # set by param
-        self.appName        = bytes(appName.encode())
-        self.pHwType        = [HwType]
-        self.pHwIndex       = [HwIndex]
-        self.pHwChannel     = [HwChannel]
-        self.busType        = busType
-        self.rxQueueSize    = rxQueueSize
-        self.flags          = flags
-        self.appChannel     = appChannel
-        self.queueLevel     = queueLevel
-
-        # internal use
-        self.accessMask = 0
-        self.portHandle = [0]
-        self.permissionMask = [self.accessMask]
-        self.xlInterfaceVersion = xl.XL_INTERFACE_VERSION
-        self.xlHandle = [0]
-
-        # internal use for error
-        self.last_error = xl.XL_SUCCESS
-
-        #
-        # Setup Driver. see 4.2 Flowchart in XL Driver Library - Description.pdf
-        #
-        status = xl.OpenDriver()
-        if status != xl.XL_SUCCESS:
-            self.last_error = status
-
-        status = xl.SetApplConfig(self.appName, self.appChannel, self.pHwType, self.pHwIndex, self.pHwChannel, self.busType)
-        if status != xl.XL_SUCCESS:
-            # t.b.d logging warning
-            self.last_error = status
-
-        xl.GetApplConfig(self.appName, self.appChannel, self.pHwType, self.pHwIndex, self.pHwChannel, self.busType)
-        if status != xl.XL_SUCCESS:
-            # t.b.d logging warning
-            self.last_error = status
-
-        # accessMask soulde be OR(|=). but in this case, OR(|=) has little meaning.
-        self.accessMask |= xl.GetChannelMask(self.pHwType[0],self.pHwIndex[0],self.pHwChannel[0])
-        if self.accessMask  == 0:
-            # t.b.d logging warning
-            pass
-
-        # permissionMask should be same as accessMask
-        self.permissionMask = [self.accessMask]
-        status = xl.OpenPort(self.portHandle, self.appName, self.accessMask, self.permissionMask, self.rxQueueSize, self.xlInterfaceVersion, self.busType)
-        if status != xl.XL_SUCCESS:
-            # t.b.d logging warning
-            self.last_error = status
-
-        # check permissionMask. it should be same as accessMask
-        if self.accessMask != self.permissionMask[0]:
-            # t.b.d logging warning
-            # xlCANdemo.c
-            pass
-        elif self.permissionMask[0] == 0:
-            # t.b.d logging warning
-            pass
-
-        # check portHandle[0]
-        if self.portHandle[0] == 0 or xl.XL_INVALID_PORTHANDLE:
-            # t.b.d logging warning
-            pass
-
-        status = xl.ActivateChannel(self.portHandle[0], self.accessMask, self.busType, self.flags)
-        if status != xl.XL_SUCCESS:
-            # t.b.d logging warning
-            self.last_error = status
-
-        status = xl.SetNotification(self.portHandle[0], self.xlHandle, self.queueLevel )
-        if status != xl.XL_SUCCESS:
-            # t.b.d logging warning
-            self.last_error = status
-
-    def __del__(self):
-        #
-        # tearDown Driver. see 4.2 Flowchart in XL Driver Library - Description.pdf
-        #
-        status = xl.DeactivateChannel(self.portHandle[0], self.accessMask)
-        if status != xl.XL_SUCCESS:
-            # t.b.d logging warning
-            pass
-
-        status = xl.ClosePort(self.portHandle[0])
-        if status != xl.XL_SUCCESS:
-            # t.b.d logging warning
             pass
 
         status = xl.ClosePort(self.portHandle[0])
@@ -226,6 +129,7 @@ class Can:
         while True:
             ret = False
             time_stamp = 0
+            ch = None
             can_id = None
             dlc    = None
             data   = []
@@ -254,6 +158,7 @@ class Can:
                         msg_flags = xlevent["tagData"]["msg"]["flags"]
                         if msg_flags == 0:
                             time_stamp = xlevent["timeStamp"] / 1_000_000_000 # unit conversion from nanoseconds to seconds.
+                            ch = xlevent["chanIndex"]
                             can_id = xlevent["tagData"]["msg"]["id"]
                             dlc    = xlevent["tagData"]["msg"]["dlc"]
                             data   = xlevent["tagData"]["msg"]["data"]
@@ -272,7 +177,7 @@ class Can:
             else:
                 # e.g. ret_win32 == win32event.WAIT_ABANDONED:
                 break
-        return (ret, time_stamp, can_id, dlc, data)
+        return (ret, time_stamp, ch, can_id, dlc, data)
 
     def get_last_error(self):
         return self._decode_bin(xl.GetErrorString(self.last_error))
@@ -311,38 +216,29 @@ class Can:
             print(f"XL_CAN_MSG_FLAG_SRR_BIT_DOM msg_flags=0x{msg_flags:04x}")
         return
 
+# 受信スレッド
+def recv_task():
+    print("recv_task - start")
+    can = Can()
+    while True:
+        ret, timestamp, ch, can_id, dlc, data = can.recv(timeout_sec=3)
+        if ret == True:
+            data = " ".join(map(lambda d:f"{d:02X}",data))
+            print(f"{timestamp:.08} {ch:2} {can_id:03x} {dlc} Data:{data}")
+        else:
+            break
+    print("recv_task - end")
+    return True
+
 if __name__ == "__main__":
-    import time
     # xl.PopupHwConfig()
-
-    # 受信スレッドを上げて置く
-    def recv_task():
-        can = Can()
-        while True:
-            ret, timestamp, can_id, dlc, data = can.recv(timeout_sec=2)
-            if ret == True:
-                print(f"{timestamp} ID:0x{can_id:03x} Data:{data[0]}")
-            else:
-                print("exit")
-                break
-        return True
-
-    executor = ThreadPoolExecutor(max_workers=1)
+    # executor = ThreadPoolExecutor(max_workers=1)
+    from concurrent.futures import ThreadPoolExecutor, ProcessPoolExecutor
+    executor = ProcessPoolExecutor(max_workers=1)
     executor.submit(recv_task)
 
-    time.sleep(0.1)
-    c = Can()
+    time.sleep(1)
 
-    can_id=0x5
-
-    signals = 0x0
-    c.send(can_id=can_id, data=[signals])
-    time.sleep(0.01)
-
-    signals |= 0x1
-    c.send(can_id=can_id, data=[signals])
-
-    signals |= 0x2
-    c.send(can_id=can_id, data=[signals])
-
-
+    for i in range(100000):
+        Can().send(can_id=0x123, data=[0,1,2,3])
+        time.sleep(0.001)
