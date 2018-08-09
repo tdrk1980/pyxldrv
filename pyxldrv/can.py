@@ -245,8 +245,7 @@ def recv_task():
         if ret == True:
             data = " ".join(map(lambda d:f"{d:02X}",data))
             #___0.081289 1  3E6             Rx   d 8 50 00 00 00 00 00 00 00  Length = 960000 BitCount = 124 ID = 998
-            timestamp += 100
-            print(f"{timestamp:>4.8f} {ch:<2} {can_id:3x}             Rx   d {dlc:1} {data}")
+            print(f"{timestamp:>11.6f} {ch:<2} {can_id:3x}             Rx   d {dlc:1} {data}")
         else:
             break
     print("recv_task - end")
