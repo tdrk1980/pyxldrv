@@ -127,7 +127,7 @@ class Can:
 
         # flags
         flags = use_flags
-        
+
         msgs = [{"flags":flags, "id":can_id, "dlc":dlc, "data":bytearray(data_buf)}]
         messageCount = [len(msgs)]
 
@@ -186,9 +186,7 @@ class Can:
                             break
                         else:
                             self._parse_msg_flags(msg_flags)
-                            pass
                 else:
-                    print("waht")
                     # status is not xl.XL_SUCCESS:
                     # self.last_error = status
                     pass
@@ -209,62 +207,70 @@ class Can:
         # for logging
         #define XL_CAN_MSG_FLAG_ERROR_FRAME   0x01
         if msg_flags & xl.XL_CAN_MSG_FLAG_ERROR_FRAME:
-            print(f"XL_CAN_MSG_FLAG_ERROR_FRAME msg_flags=0x{msg_flags:04x}")
+            # print(f"XL_CAN_MSG_FLAG_ERROR_FRAME msg_flags=0x{msg_flags:04x}")
+            pass
         #define XL_CAN_MSG_FLAG_OVERRUN       0x02           //!< Overrun in Driver or CAN Controller, previous msgs have been lost.
         if msg_flags & xl.XL_CAN_MSG_FLAG_OVERRUN:
-            print(f"XL_CAN_MSG_FLAG_OVERRUN msg_flags=0x{msg_flags:04x}")
+            # print(f"XL_CAN_MSG_FLAG_OVERRUN msg_flags=0x{msg_flags:04x}")
+            pass
         #define XL_CAN_MSG_FLAG_NERR          0x04           //!< Line Error on Lowspeed
         if msg_flags & xl.XL_CAN_MSG_FLAG_NERR:
-            print(f"XL_CAN_MSG_FLAG_NERR msg_flags=0x{msg_flags:04x}")
+            # print(f"XL_CAN_MSG_FLAG_NERR msg_flags=0x{msg_flags:04x}")
+            pass
         #define XL_CAN_MSG_FLAG_WAKEUP        0x08           //!< High Voltage Message on Single Wire CAN
         if msg_flags & xl.XL_CAN_MSG_FLAG_WAKEUP:
-            print(f"XL_CAN_MSG_FLAG_WAKEUP msg_flags=0x{msg_flags:04x}")
+            # print(f"XL_CAN_MSG_FLAG_WAKEUP msg_flags=0x{msg_flags:04x}")
+            pass
         #define XL_CAN_MSG_FLAG_REMOTE_FRAME  0x10
         if msg_flags & xl.XL_CAN_MSG_FLAG_REMOTE_FRAME:
-            print(f"XL_CAN_MSG_FLAG_REMOTE_FRAME msg_flags=0x{msg_flags:04x}")
+            # print(f"XL_CAN_MSG_FLAG_REMOTE_FRAME msg_flags=0x{msg_flags:04x}")
+            pass
         #define XL_CAN_MSG_FLAG_RESERVED_1    0x20
         if msg_flags & xl.XL_CAN_MSG_FLAG_RESERVED_1:
-            print(f"XL_CAN_MSG_FLAG_RESERVED_1 msg_flags=0x{msg_flags:04x}")
+            # print(f"XL_CAN_MSG_FLAG_RESERVED_1 msg_flags=0x{msg_flags:04x}")
+            pass
         #define XL_CAN_MSG_FLAG_TX_COMPLETED  0x40           //!< Message Transmitted
         if msg_flags & xl.XL_CAN_MSG_FLAG_TX_COMPLETED:
-            print(f"XL_CAN_MSG_FLAG_TX_COMPLETED msg_flags=0x{msg_flags:04x}")
+            # print(f"XL_CAN_MSG_FLAG_TX_COMPLETED msg_flags=0x{msg_flags:04x}")
+            pass
         #define XL_CAN_MSG_FLAG_TX_REQUEST    0x80           //!< Transmit Message stored into Controller
         if msg_flags & xl.XL_CAN_MSG_FLAG_TX_REQUEST:
-            print(f"XL_CAN_MSG_FLAG_TX_REQUEST msg_flags=0x{msg_flags:04x}")
+            # print(f"XL_CAN_MSG_FLAG_TX_REQUEST msg_flags=0x{msg_flags:04x}")
+            pass
         #define XL_CAN_MSG_FLAG_SRR_BIT_DOM 0x0200           //!< SRR bit in CAN message is dominant
         if msg_flags & xl.XL_CAN_MSG_FLAG_SRR_BIT_DOM:
-            print(f"XL_CAN_MSG_FLAG_SRR_BIT_DOM msg_flags=0x{msg_flags:04x}")
+            # print(f"XL_CAN_MSG_FLAG_SRR_BIT_DOM msg_flags=0x{msg_flags:04x}")
+            pass
         return
 
 # 受信スレッド
-def recv_task():
+def recv_thread(can, timeout_sec):
     print("recv_task - start")
-    can = Can()
     while True:
-        ret, timestamp, ch, can_id, dlc, data = can.recv(timeout_sec=3)
+        ret, timestamp, ch, can_id, dlc, data = can.recv(timeout_sec=timeout_sec)
         if ret == True:
             data = " ".join(map(lambda d:f"{d:02X}",data))
             #___0.081289 1  3E6             Rx   d 8 50 00 00 00 00 00 00 00  Length = 960000 BitCount = 124 ID = 998
-            print(f"{timestamp:>11.6f} {ch:<2} {can_id:3x}             Rx   d {dlc:1} {data}")
+            print(f"{timestamp:>11.6f} {ch+1:<2} {can_id:3x}             Rx   d {dlc:1} {data}")
         else:
             break
     print("recv_task - end")
     return True
 
+
+
 if __name__ == "__main__":
     # xl.PopupHwConfig()
-    
     from concurrent.futures import ThreadPoolExecutor, ProcessPoolExecutor
-    executor = ProcessPoolExecutor(max_workers=1)
-    # executor = ThreadPoolExecutor(max_workers=1)
-    executor.submit(recv_task)
 
-    time.sleep(1)
+    executor = ThreadPoolExecutor(max_workers=1)
 
+    can_recv=Can(HwType=xl.XL_HWTYPE_CANCASEXL, HwChannel=1)
+    executor.submit(recv_thread, can=can_recv, timeout_sec=3)
+
+    can_send=Can(HwType=xl.XL_HWTYPE_CANCASEXL, HwChannel=0)
     for i in range(10):
-        Can().send(can_id=0x123, data=[])
-        Can().send(can_id=0x123, data=[0]*12, use_dlc=0)
-        Can().send(can_id=0x123, data=[0]*12)
-        time.sleep(0.001)
-    
+        can_send.send(can_id=0x123, data=[0]*12)
+        time.sleep(0.1)
+
     executor.shutdown()
