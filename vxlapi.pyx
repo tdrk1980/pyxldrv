@@ -231,7 +231,15 @@ cpdef enum e_XLevent_type:
     XL_TRANSMIT_MSG             = 10
     XL_SYNC_PULSE               = 11
     XL_APPLICATION_NOTIFICATION = 15
-
+    XL_LIN_MSG                  = 20
+    XL_LIN_ERRMSG               = 21
+    XL_LIN_SYNCERR              = 22
+    XL_LIN_NOANS                = 23
+    XL_LIN_WAKEUP               = 24
+    XL_LIN_SLEEP                = 25
+    XL_LIN_CRCINFO              = 26
+    XL_RECEIVE_DAIO_DATA        = 32
+    XL_RECEIVE_DAIO_PIGGY       = 34
 
 cpdef OpenDriver():
     return xlOpenDriver()
