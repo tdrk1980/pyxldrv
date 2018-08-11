@@ -4,11 +4,20 @@ import chardet
 import win32event
 import time
 
+from logging import getLogger, DEBUG, NullHandler, StreamHandler, FileHandler
+logger = getLogger(__name__)
+logger.setLevel(DEBUG)
+logger.addHandler(NullHandler())
+logger.propagate = False
+
 
 class Can:
-    def __init__(self, *, appName="pyxldrv", appChannel=0, HwType=xl.XL_HWTYPE_VIRTUAL, HwIndex=0, HwChannel=0, rxQueueSize=2^10, busType=xl.XL_BUS_TYPE_CAN, flags=xl.XL_ACTIVATE_RESET_CLOCK, queueLevel=1):
+    def __init__(self, *, appName="pyxldrv", appChannel=0, HwType=xl.XL_HWTYPE_VIRTUAL, HwIndex=0, HwChannel=0, rxQueueSize=2**10, busType=xl.XL_BUS_TYPE_CAN, flags=xl.XL_ACTIVATE_RESET_CLOCK, queueLevel=1, logger=logger):
+        self.log = logger
+        self.log.debug(f"[{self.__class__.__name__:8}][{self.__init__.__name__:8}] new instance.  appName:{appName}, appChannel:{appChannel}, HwType:{HwType}, HwIndex:{HwIndex}, HwChannel:{HwChannel}, rxQueueSize:{rxQueueSize}, busType:{busType}, flags:{flags}")
+
         # set by param
-        self.appName        = bytes(appName.encode())
+        self.appName        = appName
         self.pHwType        = [HwType]
         self.pHwIndex       = [HwIndex]
         self.pHwChannel     = [HwChannel]
@@ -29,58 +38,46 @@ class Can:
         self.last_error = xl.XL_SUCCESS
 
         #
-        # Setup Driver. see 4.2 Flowchart in XL Driver Library - Description.pdf
+        # Setup Driver. see 4.2 Flowchart in "XL Driver Library - Description.pdf"
         #
         status = xl.OpenDriver()
         if status != xl.XL_SUCCESS:
-            self.last_error = status
+            self.log.error(f"[{self.appName:8}][{self.__init__.__name__:8}] !! OpenDriver() returns {status} !!")
 
-        status = xl.SetApplConfig(self.appName, self.appChannel, self.pHwType, self.pHwIndex, self.pHwChannel, self.busType)
+        status = xl.SetApplConfig(bytes(self.appName.encode()), self.appChannel, self.pHwType, self.pHwIndex, self.pHwChannel, self.busType)
         if status != xl.XL_SUCCESS:
-            # t.b.d logging warning
-            self.last_error = status
+            self.log.debug(f"[{self.appName:8}][{self.__init__.__name__:8}] SetApplConfig returns {status}.  appName:{self.appName}, appChannel:{self.appChannel}, pHwType:{self.pHwType}, pHwIndex:{self.pHwIndex}, pHwChannel:{self.pHwChannel}, busType:{self.busType}")
 
-        xl.GetApplConfig(self.appName, self.appChannel, self.pHwType, self.pHwIndex, self.pHwChannel, self.busType)
+        status = xl.GetApplConfig(bytes(self.appName.encode()), self.appChannel, self.pHwType, self.pHwIndex, self.pHwChannel, self.busType)
         if status != xl.XL_SUCCESS:
-            # t.b.d logging warning
-            self.last_error = status
+            self.log.debug(f"[{self.appName:8}][{self.__init__.__name__:8}] GetApplConfig returns {status}.  appName:{self.appName}, appChannel:{self.appChannel}, pHwType:{self.pHwType}, pHwIndex:{self.pHwIndex}, pHwChannel:{self.pHwChannel}, busType:{self.busType}")
 
-        # accessMask soulde be OR(|=). but in this case, OR(|=) has little meaning.
+        # accessMask should be OR(|=), if multi-HwChannels are used. (In this case, OR(|=) has little meaning.)
         self.accessMask |= xl.GetChannelMask(self.pHwType[0],self.pHwIndex[0],self.pHwChannel[0])
-        if self.accessMask  == 0:
-            # t.b.d logging warning
-            pass
+        if self.accessMask == 0:
+            self.log.error(f"[{self.appName:8}][{self.__init__.__name__:8}]!! GetChannelMask returns accessMask={self.accessMask}!!  pHwType:{self.pHwType}, pHwIndex:{self.pHwIndex}, pHwChannel:{self.pHwChannel}")
 
-        # permissionMask should be same as accessMask
+        # permissionMask should be same as accessMask at when OpenPort timing.
         self.permissionMask = [self.accessMask]
-        status = xl.OpenPort(self.portHandle, self.appName, self.accessMask, self.permissionMask, self.rxQueueSize, self.xlInterfaceVersion, self.busType)
+        status = xl.OpenPort(self.portHandle, bytes(self.appName.encode()), self.accessMask, self.permissionMask, self.rxQueueSize, self.xlInterfaceVersion, self.busType)
         if status != xl.XL_SUCCESS:
-            # t.b.d logging warning
-            self.last_error = status
+            self.log.error(f"[{self.appName:8}][{self.__init__.__name__:8}]!! OpenPort returns {status} !!  portHandle:{self.portHandle}, appName:{self.appName}, accessMask:{self.accessMask}, permissionMask:{self.permissionMask}, rxQueueSize:{self.rxQueueSize}, xlInterfaceVersion:{self.xlInterfaceVersion}, busType:{self.busType}")
 
-        # check permissionMask. it should be same as accessMask
-        if self.accessMask != self.permissionMask[0]:
-            # t.b.d logging warning
-            # xlCANdemo.c
-            pass
-        elif self.permissionMask[0] == 0:
-            # t.b.d logging warning
-            pass
+        # check permissionMask for logging. see 3.2.9 xlOpenPort in "XL Driver Library - Description.pdf"
+        if self.permissionMask[0] == 0:
+            self.log.debug(f"[{self.appName:8}][{self.__init__.__name__:8}] permissionMask({self.permissionMask[0]}) is 0. If this is not init access for CANs, this is no issue.")
 
-        # check portHandle[0]
-        if self.portHandle[0] == 0 or xl.XL_INVALID_PORTHANDLE:
-            # t.b.d logging warning
-            pass
+        # check portHandle for logging.
+        if self.portHandle[0] == xl.XL_INVALID_PORTHANDLE:
+            self.log.error(f"[{self.appName:8}][{self.__init__.__name__:8}]!! portHandle({self.portHandle[0]}) is XL_INVALID_PORTHANDLE !!")
 
         status = xl.ActivateChannel(self.portHandle[0], self.accessMask, self.busType, self.flags)
         if status != xl.XL_SUCCESS:
-            # t.b.d logging warning
-            self.last_error = status
+            self.log.debug(f"[{self.appName:8}][{self.__init__.__name__:8}] ActivateChannel returns {status}.  portHandle:{self.portHandle}, accessMask:{self.accessMask}, busType:{self.busType}, flags:{self.flags}")
 
         status = xl.SetNotification(self.portHandle[0], self.xlHandle, self.queueLevel )
         if status != xl.XL_SUCCESS:
-            # t.b.d logging warning
-            self.last_error = status
+            self.log.debug(f"[{self.appName:8}][{self.__init__.__name__:8}] SetNotification returns {status}.  portHandle:{self.portHandle}, xlHandle:{self.xlHandle}, queueLevel:{self.queueLevel}")
 
     def __del__(self):
         #
@@ -88,36 +85,34 @@ class Can:
         #
         status = xl.DeactivateChannel(self.portHandle[0], self.accessMask)
         if status != xl.XL_SUCCESS:
-            # t.b.d logging warning
-            pass
+            self.log.debug(f"[{self.appName:8}][{self.__del__.__name__:8}] DeactivateChannel returns {status}.  portHandle:{self.portHandle}, accessMask:{self.accessMask}")
 
         status = xl.ClosePort(self.portHandle[0])
         if status != xl.XL_SUCCESS:
-            # t.b.d logging warning
-            pass
-
-        status = xl.ClosePort(self.portHandle[0])
-        if status != xl.XL_SUCCESS:
-            # t.b.d logging warning
-            pass
+            self.log.debug(f"[{self.appName:8}][{self.__del__.__name__:8}] ClosePort returns {status}.  portHandle:{self.portHandle}")
 
         status = xl.CloseDriver()
         if status != xl.XL_SUCCESS:
-            # t.b.d logging warning
-            pass
+            self.log.debug(f"[{self.appName:8}][{self.__del__.__name__:8}] CloseDriver returns {status}")
 
-    def send(self, *, can_id, data, use_flags=0, use_dlc=None):
+
+    def send(self, *, can_id, data, user_flags=0, user_dlc=None):
         ret = True
 
-        # dlc = 0-8 even if use_dlc is set.
+        # dlc must be 0-8, even if user_dlc is not 0-8.
         dlc = None
-        if  use_dlc and use_dlc <= 8:
-            dlc = use_dlc
-        else:
+        if  user_dlc:
+            if user_dlc <= 8:
+                dlc = user_dlc
+            else:
+                self.log.warn(f"[{self.appName:8}][{self.send.__name__:8}] user_dlc({user_dlc}) is ignored.")
+        
+        # if dlc is not determined by user_dlc, it is estimated by len(data).
+        if dlc is None:
             if len(data) <= 8:
                 dlc = len(data)
             else:
-                # t.b.d logging warning
+                self.log.warn(f"[{self.appName:8}][{self.send.__name__:8}] len(data)({len(data)}) is over 8. dlc is changed into 8.")
                 dlc = 8
 
         # the size of data is 0-8byte.
@@ -126,14 +121,14 @@ class Can:
             data_buf[i] = data[i]
 
         # flags
-        flags = use_flags
+        flags = user_flags
 
         msgs = [{"flags":flags, "id":can_id, "dlc":dlc, "data":bytearray(data_buf)}]
         messageCount = [len(msgs)]
 
         status = xl.CanTransmit(self.portHandle[0], self.accessMask, messageCount, msgs)
         if status != xl.XL_SUCCESS:
-            self.last_error = status
+            self.log.error(f"[{self.appName:8}][{self.send.__name__:8}]!! CanTransmit retruns {status} !!")
             ret = False
         return ret
 
@@ -143,134 +138,131 @@ class Can:
         status = xl.Receive(self.portHandle[0], pEventCount, pEventList)
         return (status, pEventList[0])
 
-    def recv(self, *, timeout_sec=-1, t_WaitForSingleObject_msec=10):
-        start = time.time()
-        elapsed = 0
+    def recv(self, *, timeout_sec=-1, t_WaitForSingleObject_msec=300):
+        start_sec = time.time()
+        elapsed_sec = 0
+        
         while True:
-            ret = False
-            time_stamp = 0
-            ch = None
-            can_id = None
-            dlc    = None
-            data   = []
-            if timeout_sec < 0:
-                # wait forever
-                pass
-            if timeout_sec == 0:
-                # non_block
-                pass
-            elif timeout_sec > 0:
-                # with timeout
-                elapsed = time.time() - start
-                if elapsed > (timeout_sec):
+            ret     = False
+            msg_flags = 0
+            timestamp = 0
+            ch      = None
+            can_id  = None
+            dlc     = None
+            data    = []
+
+            if timeout_sec < 0:  # wait forever
+                self.log.debug(f"[{self.appName:8}][{self.recv.__name__:8}] wait forever")
+            if timeout_sec == 0: # non blocking
+                self.log.debug(f"[{self.appName:8}][{self.recv.__name__:8}] non blocking")
+            elif timeout_sec > 0: # blocking with timeout
+                elapsed_sec = time.time() - start_sec
+                if elapsed_sec > (timeout_sec):
                     break
+                self.log.debug(f"[{self.appName:8}][{self.recv.__name__:8}] blocking with timeout. elapsed_sec:{elapsed_sec:<.3}, timeout_sec:{timeout_sec}")
+            
+            # wait event
             ret_win32 = win32event.WaitForSingleObject(self.xlHandle[0], t_WaitForSingleObject_msec)
-            # http://chokuto.ifdef.jp/advanced/function/WaitForSingleObject.html
-            # 0x00000000 (WAIT_OBJECT_0) オブジェクトがシグナル状態になったことを示します。
-            # 0x00000080 (WAIT_ABANDONED) 指定されたオブジェクトがミューテックスオブジェクトであり、それを所有していたスレッドが終了する前にミューテックスオブジェクトが解放されなかったことを示します。ミューテックスオブジェクトの所有権は呼び出し側スレッドに与えられ、ミューテックスは非シグナル状態に設定されます。ミューテックスが永続的な状態情報を保護している場合には、整合性を保つためにこの戻り値を確認すべきです。
-            # 0x00000102 (WAIT_TIMEOUT) タイムアウト時間が経過したことを示します。
-            # 0xFFFFFFFF (WAIT_FAILED) エラーが発生したことを示します。拡張エラー情報を取得するには、GetLastError関数を使います。
-            if ret_win32 == win32event.WAIT_OBJECT_0:
-                # rx msg event occured
+            
+            if ret_win32 == win32event.WAIT_OBJECT_0: # xlHandle was signaled.
+                # an event occured.
                 status, xlevent = self._recv_nonblock()
                 if status == xl.XL_SUCCESS:
                     if xlevent["tag"] == xl.XL_RECEIVE_MSG:
+                        # the event was rx msg, and it could be received normally.
                         msg_flags = xlevent["tagData"]["msg"]["flags"]
-                        if msg_flags == 0:
-                            time_stamp = xlevent["timeStamp"] / 1_000_000_000 # unit conversion from nanoseconds to seconds.
-                            ch = xlevent["chanIndex"]
-                            can_id = xlevent["tagData"]["msg"]["id"]
-                            dlc    = xlevent["tagData"]["msg"]["dlc"]
-                            data   = xlevent["tagData"]["msg"]["data"][:dlc]
+                        if (msg_flags == 0) or (msg_flags & xl.XL_CAN_MSG_FLAG_ERROR_FRAME):
                             ret = True
+                            msg_flags   = msg_flags
+                            timestamp   = xlevent["timeStamp"] / 1_000_000_000 # unit conversion from nanoseconds to seconds.
+                            ch          = xlevent["chanIndex"]
+                            can_id      = xlevent["tagData"]["msg"]["id"]
+                            dlc         = xlevent["tagData"]["msg"]["dlc"]
+                            data        = xlevent["tagData"]["msg"]["data"][:dlc]
                             break
                         else:
-                            self._parse_msg_flags(msg_flags)
+                            self.log.debug(f"[{self.appName:8}][{self.recv.__name__:8}]{self._parse_msg_flags(msg_flags)}")
+                            pass
+                    else:
+                        # the event was rx msg but an 
+                        pass
                 else:
-                    # status is not xl.XL_SUCCESS:
-                    # self.last_error = status
+                    self.log.warn(f"[{self.appName:8}][{self.recv.__name__:8}]! _recv_nonblock retruns {status} !")
                     pass
             elif ret_win32 == win32event.WAIT_TIMEOUT:
+                # if there is no event within t_WaitForSingleObject_msec, WAIT_TIMEOUT occurs. (not error)
+                self.log.debug(f"[{self.appName:8}][{self.recv.__name__:8}] WaitForSingleObject returns WAIT_TIMEOUT.  t_WaitForSingleObject_msec:{t_WaitForSingleObject_msec} msec")
                 pass
-            else:
-                # e.g. ret_win32 == win32event.WAIT_ABANDONED:
+            elif ret_win32 == win32event.WAIT_ABANDONED:
+                # wait object(xlHandle) might be no longer valid. this loop must be finished.
+                self.log.critical(f"[{self.appName:8}][{self.recv.__name__:8}]!! WaitForSingleObject returns WAIT_ABANDONED. break recv() loop !!  xlHandle:{self.xlHandle[0]}, t_WaitForSingleObject_msec:{t_WaitForSingleObject_msec} msec")
                 break
-        return (ret, time_stamp, ch, can_id, dlc, data)
-
-    def get_last_error(self):
-        return self._decode_bin(xl.GetErrorString(self.last_error))
+            elif ret_win32 == win32event.WAIT_FAILED:
+                # win32api error occured. to get extra info, GetLastError should be used. 
+                self.log.critical(f"[{self.appName:8}][{self.recv.__name__:8}]!! WaitForSingleObject returns WAIT_FAILED. break recv() loop !!  xlHandle:{self.xlHandle[0]}, t_WaitForSingleObject_msec:{t_WaitForSingleObject_msec} msec")
+                break
+            else:
+                # unkown error occured. this loop must be finished.
+                self.log.critical(f"[{self.appName:8}][{self.recv.__name__:8}]!! WaitForSingleObject returns unkown value({win32event}) break recv() loop !!  xlHandle:{self.xlHandle[0]}, t_WaitForSingleObject_msec:{t_WaitForSingleObject_msec} msec")
+                break
+        return (ret, msg_flags, timestamp, ch, can_id, dlc, data)
 
     def _decode_bin(self,bin):
         return bin.decode(chardet.detect(bin)["encoding"])
 
     def _parse_msg_flags(self, msg_flags):
-        # for logging
-        #define XL_CAN_MSG_FLAG_ERROR_FRAME   0x01
-        if msg_flags & xl.XL_CAN_MSG_FLAG_ERROR_FRAME:
-            # print(f"XL_CAN_MSG_FLAG_ERROR_FRAME msg_flags=0x{msg_flags:04x}")
-            pass
-        #define XL_CAN_MSG_FLAG_OVERRUN       0x02           //!< Overrun in Driver or CAN Controller, previous msgs have been lost.
-        if msg_flags & xl.XL_CAN_MSG_FLAG_OVERRUN:
-            # print(f"XL_CAN_MSG_FLAG_OVERRUN msg_flags=0x{msg_flags:04x}")
-            pass
-        #define XL_CAN_MSG_FLAG_NERR          0x04           //!< Line Error on Lowspeed
-        if msg_flags & xl.XL_CAN_MSG_FLAG_NERR:
-            # print(f"XL_CAN_MSG_FLAG_NERR msg_flags=0x{msg_flags:04x}")
-            pass
-        #define XL_CAN_MSG_FLAG_WAKEUP        0x08           //!< High Voltage Message on Single Wire CAN
-        if msg_flags & xl.XL_CAN_MSG_FLAG_WAKEUP:
-            # print(f"XL_CAN_MSG_FLAG_WAKEUP msg_flags=0x{msg_flags:04x}")
-            pass
-        #define XL_CAN_MSG_FLAG_REMOTE_FRAME  0x10
-        if msg_flags & xl.XL_CAN_MSG_FLAG_REMOTE_FRAME:
-            # print(f"XL_CAN_MSG_FLAG_REMOTE_FRAME msg_flags=0x{msg_flags:04x}")
-            pass
-        #define XL_CAN_MSG_FLAG_RESERVED_1    0x20
-        if msg_flags & xl.XL_CAN_MSG_FLAG_RESERVED_1:
-            # print(f"XL_CAN_MSG_FLAG_RESERVED_1 msg_flags=0x{msg_flags:04x}")
-            pass
-        #define XL_CAN_MSG_FLAG_TX_COMPLETED  0x40           //!< Message Transmitted
-        if msg_flags & xl.XL_CAN_MSG_FLAG_TX_COMPLETED:
-            # print(f"XL_CAN_MSG_FLAG_TX_COMPLETED msg_flags=0x{msg_flags:04x}")
-            pass
-        #define XL_CAN_MSG_FLAG_TX_REQUEST    0x80           //!< Transmit Message stored into Controller
-        if msg_flags & xl.XL_CAN_MSG_FLAG_TX_REQUEST:
-            # print(f"XL_CAN_MSG_FLAG_TX_REQUEST msg_flags=0x{msg_flags:04x}")
-            pass
-        #define XL_CAN_MSG_FLAG_SRR_BIT_DOM 0x0200           //!< SRR bit in CAN message is dominant
-        if msg_flags & xl.XL_CAN_MSG_FLAG_SRR_BIT_DOM:
-            # print(f"XL_CAN_MSG_FLAG_SRR_BIT_DOM msg_flags=0x{msg_flags:04x}")
-            pass
-        return
+        msg_flags_str = ""
+        msg_flags_str += "" if msg_flags & xl.XL_CAN_MSG_FLAG_ERROR_FRAME  else "|XL_CAN_MSG_FLAG_ERROR_FRAME"
+        msg_flags_str += "" if msg_flags & xl.XL_CAN_MSG_FLAG_OVERRUN      else "|XL_CAN_MSG_FLAG_OVERRUN"
+        msg_flags_str += "" if msg_flags & xl.XL_CAN_MSG_FLAG_NERR         else "|XL_CAN_MSG_FLAG_NERR"
+        msg_flags_str += "" if msg_flags & xl.XL_CAN_MSG_FLAG_WAKEUP       else "|XL_CAN_MSG_FLAG_WAKEUP"
+        msg_flags_str += "" if msg_flags & xl.XL_CAN_MSG_FLAG_REMOTE_FRAME else "|XL_CAN_MSG_FLAG_REMOTE_FRAME"
+        msg_flags_str += "" if msg_flags & xl.XL_CAN_MSG_FLAG_RESERVED_1   else "|XL_CAN_MSG_FLAG_RESERVED_1"
+        msg_flags_str += "" if msg_flags & xl.XL_CAN_MSG_FLAG_TX_COMPLETED else "|XL_CAN_MSG_FLAG_TX_COMPLETED"
+        msg_flags_str += "" if msg_flags & xl.XL_CAN_MSG_FLAG_TX_REQUEST   else "|XL_CAN_MSG_FLAG_TX_REQUEST"
+        msg_flags_str += "" if msg_flags & xl.XL_CAN_MSG_FLAG_SRR_BIT_DOM  else "|XL_CAN_MSG_FLAG_SRR_BIT_DOM"
+        return msg_flags_str
 
 # 受信スレッド
 def recv_thread(can, timeout_sec):
-    print("recv_task - start")
+    logger.debug("recv_task - start")
     while True:
-        ret, timestamp, ch, can_id, dlc, data = can.recv(timeout_sec=timeout_sec)
+        ret, msg_flags, timestamp, ch, can_id, dlc, data = can.recv(timeout_sec=timeout_sec)
         if ret == True:
-            data = " ".join(map(lambda d:f"{d:02X}",data))
-            #___0.081289 1  3E6             Rx   d 8 50 00 00 00 00 00 00 00  Length = 960000 BitCount = 124 ID = 998
-            print(f"{timestamp:>11.6f} {ch+1:<2} {can_id:3x}             Rx   d {dlc:1} {data}")
+            if msg_flags == 0:
+                data = " ".join(map(lambda d:f"{d:02X}",data))
+                #___0.081289 1  3E6             Rx   d 8 50 00 00 00 00 00 00 00  Length = 960000 BitCount = 124 ID = 998
+                print(f"{timestamp:>11.6f} {ch+1:<2} {can_id:3x}             Rx   d {dlc:1} {data}")
+            elif msg_flags & xl.XL_CAN_MSG_FLAG_ERROR_FRAME:
+                print(f"{timestamp:>11.6f} {ch+1:<2} ERROR FRAME")
+            else:
+                # ignore other flags
+                pass
         else:
             break
-    print("recv_task - end")
+    logger.debug("recv_task - end")
     return True
 
-
-
 if __name__ == "__main__":
+    # from logging import basicConfig, Formatter
+    # basicConfig(level=DEBUG)
+    # logger = getLogger(__name__)
+    # handler = StreamHandler()
+    # handler.setLevel(DEBUG)
+    # handler.setFormatter(Formatter("%(asctime)s [%(levelname)-7s][%(name)-10s]%(message)s"))
+    # logger.addHandler(handler)
+
     # xl.PopupHwConfig()
-    from concurrent.futures import ThreadPoolExecutor, ProcessPoolExecutor
+    from concurrent.futures import ThreadPoolExecutor
 
     executor = ThreadPoolExecutor(max_workers=1)
 
-    can_recv=Can(HwType=xl.XL_HWTYPE_CANCASEXL, HwChannel=1)
-    executor.submit(recv_thread, can=can_recv, timeout_sec=3)
+    receiver=Can(appName="receiver")
+    executor.submit(recv_thread, can=receiver, timeout_sec=3)
 
-    can_send=Can(HwType=xl.XL_HWTYPE_CANCASEXL, HwChannel=0)
+    sender=Can(appName="sender")
     for i in range(10):
-        can_send.send(can_id=0x123, data=[0]*12)
+        sender.send(can_id=0x123, data=[0,1,2,3,4,5])
         time.sleep(0.1)
 
     executor.shutdown()
