@@ -168,10 +168,12 @@ class Can:
                 # an event occured.
                 status, xlevent = self._recv_nonblock()
                 if status == xl.XL_SUCCESS:
-                    if xlevent["tag"] == xl.XL_RECEIVE_MSG:
-                        # the event was rx msg, and it could be received normally.
+                    xlevent_tag = xlevent["tag"]
+                    if xlevent_tag == xl.XL_RECEIVE_MSG:
+                        # Normal case : the event was rx msg.
                         msg_flags = xlevent["tagData"]["msg"]["flags"]
                         if (msg_flags == 0) or (msg_flags & xl.XL_CAN_MSG_FLAG_ERROR_FRAME):
+                            # Normal case : valid receive message or error frame was received.
                             ret = True
                             msg_flags   = msg_flags
                             timestamp   = xlevent["timeStamp"] / 1_000_000_000 # unit conversion from nanoseconds to seconds.
@@ -181,18 +183,21 @@ class Can:
                             data        = xlevent["tagData"]["msg"]["data"][:dlc]
                             break
                         else:
-                            self.log.debug(f"[{self.appName:8}][{self.recv.__name__:8}]{self._parse_msg_flags(msg_flags)}")
-                            pass
+                            # ignore other msg_flags
+                            self.log.debug(f"[{self.appName:8}][{self.recv.__name__:8}] ignore xlevent_msg_flags={self._parse_msg_flags(msg_flags)}")
+                            pass # retry
                     else:
-                        # the event was rx msg but an 
-                        pass
+                        # ignore other xlevent_tag
+                        self.log.debug(f"[{self.appName:8}][{self.recv.__name__:8}] ignore xlevent_tag = {xlevent_tag}")
+                        pass # retry
                 else:
+                    # ignore _recv_nonblock(xl.Receive) errors.
                     self.log.warn(f"[{self.appName:8}][{self.recv.__name__:8}]! _recv_nonblock retruns {status} !")
-                    pass
+                    pass # retry
             elif ret_win32 == win32event.WAIT_TIMEOUT:
-                # if there is no event within t_WaitForSingleObject_msec, WAIT_TIMEOUT occurs. (not error)
+                # if there is no event within t_WaitForSingleObject_msec, WAIT_TIMEOUT occurs.
                 self.log.debug(f"[{self.appName:8}][{self.recv.__name__:8}] WaitForSingleObject returns WAIT_TIMEOUT.  t_WaitForSingleObject_msec:{t_WaitForSingleObject_msec} msec")
-                pass
+                pass # retry
             elif ret_win32 == win32event.WAIT_ABANDONED:
                 # wait object(xlHandle) might be no longer valid. this loop must be finished.
                 self.log.critical(f"[{self.appName:8}][{self.recv.__name__:8}]!! WaitForSingleObject returns WAIT_ABANDONED. break recv() loop !!  xlHandle:{self.xlHandle[0]}, t_WaitForSingleObject_msec:{t_WaitForSingleObject_msec} msec")
@@ -201,8 +206,7 @@ class Can:
                 # win32api error occured. to get extra info, GetLastError should be used. 
                 self.log.critical(f"[{self.appName:8}][{self.recv.__name__:8}]!! WaitForSingleObject returns WAIT_FAILED. break recv() loop !!  xlHandle:{self.xlHandle[0]}, t_WaitForSingleObject_msec:{t_WaitForSingleObject_msec} msec")
                 break
-            else:
-                # unkown error occured. this loop must be finished.
+            else: # unkown error occured. this loop must be finished.
                 self.log.critical(f"[{self.appName:8}][{self.recv.__name__:8}]!! WaitForSingleObject returns unkown value({win32event}) break recv() loop !!  xlHandle:{self.xlHandle[0]}, t_WaitForSingleObject_msec:{t_WaitForSingleObject_msec} msec")
                 break
         return (ret, msg_flags, timestamp, ch, can_id, dlc, data)
@@ -244,13 +248,13 @@ def recv_thread(can, timeout_sec):
     return True
 
 if __name__ == "__main__":
-    # from logging import basicConfig, Formatter
-    # basicConfig(level=DEBUG)
-    # logger = getLogger(__name__)
-    # handler = StreamHandler()
-    # handler.setLevel(DEBUG)
-    # handler.setFormatter(Formatter("%(asctime)s [%(levelname)-7s][%(name)-10s]%(message)s"))
-    # logger.addHandler(handler)
+    from logging import basicConfig, Formatter
+    basicConfig(level=DEBUG)
+    logger = getLogger(__name__)
+    handler = StreamHandler()
+    handler.setLevel(DEBUG)
+    handler.setFormatter(Formatter("%(asctime)s [%(levelname)-7s][%(name)-10s]%(message)s"))
+    logger.addHandler(handler)
 
     # xl.PopupHwConfig()
     from concurrent.futures import ThreadPoolExecutor
