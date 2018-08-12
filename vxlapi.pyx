@@ -254,8 +254,8 @@ cpdef GetChannelMask(int hwType, int hwIndex, int hwChannel):
     return xlGetChannelMask(hwType, hwIndex, hwChannel)
 
 cpdef OpenPort(list portHandle, char* appName, XLaccess accessMask, list permissionMask, unsigned int rxQueueSize, unsigned int xlInterfaceVersion, unsigned int busType):
-    cdef XLstatus status = 0
-    cdef XLportHandle port_handle = -1 # XL_INVALID_PORTHANDLE
+    cdef XLstatus status = XL_ERROR
+    cdef XLportHandle port_handle = XL_INVALID_PORTHANDLE
     cdef XLaccess permission_mask = permissionMask[0]
 
     status = xlOpenPort(&port_handle, appName, accessMask, &permission_mask, rxQueueSize, xlInterfaceVersion, busType)
@@ -277,7 +277,7 @@ cpdef DeactivateChannel(XLportHandle portHandle, XLaccess accessMask):
     return xlDeactivateChannel(portHandle, accessMask)
 
 cpdef CanTransmit(XLportHandle portHandle, XLaccess accessMask, list messageCount, list pMessage):
-    cdef XLstatus status = 0
+    cdef XLstatus status = XL_ERROR
     cdef unsigned int message_count = 0
     cdef XLevent *pxlEvent = NULL
 
@@ -298,7 +298,7 @@ cpdef CanTransmit(XLportHandle portHandle, XLaccess accessMask, list messageCoun
     return status
 
 cpdef Receive(XLportHandle portHandle, list pEventCount, list pEventList, list pEventString):
-    cdef XLstatus status = 0
+    cdef XLstatus status = XL_ERROR
     cdef unsigned int eventCount = 1
     cdef XLevent xlEvent
     cdef XLstringType xlstring
@@ -336,7 +336,7 @@ cpdef Receive(XLportHandle portHandle, list pEventCount, list pEventList, list p
     return status
 
 cpdef SetNotification(XLportHandle portHandle, list pXlHandle, int queueLevel):
-    cpdef XLstatus status = 0
+    cpdef XLstatus status = XL_ERROR
     cpdef XLhandle xlHandle = NULL
     status = xlSetNotification(portHandle, &xlHandle, queueLevel)
     pXlHandle[0] = <size_t>xlHandle
@@ -363,7 +363,7 @@ cpdef GetErrorString(XLstatus err):
     return xlGetErrorString(err)
 
 def GetApplConfig(char *appName, unsigned int appChannel, list pHwType, list pHwIndex, list pHwChannel, unsigned int busType):
-    cdef XLstatus status = 0
+    cdef XLstatus status = XL_ERROR
     cdef unsigned int hwType    = pHwType[0]
     cdef unsigned int hwIndex   = pHwIndex[0]
     cdef unsigned int hwChannel = pHwChannel[0]
@@ -395,6 +395,7 @@ def GetDriverConfig(dict pDriverConfig):
         ch["name"]                   = bytes(driverConfig.channel[i].name)
         ch["hwType"]                 = driverConfig.channel[i].hwType
         ch["hwIndex"]                = driverConfig.channel[i].hwIndex
+        ch["hwChannel"]              = driverConfig.channel[i].hwChannel
         ch["transceiverType"]        = driverConfig.channel[i].transceiverType
         ch["transceiverState"]       = driverConfig.channel[i].transceiverState
         ch["configError"]            = driverConfig.channel[i].configError
