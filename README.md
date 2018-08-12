@@ -94,7 +94,7 @@ ret = xl.CloseDriver()
 |xlCanSetChannelTransceiver|no||
 |xlCanSetChannelParams|no||
 |xlCanSetChannelParamsC200|no||
-|xlCanSetChannelBitrate|no||
+|xlCanSetChannelBitrate|yes||
 |xlCanSetChannelAcceptance|no||
 |xlCanAddAcceptanceRange|no||
 |xlCanRemoveAcceptanceRange|no||
