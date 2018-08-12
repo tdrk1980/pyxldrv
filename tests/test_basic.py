@@ -153,7 +153,7 @@ class TestOpenClosePort(unittest.TestCase):
         status = xl.CloseDriver()
         self.assertEqual(status, xl.XL_SUCCESS)
 
-# python -m unittest tests.test_basic.TestCanTransmitReceive
+# python -m unittest tests.test_basic.TestCanSetChannelBitrate
 class TestCanSetChannelBitrate(unittest.TestCase):
     def setUp(self):
         xl.OpenDriver()
@@ -180,7 +180,8 @@ class TestCanSetChannelBitrate(unittest.TestCase):
         xl.CloseDriver()
 
     def test_CanSetChannelBitrate(self):
-        pass
+        status = xl.CanSetChannelBitrate(self.portHandle[0], self.accessMask, 250_000)
+
 
 # python -m unittest tests.test_basic.TestActivateDeactivate
 class TestActivateDeactivate(unittest.TestCase):
@@ -269,12 +270,10 @@ class TestCanTransmitReceive(unittest.TestCase):
         evstr=[""]
         status = xl.Receive(self.portHandle[0],eventcount,events,evstr)
         print(decode_bin(evstr[0]))
-        print(xl.GetEventString(events[0]))
         self.assertEqual(status, xl.XL_SUCCESS)
 
         status = xl.Receive(self.portHandle[0],eventcount,events,evstr)
         print(decode_bin(evstr[0]))
-        print(xl.GetEventString(events[0]))
         self.assertEqual(status, xl.XL_SUCCESS)
         # self.assertEqual(eventcount[0], 0)
 
