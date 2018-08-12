@@ -101,7 +101,23 @@ ret = xl.CloseDriver()
 |xlCanResetAcceptance|no||
 |xlCanRequestChipState|no||
 |xlCanTransmit|yes||
-|xlCanFlushTransmitQueue|||
+|xlCanFlushTransmitQueue|no||
+
+### CAN FD Commands
+
+to be suported. 2nd
+
+### LIN Commands
+
+to be suported. 3rd
+
+### Ethernet Commands
+
+to be suported. 4th
+
+### Other Commands(MOST, FlexRay, AR429, ...)
+
+not to be supported at this moment.
 
 
 ## DebugView for Windows
