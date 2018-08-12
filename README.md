@@ -5,7 +5,7 @@
 ## What
 
 - [Vector XL Driver Library][1] inlclude dlls for C/C++, C# but not for Python.
-- pyxldrv wraps dlls for C/C++ as imporable library(vxlapi).
+- pyxldrv makes the dll for C/C++ an importable library(vxlapi).
     - To wrap C/C++ dll, pyxldrv uses Cython.
     - Cython generates a library for Python("vxlapi.xxxxxx.pyd") from Cython codes(vxlapi.pxd and vxlapi.pyx).
 
@@ -13,12 +13,16 @@
 import vxlapi as xl
 
 ret = xl.OpenDriver()
-
+....
+msgs = []
+msgs.append({"flags":0, "id":0x321, "dlc":8, "data":bytearray([0x12,0x34,0x56,0x78,0x9A,0xBC,0xDE,0xF0])})
+message_count = [len(msgs)]
+status = xl.CanTransmit(portHandle[0], accessMask, message_count, msgs)
 ...
-
 ret = xl.CloseDriver()
 ```
 
+- and there is an additional wrapper class for CAN(can.py).
 
 ## Installation
 
@@ -43,6 +47,61 @@ ret = xl.CloseDriver()
 
 - For Python 3.6
     - Get [Build Tools for Visual Studio 2017](https://www.visualstudio.com/ja/downloads).
+
+## Support APIs
+
+### Common Commands
+
+|name|support|remark|
+|:---|:---|:---|
+|xlOpenDriver|yes||
+|xlCloseDriver|yes||
+|xlGetApplConfig|yes||
+|xlSetApplConfig|yes|||
+|xlGetDriverConfig|yes|||
+|xlGetRemoteDriverConfig|no||
+|xlGetChannelIndex|no||
+|xlGetChannelMask|yes||
+|xlOpenPort|yes||
+|xlClosePort|yes||
+|xlSetTimerRate|no||
+|xlSetTimerRateAndChannel|no||
+|xlResetClock|no||
+|xlSetNotification|yes||
+|xlFlushReceiveQueue|no||
+|xlGetReceiveQueueLevel|no||
+|xlActivateChannel|yes||
+|xlReceive|yes||
+|xlGetEventString|yes|xlReceive and xlGetEventString are intergrated into vxlapi.Receive.|
+|xlGetErrorString|yes||
+|xlGetSyncTime|no||
+|xlGetChannelTime|no||
+|xlGenerateSyncPulse|no||
+|xlPopupHwConfig|yes||
+|xlDeactivateChannel|yes||
+|xlGetLicenseInfo|no||
+|xlSetGlobalTimeSync|no||
+|xlGetKeymanBoxes|no||
+|xlGetKeymanInfo|no||
+
+### CAN Commands
+
+|name|support|remark|
+|:---|:---|:---|
+|xlCanSetChannelMode|no||
+|xlCanSetChannelOutput|no||
+|xlCanSetReceiveMode|no||
+|xlCanSetChannelTransceiver|no||
+|xlCanSetChannelParams|no||
+|xlCanSetChannelParamsC200|no||
+|xlCanSetChannelBitrate|no||
+|xlCanSetChannelAcceptance|no||
+|xlCanAddAcceptanceRange|no||
+|xlCanRemoveAcceptanceRange|no||
+|xlCanResetAcceptance|no||
+|xlCanRequestChipState|no||
+|xlCanTransmit|yes||
+|xlCanFlushTransmitQueue|||
 
 
 ## DebugView for Windows
