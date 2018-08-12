@@ -42,26 +42,26 @@ class Can:
         #
         status = xl.OpenDriver()
         if status != xl.XL_SUCCESS:
-            self.log.error(f"[{self.appName:8}][{self.__init__.__name__:8}] !! OpenDriver() returns {status} !!")
+            self.log.error(f"[{self.appName:8}][{self.__init__.__name__:8}] !! OpenDriver() returned {status} !!")
 
         status = xl.SetApplConfig(bytes(self.appName.encode()), self.appChannel, self.pHwType, self.pHwIndex, self.pHwChannel, self.busType)
         if status != xl.XL_SUCCESS:
-            self.log.debug(f"[{self.appName:8}][{self.__init__.__name__:8}] SetApplConfig returns {status}.  appName:{self.appName}, appChannel:{self.appChannel}, pHwType:{self.pHwType}, pHwIndex:{self.pHwIndex}, pHwChannel:{self.pHwChannel}, busType:{self.busType}")
+            self.log.debug(f"[{self.appName:8}][{self.__init__.__name__:8}] SetApplConfig returned {status}.  appName:{self.appName}, appChannel:{self.appChannel}, pHwType:{self.pHwType}, pHwIndex:{self.pHwIndex}, pHwChannel:{self.pHwChannel}, busType:{self.busType}")
 
         status = xl.GetApplConfig(bytes(self.appName.encode()), self.appChannel, self.pHwType, self.pHwIndex, self.pHwChannel, self.busType)
         if status != xl.XL_SUCCESS:
-            self.log.debug(f"[{self.appName:8}][{self.__init__.__name__:8}] GetApplConfig returns {status}.  appName:{self.appName}, appChannel:{self.appChannel}, pHwType:{self.pHwType}, pHwIndex:{self.pHwIndex}, pHwChannel:{self.pHwChannel}, busType:{self.busType}")
+            self.log.debug(f"[{self.appName:8}][{self.__init__.__name__:8}] GetApplConfig returned {status}.  appName:{self.appName}, appChannel:{self.appChannel}, pHwType:{self.pHwType}, pHwIndex:{self.pHwIndex}, pHwChannel:{self.pHwChannel}, busType:{self.busType}")
 
         # accessMask should be OR(|=), if multi-HwChannels are used. (In this case, OR(|=) has little meaning.)
         self.accessMask |= xl.GetChannelMask(self.pHwType[0],self.pHwIndex[0],self.pHwChannel[0])
         if self.accessMask == 0:
-            self.log.error(f"[{self.appName:8}][{self.__init__.__name__:8}]!! GetChannelMask returns accessMask={self.accessMask}!!  pHwType:{self.pHwType}, pHwIndex:{self.pHwIndex}, pHwChannel:{self.pHwChannel}")
+            self.log.error(f"[{self.appName:8}][{self.__init__.__name__:8}]!! GetChannelMask returned accessMask={self.accessMask}!!  pHwType:{self.pHwType}, pHwIndex:{self.pHwIndex}, pHwChannel:{self.pHwChannel}")
 
         # permissionMask should be same as accessMask at when OpenPort timing.
         self.permissionMask = [self.accessMask]
         status = xl.OpenPort(self.portHandle, bytes(self.appName.encode()), self.accessMask, self.permissionMask, self.rxQueueSize, self.xlInterfaceVersion, self.busType)
         if status != xl.XL_SUCCESS:
-            self.log.error(f"[{self.appName:8}][{self.__init__.__name__:8}]!! OpenPort returns {status} !!  portHandle:{self.portHandle}, appName:{self.appName}, accessMask:{self.accessMask}, permissionMask:{self.permissionMask}, rxQueueSize:{self.rxQueueSize}, xlInterfaceVersion:{self.xlInterfaceVersion}, busType:{self.busType}")
+            self.log.error(f"[{self.appName:8}][{self.__init__.__name__:8}]!! OpenPort returned {status} !!  portHandle:{self.portHandle}, appName:{self.appName}, accessMask:{self.accessMask}, permissionMask:{self.permissionMask}, rxQueueSize:{self.rxQueueSize}, xlInterfaceVersion:{self.xlInterfaceVersion}, busType:{self.busType}")
 
         # check permissionMask for logging. see 3.2.9 xlOpenPort in "XL Driver Library - Description.pdf"
         if self.permissionMask[0] == 0:
@@ -73,11 +73,11 @@ class Can:
 
         status = xl.ActivateChannel(self.portHandle[0], self.accessMask, self.busType, self.flags)
         if status != xl.XL_SUCCESS:
-            self.log.debug(f"[{self.appName:8}][{self.__init__.__name__:8}] ActivateChannel returns {status}.  portHandle:{self.portHandle}, accessMask:{self.accessMask}, busType:{self.busType}, flags:{self.flags}")
+            self.log.debug(f"[{self.appName:8}][{self.__init__.__name__:8}] ActivateChannel returned {status}.  portHandle:{self.portHandle}, accessMask:{self.accessMask}, busType:{self.busType}, flags:{self.flags}")
 
         status = xl.SetNotification(self.portHandle[0], self.xlHandle, self.queueLevel )
         if status != xl.XL_SUCCESS:
-            self.log.debug(f"[{self.appName:8}][{self.__init__.__name__:8}] SetNotification returns {status}.  portHandle:{self.portHandle}, xlHandle:{self.xlHandle}, queueLevel:{self.queueLevel}")
+            self.log.debug(f"[{self.appName:8}][{self.__init__.__name__:8}] SetNotification returned {status}.  portHandle:{self.portHandle}, xlHandle:{self.xlHandle}, queueLevel:{self.queueLevel}")
 
     def __del__(self):
         #
@@ -85,15 +85,15 @@ class Can:
         #
         status = xl.DeactivateChannel(self.portHandle[0], self.accessMask)
         if status != xl.XL_SUCCESS:
-            self.log.debug(f"[{self.appName:8}][{self.__del__.__name__:8}] DeactivateChannel returns {status}.  portHandle:{self.portHandle}, accessMask:{self.accessMask}")
+            self.log.debug(f"[{self.appName:8}][{self.__del__.__name__:8}] DeactivateChannel returned {status}.  portHandle:{self.portHandle}, accessMask:{self.accessMask}")
 
         status = xl.ClosePort(self.portHandle[0])
         if status != xl.XL_SUCCESS:
-            self.log.debug(f"[{self.appName:8}][{self.__del__.__name__:8}] ClosePort returns {status}.  portHandle:{self.portHandle}")
+            self.log.debug(f"[{self.appName:8}][{self.__del__.__name__:8}] ClosePort returned {status}.  portHandle:{self.portHandle}")
 
         status = xl.CloseDriver()
         if status != xl.XL_SUCCESS:
-            self.log.debug(f"[{self.appName:8}][{self.__del__.__name__:8}] CloseDriver returns {status}")
+            self.log.debug(f"[{self.appName:8}][{self.__del__.__name__:8}] CloseDriver returned {status}")
 
 
     def send(self, *, can_id, data, user_flags=0, user_dlc=None):
@@ -135,8 +135,9 @@ class Can:
     def _recv_nonblock(self):
         pEventCount = [1]
         pEventList = [{}]
-        status = xl.Receive(self.portHandle[0], pEventCount, pEventList)
-        return (status, pEventList[0])
+        pEventString = [b""]
+        status = xl.Receive(self.portHandle[0], pEventCount, pEventList, pEventString)
+        return (status, pEventList[0], pEventString[0])
 
     def recv(self, *, timeout_sec=-1, t_WaitForSingleObject_msec=300):
         start_sec = time.time()
@@ -158,22 +159,25 @@ class Can:
             elif timeout_sec > 0: # blocking with timeout
                 elapsed_sec = time.time() - start_sec
                 if elapsed_sec > (timeout_sec):
+                    self.log.debug(f"[{self.appName:8}][{self.recv.__name__:8}] there were no event.(recv end) elapsed_sec:{elapsed_sec:<.3}, timeout_sec:{timeout_sec}")
                     break
                 self.log.debug(f"[{self.appName:8}][{self.recv.__name__:8}] blocking with timeout. elapsed_sec:{elapsed_sec:<.3}, timeout_sec:{timeout_sec}")
             
-            # wait event
+            # wait for the signal from vector xl driver
+            self.log.debug(f"[{self.appName:8}][{self.recv.__name__:8}] WaitForSingleObject. xlHandle:{self.xlHandle[0]}, t_WaitForSingleObject_msec:{t_WaitForSingleObject_msec} msec")
             ret_win32 = win32event.WaitForSingleObject(self.xlHandle[0], t_WaitForSingleObject_msec)
-            
+
             if ret_win32 == win32event.WAIT_OBJECT_0: # xlHandle was signaled.
-                # an event occured.
-                status, xlevent = self._recv_nonblock()
+                self.log.debug(f"[{self.appName:8}][{self.recv.__name__:8}] WaitForSingleObject returned WAIT_OBJECT_0(xlHandle was signaled correctly). xlHandle:{self.xlHandle[0]}, t_WaitForSingleObject_msec:{t_WaitForSingleObject_msec} msec")
+                
+                # get the event which signals the xHandle via _recv_nonblock->xlReceive.
+                status, xlevent, xlevstr = self._recv_nonblock()
+
                 if status == xl.XL_SUCCESS:
                     xlevent_tag = xlevent["tag"]
-                    if xlevent_tag == xl.XL_RECEIVE_MSG:
-                        # Normal case : the event was rx msg.
+                    if xlevent_tag == xl.XL_RECEIVE_MSG: # Normal case : the event was rx msg.
                         msg_flags = xlevent["tagData"]["msg"]["flags"]
-                        if (msg_flags == 0) or (msg_flags & xl.XL_CAN_MSG_FLAG_ERROR_FRAME):
-                            # Normal case : valid receive message or error frame was received.
+                        if (msg_flags == 0) or (msg_flags & xl.XL_CAN_MSG_FLAG_ERROR_FRAME): # Normal case : valid receive message or error frame was received.
                             ret = True
                             msg_flags   = msg_flags
                             timestamp   = xlevent["timeStamp"] / 1_000_000_000 # unit conversion from nanoseconds to seconds.
@@ -181,33 +185,26 @@ class Can:
                             can_id      = xlevent["tagData"]["msg"]["id"]
                             dlc         = xlevent["tagData"]["msg"]["dlc"]
                             data        = xlevent["tagData"]["msg"]["data"][:dlc]
-                            break
-                        else:
-                            # ignore other msg_flags
-                            self.log.debug(f"[{self.appName:8}][{self.recv.__name__:8}] ignore xlevent_msg_flags={self._parse_msg_flags(msg_flags)}")
-                            pass # retry
-                    else:
-                        # ignore other xlevent_tag
-                        self.log.debug(f"[{self.appName:8}][{self.recv.__name__:8}] ignore xlevent_tag = {xlevent_tag}")
-                        pass # retry
+                            break # recv done normally
+                    # logging not handle event.
+                    self.log.debug(f"[{self.appName:8}][{self.recv.__name__:8}] xlevstr = {self._decode_bin(xlevstr)}")
                 else:
-                    # ignore _recv_nonblock(xl.Receive) errors.
-                    self.log.warn(f"[{self.appName:8}][{self.recv.__name__:8}]! _recv_nonblock retruns {status} !")
-                    pass # retry
+                    # logging _recv_nonblock(xl.Receive) errors.
+                    self.log.warn(f"[{self.appName:8}][{self.recv.__name__:8}]! _recv_nonblock retruns {self._decode_bin(xl.GetErrorString(status))} !")
             elif ret_win32 == win32event.WAIT_TIMEOUT:
                 # if there is no event within t_WaitForSingleObject_msec, WAIT_TIMEOUT occurs.
-                self.log.debug(f"[{self.appName:8}][{self.recv.__name__:8}] WaitForSingleObject returns WAIT_TIMEOUT.  t_WaitForSingleObject_msec:{t_WaitForSingleObject_msec} msec")
+                self.log.debug(f"[{self.appName:8}][{self.recv.__name__:8}] WaitForSingleObject returned WAIT_TIMEOUT. xlHandle:{self.xlHandle[0]}, t_WaitForSingleObject_msec:{t_WaitForSingleObject_msec} msec")
                 pass # retry
             elif ret_win32 == win32event.WAIT_ABANDONED:
                 # wait object(xlHandle) might be no longer valid. this loop must be finished.
-                self.log.critical(f"[{self.appName:8}][{self.recv.__name__:8}]!! WaitForSingleObject returns WAIT_ABANDONED. break recv() loop !!  xlHandle:{self.xlHandle[0]}, t_WaitForSingleObject_msec:{t_WaitForSingleObject_msec} msec")
+                self.log.critical(f"[{self.appName:8}][{self.recv.__name__:8}]!! WaitForSingleObject returned WAIT_ABANDONED. break recv() loop !! xlHandle:{self.xlHandle[0]}, t_WaitForSingleObject_msec:{t_WaitForSingleObject_msec} msec")
                 break
             elif ret_win32 == win32event.WAIT_FAILED:
                 # win32api error occured. to get extra info, GetLastError should be used. 
-                self.log.critical(f"[{self.appName:8}][{self.recv.__name__:8}]!! WaitForSingleObject returns WAIT_FAILED. break recv() loop !!  xlHandle:{self.xlHandle[0]}, t_WaitForSingleObject_msec:{t_WaitForSingleObject_msec} msec")
+                self.log.critical(f"[{self.appName:8}][{self.recv.__name__:8}]!! WaitForSingleObject returned WAIT_FAILED. break recv() loop !! xlHandle:{self.xlHandle[0]}, t_WaitForSingleObject_msec:{t_WaitForSingleObject_msec} msec")
                 break
             else: # unkown error occured. this loop must be finished.
-                self.log.critical(f"[{self.appName:8}][{self.recv.__name__:8}]!! WaitForSingleObject returns unkown value({win32event}) break recv() loop !!  xlHandle:{self.xlHandle[0]}, t_WaitForSingleObject_msec:{t_WaitForSingleObject_msec} msec")
+                self.log.critical(f"[{self.appName:8}][{self.recv.__name__:8}]!! WaitForSingleObject returned unkown value({win32event}) break recv() loop !!  xlHandle:{self.xlHandle[0]}, t_WaitForSingleObject_msec:{t_WaitForSingleObject_msec} msec")
                 break
         return (ret, msg_flags, timestamp, ch, can_id, dlc, data)
 

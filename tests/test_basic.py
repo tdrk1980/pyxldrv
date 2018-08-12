@@ -4,6 +4,12 @@ import unittest
 import inspect
 import vxlapi as xl
 from pprint import pprint
+import chardet
+
+
+def decode_bin(bin):
+    return bin.decode(chardet.detect(bin)["encoding"])
+
 
 # python -m unittest tests.test_basic.TestOpenCloseDriver
 class TestOpenCloseDriver(unittest.TestCase):
@@ -147,6 +153,35 @@ class TestOpenClosePort(unittest.TestCase):
         status = xl.CloseDriver()
         self.assertEqual(status, xl.XL_SUCCESS)
 
+# python -m unittest tests.test_basic.TestCanTransmitReceive
+class TestCanSetChannelBitrate(unittest.TestCase):
+    def setUp(self):
+        xl.OpenDriver()
+
+        self.pHwType        = [xl.XL_HWTYPE_VIRTUAL]
+        self.pHwIndex       = [0]
+        self.pHwChannel     = [0]
+        self.busType        = xl.XL_BUS_TYPE_CAN
+        self.appName        = bytes("pyxldrv".encode())
+        xl.SetApplConfig(appName=self.appName, appChannel=0, pHwType=self.pHwType, pHwIndex=self.pHwIndex, pHwChannel=self.pHwChannel, busType=self.busType)
+        xl.GetApplConfig(appName=self.appName, appChannel=0, pHwType=self.pHwType, pHwIndex=self.pHwIndex, pHwChannel=self.pHwChannel, busType=self.busType)
+
+        self.accessMask = 0
+        self.accessMask = xl.GetChannelMask(self.pHwType[0],self.pHwIndex[0],self.pHwChannel[0])
+
+        self.portHandle     = [0]
+        self.permissionMask = [self.accessMask]
+        self.rxQueueSize    = 2^10
+        self.xlInterfaceVersion = xl.XL_INTERFACE_VERSION
+        xl.OpenPort(self.portHandle, self.appName, self.accessMask, self.permissionMask, self.rxQueueSize, self.xlInterfaceVersion, self.busType)
+
+    def tearDown(self):
+        xl.ClosePort(self.portHandle[0])
+        xl.CloseDriver()
+
+    def test_CanSetChannelBitrate(self):
+        pass
+
 # python -m unittest tests.test_basic.TestActivateDeactivate
 class TestActivateDeactivate(unittest.TestCase):
     def setUp(self):
@@ -230,15 +265,16 @@ class TestCanTransmitReceive(unittest.TestCase):
         self.assertEqual(status, xl.XL_SUCCESS)
 
         eventcount=[1]
-        eventstring=[""]
-        status = xl.Receive(self.portHandle[0],eventcount,eventstring)
-        print(eventstring)
+        events=[{}]
+        evstr=[""]
+        status = xl.Receive(self.portHandle[0],eventcount,events,evstr)
+        print(decode_bin(evstr[0]))
+        print(xl.GetEventString(events[0]))
         self.assertEqual(status, xl.XL_SUCCESS)
 
-        eventcount=[1]
-        eventstring=[""]
-        status = xl.Receive(self.portHandle[0],eventcount,eventstring)
-        print(eventstring)
+        status = xl.Receive(self.portHandle[0],eventcount,events,evstr)
+        print(decode_bin(evstr[0]))
+        print(xl.GetEventString(events[0]))
         self.assertEqual(status, xl.XL_SUCCESS)
         # self.assertEqual(eventcount[0], 0)
 
