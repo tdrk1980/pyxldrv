@@ -10,6 +10,19 @@ import chardet
 def decode_bin(bin):
     return bin.decode(chardet.detect(bin)["encoding"])
 
+def get_can_bus_params(hwType, hwIndex, hwChannel, busType):
+    driverConfig = {}
+    xl.GetDriverConfig(driverConfig)
+    can_bus_params = None
+    for ch in driverConfig["channel"]:
+        if (ch["hwType"] == hwType and ch["hwIndex"] == hwIndex and ch["hwChannel"] == hwChannel):
+            if ch["busParams"]["busType"] == busType:
+                can_bus_params = ch["busParams"]["data"]["can"]
+                can_bus_params["name"] = ch["name"]
+                can_bus_params["hwType"] = ch["hwType"]
+                can_bus_params["hwIndex"] = ch["hwIndex"]
+                can_bus_params["hwChannel"] = ch["hwChannel"]
+    return can_bus_params
 
 # python -m unittest tests.test_basic.TestOpenCloseDriver
 class TestOpenCloseDriver(unittest.TestCase):
@@ -180,7 +193,43 @@ class TestCanSetChannelBitrate(unittest.TestCase):
         xl.CloseDriver()
 
     def test_CanSetChannelBitrate(self):
+
+        # 1st
+        bitrate = 250_000
         status = xl.CanSetChannelBitrate(self.portHandle[0], self.accessMask, 250_000)
+        self.assertEqual(status, xl.XL_SUCCESS)
+
+        # get driver's bitrate
+        can_bus_params = get_can_bus_params(self.pHwType[0],self.pHwIndex[0],self.pHwChannel[0], self.busType)
+        print(can_bus_params)
+
+        # check result
+        self.assertEqual(bitrate, can_bus_params["bitRate"])
+
+        # 2nd
+        bitrate = 500_000
+        status = xl.CanSetChannelBitrate(self.portHandle[0], self.accessMask, bitrate)
+        self.assertEqual(status, xl.XL_SUCCESS)
+
+        # get driver's bitrate
+        can_bus_params = get_can_bus_params(self.pHwType[0],self.pHwIndex[0],self.pHwChannel[0], self.busType)
+        print(can_bus_params)
+
+        # check result
+        self.assertEqual(bitrate, can_bus_params["bitRate"])
+
+        # 3rd
+        bitrate = 1_000_000
+        status = xl.CanSetChannelBitrate(self.portHandle[0], self.accessMask, bitrate)
+        self.assertEqual(status, xl.XL_SUCCESS)
+
+        # get driver's bitrate
+        can_bus_params = get_can_bus_params(self.pHwType[0],self.pHwIndex[0],self.pHwChannel[0], self.busType)
+        print(can_bus_params)
+
+        # check result
+        self.assertEqual(bitrate, can_bus_params["bitRate"])
+
 
 
 # python -m unittest tests.test_basic.TestActivateDeactivate
