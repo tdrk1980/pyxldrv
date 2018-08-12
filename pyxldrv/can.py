@@ -139,7 +139,7 @@ class Can:
         status = xl.Receive(self.portHandle[0], pEventCount, pEventList, pEventString)
         return (status, pEventList[0], pEventString[0])
 
-    def recv(self, *, timeout_sec=-1, t_WaitForSingleObject_msec=300):
+    def recv(self, *, timeout_sec=3, t_WaitForSingleObject_msec=300):
         start_sec = time.time()
         elapsed_sec = 0
         
@@ -151,31 +151,21 @@ class Can:
             can_id  = None
             dlc     = None
             data    = []
-
-            if timeout_sec < 0:  # wait forever
-                self.log.debug(f"[{self.appName:8}][{self.recv.__name__:8}] wait forever")
-            if timeout_sec == 0: # non blocking
-                self.log.debug(f"[{self.appName:8}][{self.recv.__name__:8}] non blocking")
-            elif timeout_sec > 0: # blocking with timeout
-                elapsed_sec = time.time() - start_sec
-                if elapsed_sec > (timeout_sec):
-                    self.log.debug(f"[{self.appName:8}][{self.recv.__name__:8}] there were no event.(recv end) elapsed_sec:{elapsed_sec:<.3}, timeout_sec:{timeout_sec}")
-                    break
-                self.log.debug(f"[{self.appName:8}][{self.recv.__name__:8}] blocking with timeout. elapsed_sec:{elapsed_sec:<.3}, timeout_sec:{timeout_sec}")
             
             # wait for the signal from vector xl driver
-            self.log.debug(f"[{self.appName:8}][{self.recv.__name__:8}] WaitForSingleObject. xlHandle:{self.xlHandle[0]}, t_WaitForSingleObject_msec:{t_WaitForSingleObject_msec} msec")
+            self.debug(self.recv, f"call WaitForSingleObject. xlHandle:{self.xlHandle[0]}, t_WaitForSingleObject_msec:{t_WaitForSingleObject_msec} msec")
             ret_win32 = win32event.WaitForSingleObject(self.xlHandle[0], t_WaitForSingleObject_msec)
 
-            if ret_win32 == win32event.WAIT_OBJECT_0: # xlHandle was signaled.
-                self.log.debug(f"[{self.appName:8}][{self.recv.__name__:8}] WaitForSingleObject returned WAIT_OBJECT_0(xlHandle was signaled correctly). xlHandle:{self.xlHandle[0]}, t_WaitForSingleObject_msec:{t_WaitForSingleObject_msec} msec")
+            if ret_win32 == win32event.WAIT_OBJECT_0:
+                self.debug(self.recv, f"WaitForSingleObject returned WAIT_OBJECT_0(xlHandle was signaled correctly).")
                 
                 # get the event which signals the xHandle via _recv_nonblock->xlReceive.
                 status, xlevent, xlevstr = self._recv_nonblock()
 
+                # analysis of the event
                 if status == xl.XL_SUCCESS:
                     xlevent_tag = xlevent["tag"]
-                    if xlevent_tag == xl.XL_RECEIVE_MSG: # Normal case : the event was rx msg.
+                    if xlevent_tag == xl.XL_RECEIVE_MSG: # Normal case : the event was rx msg(exected event).
                         msg_flags = xlevent["tagData"]["msg"]["flags"]
                         if (msg_flags == 0) or (msg_flags & xl.XL_CAN_MSG_FLAG_ERROR_FRAME): # Normal case : valid receive message or error frame was received.
                             ret = True
@@ -185,28 +175,49 @@ class Can:
                             can_id      = xlevent["tagData"]["msg"]["id"]
                             dlc         = xlevent["tagData"]["msg"]["dlc"]
                             data        = xlevent["tagData"]["msg"]["data"][:dlc]
-                            break # recv done normally
-                    # logging not handle event.
-                    self.log.debug(f"[{self.appName:8}][{self.recv.__name__:8}] xlevstr = {self._decode_bin(xlevstr)}")
+                            break # loop end normally (ret = True)
+
+                    # logging unhandled event.
+                    self.debug(self.recv, f"{self._decode_bin(xlevstr)}")
                 else:
-                    # logging _recv_nonblock(xl.Receive) errors.
-                    self.log.warn(f"[{self.appName:8}][{self.recv.__name__:8}]! _recv_nonblock retruns {self._decode_bin(xl.GetErrorString(status))} !")
+                    # status != xl.XL_SUCCESS
+                    self.warn(self.recv, f"! _recv_nonblock retruns {self._decode_bin(xl.GetErrorString(status))} !")
             elif ret_win32 == win32event.WAIT_TIMEOUT:
-                # if there is no event within t_WaitForSingleObject_msec, WAIT_TIMEOUT occurs.
-                self.log.debug(f"[{self.appName:8}][{self.recv.__name__:8}] WaitForSingleObject returned WAIT_TIMEOUT. xlHandle:{self.xlHandle[0]}, t_WaitForSingleObject_msec:{t_WaitForSingleObject_msec} msec")
-                pass # retry
-            elif ret_win32 == win32event.WAIT_ABANDONED:
-                # wait object(xlHandle) might be no longer valid. this loop must be finished.
-                self.log.critical(f"[{self.appName:8}][{self.recv.__name__:8}]!! WaitForSingleObject returned WAIT_ABANDONED. break recv() loop !! xlHandle:{self.xlHandle[0]}, t_WaitForSingleObject_msec:{t_WaitForSingleObject_msec} msec")
-                break
-            elif ret_win32 == win32event.WAIT_FAILED:
-                # win32api error occured. to get extra info, GetLastError should be used. 
-                self.log.critical(f"[{self.appName:8}][{self.recv.__name__:8}]!! WaitForSingleObject returned WAIT_FAILED. break recv() loop !! xlHandle:{self.xlHandle[0]}, t_WaitForSingleObject_msec:{t_WaitForSingleObject_msec} msec")
-                break
-            else: # unkown error occured. this loop must be finished.
-                self.log.critical(f"[{self.appName:8}][{self.recv.__name__:8}]!! WaitForSingleObject returned unkown value({win32event}) break recv() loop !!  xlHandle:{self.xlHandle[0]}, t_WaitForSingleObject_msec:{t_WaitForSingleObject_msec} msec")
+                # continue recv() loop 
+                self.debug(self.recv, f"WaitForSingleObject returned WAIT_TIMEOUT. xlHandle:{self.xlHandle[0]}, t_WaitForSingleObject_msec:{t_WaitForSingleObject_msec} msec")
+            else:
+                # critical errors. this loop must be finished.
+                if ret_win32 == win32event.WAIT_ABANDONED:
+                    # xlHandle might be no longer valid. 
+                    self.critical(self.recv, f"!! break recv() loop (ret = False). WaitForSingleObject returned WAIT_ABANDONED. xlHandle:{self.xlHandle[0]}, t_WaitForSingleObject_msec:{t_WaitForSingleObject_msec} msec")
+                    break
+                elif ret_win32 == win32event.WAIT_FAILED:
+                    # win32api error occured. to get extra info, GetLastError should be used. 
+                    self.critical(self.recv, f"!! break recv() loop (ret = False). WaitForSingleObject returned WAIT_FAILED. xlHandle:{self.xlHandle[0]}, t_WaitForSingleObject_msec:{t_WaitForSingleObject_msec} msec")
+                    break
+                else:
+                    # unkown error occured.
+                    self.critical(self.recv, f"!! break recv() loop (ret = False). WaitForSingleObject returned unkown value({win32event}) break recv() loop !! xlHandle:{self.xlHandle[0]}, t_WaitForSingleObject_msec:{t_WaitForSingleObject_msec} msec")
+                    break
+            
+            # timeout detection
+            elapsed_sec = time.time() - start_sec
+            if elapsed_sec > timeout_sec:
+                self.info(self.recv, f"break recv() loop due to no event (ret = False). elapsed_sec:{elapsed_sec:<.3}, timeout_sec:{timeout_sec}")
                 break
         return (ret, msg_flags, timestamp, ch, can_id, dlc, data)
+
+    def info(self,method,s):
+        self.log.info(f"[{self.appName:8}][{method.__name__:8}] {s}")
+
+    def debug(self,method,s):
+        self.log.debug(f"[{self.appName:8}][{method.__name__:8}] {s}")
+
+    def warn(self,method,s):
+        self.log.warn(f"[{self.appName:8}][{method.__name__:8}] {s}")
+
+    def critical(self,method,s):
+        self.log.critical(f"[{self.appName:8}][{method.__name__:8}] {s}")
 
     def _decode_bin(self,bin):
         return bin.decode(chardet.detect(bin)["encoding"])
@@ -224,7 +235,7 @@ class Can:
         msg_flags_str += "" if msg_flags & xl.XL_CAN_MSG_FLAG_SRR_BIT_DOM  else "|XL_CAN_MSG_FLAG_SRR_BIT_DOM"
         return msg_flags_str
 
-# 受信スレッド
+
 def recv_thread(can, timeout_sec):
     logger.debug("recv_task - start")
     while True:
