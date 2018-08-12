@@ -10,7 +10,39 @@ logger.setLevel(DEBUG)
 logger.addHandler(NullHandler())
 logger.propagate = False
 
+def decode_bin(bin):
+    return bin.decode(chardet.detect(bin)["encoding"])
 
+def get_can_bus_params(hwType, hwIndex, hwChannel, busType):
+    driverConfig = {}
+    xl.GetDriverConfig(driverConfig)
+    can_bus_params = None
+    for ch in driverConfig["channel"]:
+        if (ch["hwType"] == hwType and ch["hwIndex"] == hwIndex and ch["hwChannel"] == hwChannel):
+            if ch["busParams"]["busType"] == busType:
+                can_bus_params = ch["busParams"]["data"]["can"]
+                can_bus_params["name"] = decode_bin(ch["name"])
+                can_bus_params["hwType"] = ch["hwType"]
+                can_bus_params["hwIndex"] = ch["hwIndex"]
+                can_bus_params["hwChannel"] = ch["hwChannel"]
+    return can_bus_params
+
+def print_can_networks():
+    driverConfig = {}
+    xl.GetDriverConfig(driverConfig)
+    for ch in driverConfig["channel"]:
+        if ch["busParams"]["busType"] == xl.XL_BUS_TYPE_CAN:
+            name = decode_bin(ch["name"])
+            print(f"name      : {name}")
+            hwType=ch["hwType"]
+            print(f"hwType    : {hwType}")
+            hwIndex=ch["hwIndex"]
+            print(f"hwIndex   : {hwIndex}")
+            hwChannel = ch["hwChannel"]
+            print(f"hwChannel : {hwChannel}")
+            bitRate = ch["busParams"]["data"]["can"]["bitRate"]
+            print(f"bitRate   : {bitRate//1000} kbps")
+            print()
 class Can:
     def __init__(self, *, appName="pyxldrv", appChannel=0, HwType=xl.XL_HWTYPE_VIRTUAL, HwIndex=0, HwChannel=0, rxQueueSize=2**10, busType=xl.XL_BUS_TYPE_CAN, flags=xl.XL_ACTIVATE_RESET_CLOCK, queueLevel=1, logger=logger):
         self.log = logger
@@ -264,6 +296,7 @@ if __name__ == "__main__":
     handler.setFormatter(Formatter("%(asctime)s [%(levelname)-7s][%(name)-10s]%(message)s"))
     logger.addHandler(handler)
 
+    print_can_networks()
     # xl.PopupHwConfig()
     from concurrent.futures import ThreadPoolExecutor
 
