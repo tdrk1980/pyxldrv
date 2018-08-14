@@ -66,7 +66,7 @@ ret = xl.CloseDriver()
 |xlClosePort|yes||
 |xlSetTimerRate|no||
 |xlSetTimerRateAndChannel|no||
-|xlResetClock|no||
+|xlResetClock|yes|not tested.|
 |xlSetNotification|yes||
 |xlFlushReceiveQueue|no||
 |xlGetReceiveQueueLevel|no||
@@ -92,7 +92,7 @@ ret = xl.CloseDriver()
 |xlCanSetChannelOutput|no||
 |xlCanSetReceiveMode|no||
 |xlCanSetChannelTransceiver|no||
-|xlCanSetChannelParams|no||
+|xlCanSetChannelParams|yes|not tested.|
 |xlCanSetChannelParamsC200|no||
 |xlCanSetChannelBitrate|yes||
 |xlCanSetChannelAcceptance|no||
@@ -101,7 +101,7 @@ ret = xl.CloseDriver()
 |xlCanResetAcceptance|no||
 |xlCanRequestChipState|no||
 |xlCanTransmit|yes||
-|xlCanFlushTransmitQueue|no||
+|xlCanFlushTransmitQueue|yes|not tested.|
 
 ### CAN FD Commands
 

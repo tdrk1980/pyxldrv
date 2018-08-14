@@ -231,6 +231,43 @@ class TestCanSetChannelBitrate(unittest.TestCase):
         self.assertEqual(bitrate, can_bus_params["bitRate"])
 
 
+# python -m unittest tests.test_basic.TestCanSetChannelParams
+class TestCanSetChannelParams(unittest.TestCase):
+    def setUp(self):
+        xl.OpenDriver()
+
+        self.pHwType        = [xl.XL_HWTYPE_VIRTUAL]
+        self.pHwIndex       = [0]
+        self.pHwChannel     = [0]
+        self.busType        = xl.XL_BUS_TYPE_CAN
+        self.appName        = bytes("pyxldrv".encode())
+        xl.SetApplConfig(appName=self.appName, appChannel=0, pHwType=self.pHwType, pHwIndex=self.pHwIndex, pHwChannel=self.pHwChannel, busType=self.busType)
+        xl.GetApplConfig(appName=self.appName, appChannel=0, pHwType=self.pHwType, pHwIndex=self.pHwIndex, pHwChannel=self.pHwChannel, busType=self.busType)
+
+        self.accessMask = 0
+        self.accessMask = xl.GetChannelMask(self.pHwType[0],self.pHwIndex[0],self.pHwChannel[0])
+
+        self.portHandle     = [0]
+        self.permissionMask = [self.accessMask]
+        self.rxQueueSize    = 2^10
+        self.xlInterfaceVersion = xl.XL_INTERFACE_VERSION
+        xl.OpenPort(self.portHandle, self.appName, self.accessMask, self.permissionMask, self.rxQueueSize, self.xlInterfaceVersion, self.busType)
+
+    def tearDown(self):
+        xl.ClosePort(self.portHandle[0])
+        xl.CloseDriver()
+
+    def test_CanSetChannelParams(self):
+        # chipParams = {}
+        # chipParams["bitRate"] =125_000
+        # chipParams["sjw"] = 1
+        # chipParams["tseg1"] = 1
+        # chipParams["tseg2"] = 1
+        # chipParams["sam"] = 1
+        # status = xl.CanSetChannelParams(self.portHandle[0], self.accessMask, chipParams)
+        # self.assertEqual(status, xl.XL_SUCCESS)
+        pass
+
 
 # python -m unittest tests.test_basic.TestActivateDeactivate
 class TestActivateDeactivate(unittest.TestCase):

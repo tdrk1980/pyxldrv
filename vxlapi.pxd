@@ -253,3 +253,9 @@ cdef extern from "vxlapi.h":
 
         ctypedef char *XLstringType
         
+        ctypedef struct XLchipParams:
+            unsigned long bitRate
+            unsigned char sjw
+            unsigned char tseg1
+            unsigned char tseg2
+            unsigned char sam
