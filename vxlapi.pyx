@@ -223,8 +223,14 @@ cdef extern from "vxlapi.h":
     
     XLstatus xlResetClock(XLportHandle portHandle)
     
+    XLstatus xlCanSetChannelMode(XLportHandle portHandle, XLaccess accessMask, int tx, int txrq)
+    XLstatus xlCanSetChannelOutput(XLportHandle portHandle, XLaccess accessMask, unsigned char mode)
+    XLstatus xlCanSetReceiveMode(XLportHandle portHandle, unsigned char ErrorFrame, unsigned char ChipState)
     XLstatus xlCanSetChannelAcceptance(XLportHandle portHandle, XLaccess accessMask, unsigned long code, unsigned long mask, unsigned int idRange)
     XLstatus xlCanAddAcceptanceRange(XLportHandle portHandle, XLaccess accessMask, unsigned long first_id, unsigned long last_id)
+    XLstatus xlCanRemoveAcceptanceRange(XLportHandle portHandle, XLaccess accessMask, unsigned long first_id, unsigned long last_id)
+    XLstatus xlCanResetAcceptance(XLportHandle portHandle, XLaccess accessMask, unsigned int idRange)
+    
     XLstringType xlGetEventString(XLevent* ev)
     const char* xlGetErrorString(XLstatus err)
 
@@ -377,11 +383,26 @@ cpdef SetNotification(XLportHandle portHandle, list pXlHandle, int queueLevel):
 cpdef ResetClock(XLportHandle portHandle):
     return xlResetClock(portHandle)
 
+cpdef CanSetChannelMode(XLportHandle portHandle, XLaccess accessMask, int tx, int txrq):
+    return xlCanSetChannelMode(portHandle, accessMask, tx, txrq)
+
+cpdef CanSetChannelOutput(XLportHandle portHandle, XLaccess accessMask, unsigned char mode):
+    return xlCanSetChannelOutput(portHandle, accessMask, mode)
+
+cpdef CanSetReceiveMode(XLportHandle portHandle, unsigned char ErrorFrame, unsigned char ChipState):
+    return xlCanSetReceiveMode(portHandle, ErrorFrame, ChipState)
+
 cpdef CanSetChannelAcceptance(XLportHandle portHandle, XLaccess accessMask, unsigned long code, unsigned long mask, unsigned int idRange):
     return xlCanSetChannelAcceptance(portHandle, accessMask, code, mask, idRange)
 
 cpdef CanAddAcceptanceRange(XLportHandle portHandle, XLaccess accessMask, unsigned long first_id, unsigned long last_id):
     return xlCanAddAcceptanceRange(portHandle, accessMask, first_id, last_id)
+
+cpdef CanRemoveAcceptanceRange(XLportHandle portHandle, XLaccess accessMask, unsigned long first_id, unsigned long last_id):
+    return xlCanRemoveAcceptanceRange(portHandle, accessMask, first_id, last_id)
+
+cpdef CanResetAcceptance(XLportHandle portHandle, XLaccess accessMask, unsigned int idRange):
+    return xlCanResetAcceptance(portHandle, accessMask, idRange)
 
 #cpdef GetEventString(dict pXLevent):
     #cdef XLevent xlEvent

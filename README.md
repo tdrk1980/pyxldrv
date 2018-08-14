@@ -88,17 +88,17 @@ ret = xl.CloseDriver()
 
 |name|support|remark|
 |:---|:---|:---|
-|xlCanSetChannelMode|no||
-|xlCanSetChannelOutput|no||
-|xlCanSetReceiveMode|no||
+|xlCanSetChannelMode|yes|not tested.|
+|xlCanSetChannelOutput|yes|not tested.|
+|xlCanSetReceiveMode|yes|not tested.|
 |xlCanSetChannelTransceiver|no||
 |xlCanSetChannelParams|yes|not tested.|
 |xlCanSetChannelParamsC200|no||
 |xlCanSetChannelBitrate|yes||
 |xlCanSetChannelAcceptance|yes|not tested.|
 |xlCanAddAcceptanceRange|yes|not tested.|
-|xlCanRemoveAcceptanceRange|no||
-|xlCanResetAcceptance|no||
+|xlCanRemoveAcceptanceRange|yes|not tested.
+|xlCanResetAcceptance|yes|not tested.
 |xlCanRequestChipState|yes|not tested.|
 |xlCanTransmit|yes||
 |xlCanFlushTransmitQueue|yes|not tested.|
