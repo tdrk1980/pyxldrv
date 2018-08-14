@@ -207,14 +207,24 @@ cdef extern from "vxlapi.h":
     XLstatus xlClosePort(XLportHandle portHandle)
 
     XLstatus xlCanSetChannelBitrate(XLportHandle portHandle, XLaccess accessMask, unsigned long bitrate)
+    XLstatus xlCanSetChannelParams(XLportHandle portHandle, XLaccess accessMask, XLchipParams* pChipParams)
 
     XLstatus xlActivateChannel(XLportHandle portHandle, XLaccess accessMask, unsigned int busType, unsigned int flags)
     XLstatus xlDeactivateChannel(XLportHandle portHandle, XLaccess accessMask)
 
     XLstatus xlCanTransmit(XLportHandle portHandle, XLaccess accessMask, unsigned int* messageCount, void* pMessage)
+    XLstatus xlCanFlushTransmitQueue(XLportHandle portHandle, XLaccess accessMask)
+    XLstatus xlCanRequestChipState(XLportHandle portHandle, XLaccess accessMask)
+
     XLstatus xlReceive(XLportHandle portHandle, unsigned int *pEventCount, XLevent *pEventList)
+    XLstatus xlFlushReceiveQueue(XLportHandle portHandle)
+
     XLstatus xlSetNotification(XLportHandle portHandle, XLhandle pXlHandle, int queueLevel)
     
+    XLstatus xlResetClock(XLportHandle portHandle)
+    
+    XLstatus xlCanSetChannelAcceptance(XLportHandle portHandle, XLaccess accessMask, unsigned long code, unsigned long mask, unsigned int idRange)
+    XLstatus xlCanAddAcceptanceRange(XLportHandle portHandle, XLaccess accessMask, unsigned long first_id, unsigned long last_id)
     XLstringType xlGetEventString(XLevent* ev)
     const char* xlGetErrorString(XLstatus err)
 
@@ -270,6 +280,19 @@ cpdef ClosePort(XLportHandle portHandle):
 cpdef CanSetChannelBitrate(XLportHandle portHandle, XLaccess accessMask, unsigned long bitrate):
     return xlCanSetChannelBitrate(portHandle, accessMask, bitrate)
 
+cpdef CanSetChannelParams(XLportHandle portHandle, XLaccess accessMask, dict pChipParams):
+    cdef XLstatus status = XL_ERROR
+    cdef XLchipParams chipParams = {0}
+
+    chipParams.bitRate  = pChipParams["bitRate"]
+    chipParams.sjw      = pChipParams["sjw"]
+    chipParams.tseg1    = pChipParams["tseg1"]
+    chipParams.tseg2    = pChipParams["tseg2"]
+    chipParams.sam      = pChipParams["sam"]
+
+    status = xlCanSetChannelParams(portHandle, accessMask, &chipParams)
+    return status
+
 cpdef ActivateChannel(XLportHandle portHandle, XLaccess accessMask, unsigned int busType, unsigned int flags):
     return xlActivateChannel(portHandle, accessMask, busType, flags)
 
@@ -296,6 +319,12 @@ cpdef CanTransmit(XLportHandle portHandle, XLaccess accessMask, list messageCoun
         free(pxlEvent)
     messageCount[0] = message_count
     return status
+
+cpdef CanFlushTransmitQueue(XLportHandle portHandle, XLaccess accessMask):
+    return xlCanFlushTransmitQueue(portHandle, accessMask)
+
+cpdef CanRequestChipState(XLportHandle portHandle, XLaccess accessMask):
+    return xlCanRequestChipState(portHandle,accessMask)
 
 cpdef Receive(XLportHandle portHandle, list pEventCount, list pEventList, list pEventString):
     cdef XLstatus status = XL_ERROR
@@ -335,12 +364,24 @@ cpdef Receive(XLportHandle portHandle, list pEventCount, list pEventList, list p
     pEventList[0] = retEvent
     return status
 
+cpdef FlushReceiveQueue(XLportHandle portHandle):
+    return xlFlushReceiveQueue(portHandle)
+
 cpdef SetNotification(XLportHandle portHandle, list pXlHandle, int queueLevel):
     cpdef XLstatus status = XL_ERROR
     cpdef XLhandle xlHandle = NULL
     status = xlSetNotification(portHandle, &xlHandle, queueLevel)
     pXlHandle[0] = <size_t>xlHandle
     return status
+
+cpdef ResetClock(XLportHandle portHandle):
+    return xlResetClock(portHandle)
+
+cpdef CanSetChannelAcceptance(XLportHandle portHandle, XLaccess accessMask, unsigned long code, unsigned long mask, unsigned int idRange):
+    return xlCanSetChannelAcceptance(portHandle, accessMask, code, mask, idRange)
+
+cpdef CanAddAcceptanceRange(XLportHandle portHandle, XLaccess accessMask, unsigned long first_id, unsigned long last_id):
+    return xlCanAddAcceptanceRange(portHandle, accessMask, first_id, last_id)
 
 #cpdef GetEventString(dict pXLevent):
     #cdef XLevent xlEvent
