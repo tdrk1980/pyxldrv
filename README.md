@@ -105,7 +105,13 @@ ret = xl.CloseDriver()
 
 ### CAN FD Commands
 
-to be suported. 2nd
+|name|support|remark|
+|:---|:---|:---|
+|xlCanFdSetConfiguration|no||
+|xlCanFdSetConfiguration|no||
+|xlCanTransmitEx|no||
+|xlCanReceive|no||
+|xlCanGetEventString|no||
 
 ### LIN Commands
 
