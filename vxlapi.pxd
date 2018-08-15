@@ -259,3 +259,9 @@ cdef extern from "vxlapi.h":
             unsigned char tseg1
             unsigned char tseg2
             unsigned char sam
+
+        ctypedef struct XL_LICENSE_INFO:
+            unsigned char bAvailable
+            char          licName[65]
+
+        ctypedef XL_LICENSE_INFO XLlicenseInfo

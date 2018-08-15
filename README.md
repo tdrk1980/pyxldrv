@@ -79,10 +79,10 @@ ret = xl.CloseDriver()
 |xlGenerateSyncPulse|yes|not tested.|
 |xlPopupHwConfig|yes||
 |xlDeactivateChannel|yes||
-|xlGetLicenseInfo|no||
+|xlGetLicenseInfo|yes|not tested.|
 |xlSetGlobalTimeSync|yes|not tested.|
-|xlGetKeymanBoxes|no||
-|xlGetKeymanInfo|no||
+|xlGetKeymanBoxes|yes|not tested.|
+|xlGetKeymanInfo|yes|not tested.|
 
 ### CAN Commands
 

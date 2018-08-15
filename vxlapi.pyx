@@ -257,6 +257,9 @@ cdef extern from "vxlapi.h":
     XLstatus xlGetRemoteDriverConfig(XLdriverConfig *pDriverConfig)
 
     XLstatus xlPopupHwConfig(char* callSign, unsigned int waitForFinish)
+    XLstatus xlGetLicenseInfo(XLaccess channelMask, XLlicenseInfo* pLicInfoArray, unsigned int licInfoArraySize)
+    XLstatus xlGetKeymanBoxes(unsigned int* boxCount)
+    XLstatus xlGetKeymanInfo(unsigned int boxIndex, unsigned int* boxMask, unsigned int* boxSerial, XLuint64* licInfo)
 
 cpdef enum e_XLevent_type:
     XL_NO_COMMAND               =  0
@@ -811,8 +814,49 @@ def GetRemoteDriverConfig(dict pDriverConfig):
     pDriverConfig["channel"] = channel
 
     return status
+
 def PopupHwConfig(char* callSign=NULL, unsigned int waitForFinish=0):
     return xlPopupHwConfig(callSign, waitForFinish)
+
+def GetLicenseInfo(XLaccess channelMask, list pLicInfoArray):
+    cdef XLstatus status = XL_ERROR
+    cdef XLlicenseInfo licInfoArray[1024]
+    cdef unsigned int licInfoArraySize = 1024
+    pLicInfoArray = []
+
+    if licInfoArraySize > 0:
+        memset(licInfoArray, 0, sizeof(XLlicenseInfo) * licInfoArraySize)
+        status = xlGetLicenseInfo(channelMask, licInfoArray, licInfoArraySize)
+        if status == XL_SUCCESS:
+            for i in range(licInfoArraySize):
+                licInfo = {}
+                licInfo["bAvailable"] = licInfoArray[i].bAvailable
+                licInfo["licName"] =  bytearray([licInfoArray[i].licName[j] for j in range(65)])
+                pLicInfoArray.append(licInfo)
+    return status
+
+def GetKeymanBoxes(list pBoxCount):
+    cdef XLstatus status = XL_ERROR
+    cdef unsigned int boxCount = 0
+    status = xlGetKeymanBoxes(&boxCount)
+    pBoxCount[0] = boxCount
+    return status
+
+def GetKeymanInfo(unsigned int boxIndex, list pBoxMask, list pBoxSerial, list pLicInfo):
+        cdef XLstatus status = XL_ERROR
+        cdef unsigned int boxMask = 0
+        cdef unsigned int boxSerial = 0
+        cdef XLuint64 licInfo[4]
+        pLicInfo = []
+        
+        memset(licInfo, 0, sizeof(XLuint64) * 4)
+        status = xlGetKeymanInfo(boxIndex, &boxMask, &boxSerial, licInfo)
+        if status == XL_SUCCESS:
+            pBoxMask[0]   = boxMask
+            pBoxSerial[0] = boxSerial
+            for i in range(4):
+                pLicInfo.append(licInfo[i])
+        return status
 
 
 # HwType

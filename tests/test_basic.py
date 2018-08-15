@@ -258,14 +258,19 @@ class TestCanSetChannelParams(unittest.TestCase):
         xl.CloseDriver()
 
     def test_CanSetChannelParams(self):
-        # chipParams = {}
-        # chipParams["bitRate"] =125_000
-        # chipParams["sjw"] = 1
-        # chipParams["tseg1"] = 1
-        # chipParams["tseg2"] = 1
-        # chipParams["sam"] = 1
+        chipParams = {}
+        chipParams["bitRate"] =250_000
+        chipParams["sjw"] = 1
+        chipParams["tseg1"] = 10
+        chipParams["tseg2"] = 5
+        chipParams["sam"] = 1
         # status = xl.CanSetChannelParams(self.portHandle[0], self.accessMask, chipParams)
         # self.assertEqual(status, xl.XL_SUCCESS)
+        # .{'bitRate': 250000, 'sjw': 1, 'tseg1': 10, 'tseg2': 5, 'sam': 1, 'outputMode': 1, 'reserved[7]': bytearray(b'\x00\x00\x00\x00\x00\x00\x00'), 'canOpMode': 1, 'name': b'Virtual Channel 1', 'hwType': 1, 'hwIndex': 0, 'hwChannel': 0}
+        # {'bitRate': 500000, 'sjw': 1, 'tseg1': 10, 'tseg2': 5, 'sam': 1, 'outputMode': 1, 'reserved[7]': bytearray(b'\x00\x00\x00\x00\x00\x00\x00'), 'canOpMode': 1, 'name': b'Virtual Channel 1', 'hwType': 1, 'hwIndex': 0, 'hwChannel': 0}
+        # {'bitRate': 1000000, 'sjw': 1, 'tseg1': 5, 'tseg2': 2, 'sam': 1, 'outputMode': 1, 'reserved[7]': bytearray(b'\x00\x00\x00\x00\x00\x00\x00'), 'canOpMode': 1, 'name': b'Virtual Channel 1', 'hwType': 1, 'hwIndex': 0, 'hwChannel': 0}
+
+        
         pass
 
 
