@@ -198,6 +198,10 @@ cdef extern from "vxlapi.h":
     int _XL_LIN_MSGFLAG_TX              "XL_LIN_MSGFLAG_TX"
     int _XL_LIN_MSGFLAG_CRCERROR        "XL_LIN_MSGFLAG_CRCERROR"
 
+    unsigned long _XL_SET_TIMESYNC_NO_CHANGE    "XL_SET_TIMESYNC_NO_CHANGE"
+    unsigned long _XL_SET_TIMESYNC_ON           "XL_SET_TIMESYNC_ON"
+    unsigned long _XL_SET_TIMESYNC_OFF          "XL_SET_TIMESYNC_OFF"
+
     XLstatus xlOpenDriver()
     XLstatus xlCloseDriver()
 
@@ -237,6 +241,11 @@ cdef extern from "vxlapi.h":
     XLstatus xlCanAddAcceptanceRange(XLportHandle portHandle, XLaccess accessMask, unsigned long first_id, unsigned long last_id)
     XLstatus xlCanRemoveAcceptanceRange(XLportHandle portHandle, XLaccess accessMask, unsigned long first_id, unsigned long last_id)
     XLstatus xlCanResetAcceptance(XLportHandle portHandle, XLaccess accessMask, unsigned int idRange)
+    
+    XLstatus xlSetGlobalTimeSync(unsigned long newValue, unsigned long* previousValue)
+    XLstatus xlGetSyncTime(XLportHandle portHandle, XLuint64* time)
+    XLstatus xlGetChannelTime(XLportHandle portHandle, XLaccess accessMask, XLuint64* pChannelTime)
+    XLstatus xlGenerateSyncPulse(XLportHandle portHandle, XLaccess accessMask)
     
     XLstringType xlGetEventString(XLevent* ev)
     const char* xlGetErrorString(XLstatus err)
@@ -439,6 +448,30 @@ cpdef CanRemoveAcceptanceRange(XLportHandle portHandle, XLaccess accessMask, uns
 
 cpdef CanResetAcceptance(XLportHandle portHandle, XLaccess accessMask, unsigned int idRange):
     return xlCanResetAcceptance(portHandle, accessMask, idRange)
+
+cpdef SetGlobalTimeSync(unsigned long newValue, list pPreviousValue):
+    cdef XLstatus status = XL_ERROR
+    cdef unsigned long previousValue = XL_SET_TIMESYNC_NO_CHANGE
+    status = xlSetGlobalTimeSync(newValue, &previousValue)
+    pPreviousValue[0] = previousValue
+    return status
+
+cpdef GetSyncTime(XLportHandle portHandle, list pTime):
+    cdef XLstatus = XL_ERROR
+    cdef XLuint64 time = 0
+    status = xlGetSyncTime(portHandle, &time)
+    pTime[0] = time
+    return status
+
+cpdef GetChannelTime(XLportHandle portHandle, XLaccess accessMask, list pChannelTime):
+    cpdef XLstatus status = XL_ERROR
+    cpdef XLuint64 channelTime
+    status = xlGetChannelTime(portHandle, accessMask, &channelTime)
+    pChannelTime[0] = channelTime
+    return status
+
+cpdef GenerateSyncPulse(XLportHandle portHandle, XLaccess accessMask):
+    return xlGenerateSyncPulse(portHandle, accessMask)
 
 #cpdef GetEventString(dict pXLevent):
     #cdef XLevent xlEvent
@@ -980,3 +1013,7 @@ XL_CAN_MSG_FLAG_SRR_BIT_DOM  = _XL_CAN_MSG_FLAG_SRR_BIT_DOM
 XL_EVENT_FLAG_OVERRUN        = _XL_EVENT_FLAG_OVERRUN
 XL_LIN_MSGFLAG_TX            = _XL_LIN_MSGFLAG_TX
 XL_LIN_MSGFLAG_CRCERROR      = _XL_LIN_MSGFLAG_CRCERROR
+
+XL_SET_TIMESYNC_NO_CHANGE   = _XL_SET_TIMESYNC_NO_CHANGE
+XL_SET_TIMESYNC_ON          = _XL_SET_TIMESYNC_ON
+XL_SET_TIMESYNC_OFF         = _XL_SET_TIMESYNC_OFF

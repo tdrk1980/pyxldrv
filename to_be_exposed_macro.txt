@@ -347,9 +347,6 @@
 #define XL_DAIO_TRIGGER_MODE_ANALOG             (XL_DAIO_TRIGGER_MODE_ANALOG_ASCENDING | \
 #define XL_DAIO_TRIGGER_LEVEL_NONE                       0  // no trigger level is defined
 #define XL_DAIO_POLLING_NONE                             0  // periodic measurement is disabled 
-#define XL_SET_TIMESYNC_NO_CHANGE    (unsigned long)  0
-#define XL_SET_TIMESYNC_ON           (unsigned long)  1
-#define XL_SET_TIMESYNC_OFF          (unsigned long)  2
 #define XLuserHandle               unsigned short
 #define MOST_ALLOC_TABLE_SIZE                    64   // size of channel alloctaion table + 4Bytes (MPR, MDR; ?, ?)
 #define XL_IPv4 4

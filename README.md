@@ -74,13 +74,13 @@ ret = xl.CloseDriver()
 |xlReceive|yes||
 |xlGetEventString|yes|xlReceive and xlGetEventString are intergrated into vxlapi.Receive.|
 |xlGetErrorString|yes||
-|xlGetSyncTime|no||
-|xlGetChannelTime|no||
-|xlGenerateSyncPulse|no||
+|xlGetSyncTime|yes|not tested.|
+|xlGetChannelTime|yes|not tested.|
+|xlGenerateSyncPulse|yes|not tested.|
 |xlPopupHwConfig|yes||
 |xlDeactivateChannel|yes||
 |xlGetLicenseInfo|no||
-|xlSetGlobalTimeSync|no||
+|xlSetGlobalTimeSync|yes|not tested.|
 |xlGetKeymanBoxes|no||
 |xlGetKeymanInfo|no||
 
@@ -122,7 +122,7 @@ not to be supported at this moment.
 
 ## DebugView for Windows
 
-For debugging vxlapi.pyd, [DebugView for Windows](https://technet.microsoft.com/en-us/sysinternals/debugview.aspx) can be used. Because DebugView for Windows shows native side(vxlapi.dll) function's status, "debug print" can be reduced.
+For debugging vxlapi.pyx, [DebugView for Windows](https://technet.microsoft.com/en-us/sysinternals/debugview.aspx) can be used. Because DebugView for Windows shows native side(vxlapi.dll) function's status, "debug print" can be reduced.
 
 See XL Driver Library - Description.pdf
 
