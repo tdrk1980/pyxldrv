@@ -59,17 +59,17 @@ ret = xl.CloseDriver()
 |xlGetApplConfig|yes||
 |xlSetApplConfig|yes|||
 |xlGetDriverConfig|yes|||
-|xlGetRemoteDriverConfig|no||
-|xlGetChannelIndex|no||
+|xlGetRemoteDriverConfig|yes|not tested.|
+|xlGetChannelIndex|yes|not tested.|
 |xlGetChannelMask|yes||
 |xlOpenPort|yes||
 |xlClosePort|yes||
-|xlSetTimerRate|no||
-|xlSetTimerRateAndChannel|no||
+|xlSetTimerRate|yes|not tested.|
+|xlSetTimerRateAndChannel|yes|not tested.|
 |xlResetClock|yes|not tested.|
 |xlSetNotification|yes||
-|xlFlushReceiveQueue|no||
-|xlGetReceiveQueueLevel|no||
+|xlFlushReceiveQueue|yes|not tested.|
+|xlGetReceiveQueueLevel|yes|not tested.|
 |xlActivateChannel|yes||
 |xlReceive|yes||
 |xlGetEventString|yes|xlReceive and xlGetEventString are intergrated into vxlapi.Receive.|
@@ -91,9 +91,9 @@ ret = xl.CloseDriver()
 |xlCanSetChannelMode|yes|not tested.|
 |xlCanSetChannelOutput|yes|not tested.|
 |xlCanSetReceiveMode|yes|not tested.|
-|xlCanSetChannelTransceiver|no||
+|xlCanSetChannelTransceiver|yes|not tested.|
 |xlCanSetChannelParams|yes|not tested.|
-|xlCanSetChannelParamsC200|no||
+|xlCanSetChannelParamsC200|yes|not tested.|
 |xlCanSetChannelBitrate|yes||
 |xlCanSetChannelAcceptance|yes|not tested.|
 |xlCanAddAcceptanceRange|yes|not tested.|
