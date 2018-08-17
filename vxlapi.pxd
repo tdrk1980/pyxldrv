@@ -10,6 +10,9 @@ cdef extern from "vxlapi.h":
         DEF XL_CONFIG_MAX_CHANNELS = 64
         DEF XL_INVALID_PORTHANDLE  = -1
         DEF MAX_MSG_LEN = 8
+        DEF XL_CAN_MAX_DATA_LEN           = 64
+        DEF XL_CANFD_RX_EVENT_HEADER_SIZE = 32
+        DEF XL_CANFD_MAX_EVENT_SIZE       = 128
 
         ctypedef short XLstatus
         ctypedef unsigned long long XLuint64
@@ -265,3 +268,34 @@ cdef extern from "vxlapi.h":
             char          licName[65]
 
         ctypedef XL_LICENSE_INFO XLlicenseInfo
+
+        ctypedef struct XLcanFdConf:
+            unsigned int  arbitrationBitRate
+            unsigned int  sjwAbr
+            unsigned int  tseg1Abr
+            unsigned int  tseg2Abr
+            unsigned int  dataBitRate
+            unsigned int  sjwDbr
+            unsigned int  tseg1Dbr
+            unsigned int  tseg2Dbr
+            unsigned int  reserved[2]
+
+
+        ctypedef struct XL_CAN_TX_MSG:
+            unsigned int       canId
+            unsigned int       msgFlags
+            unsigned char      dlc
+            unsigned char      reserved[7]
+            unsigned char      data[XL_CAN_MAX_DATA_LEN]
+
+        ctypedef union st_tagData:
+            XL_CAN_TX_MSG   canMsg
+
+        ctypedef struct XLcanTxEvent:
+            unsigned short     tag
+            unsigned short     transId
+            unsigned char      channelIndex
+            unsigned char      reserved[3]
+            st_tagData         tagData
+
+

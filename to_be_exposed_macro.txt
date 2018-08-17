@@ -223,7 +223,6 @@
 #define XL_CAN_EV_TAG_TX_REQUEST                ((unsigned short)0x0403)
 #define XL_CAN_EV_TAG_TX_OK                     ((unsigned short)0x0404)
 #define XL_CAN_EV_TAG_CHIP_STATE                ((unsigned short)0x0409)
-#define XL_CAN_EV_TAG_TX_MSG                    ((unsigned short)0x0440)
 #define XL_ETH_EVENT_TAG_FRAMERX                    ((unsigned short)0x0500)  //Event data type T_XL_ETH_DATAFRAME_RX
 #define XL_ETH_EVENT_TAG_FRAMERX_ERROR              ((unsigned short)0x0501)  //Event data type T_XL_ETH_DATAFRAME_RX_ERROR
 #define XL_ETH_EVENT_TAG_FRAMETX_ERROR              ((unsigned short)0x0506)  //Event data type T_XL_ETH_DATAFRAME_TX_ERROR
@@ -953,9 +952,9 @@
 #define XL_MOST150_ECL_LINE_PULL_UP_NOT_ACTIVE           (unsigned int) 0x00000000
 #define XL_MOST150_ECL_LINE_PULL_UP_ACTIVE               (unsigned int) 0x00000001
 #define XL_MOST150_ECL_SEQ_NUM_STATES_MAX               200
-#define XL_MOST150_ECL_SEQ_DURATION_MIN                  1      // -> 100 µs
+#define XL_MOST150_ECL_SEQ_DURATION_MIN                  1      // -> 100 ï¿½s
 #define XL_MOST150_ECL_SEQ_DURATION_MAX                  655350 // -> 65535 ms
-#define XL_MOST150_ECL_GLITCH_FILTER_MIN                 50      // -> 50 µs
+#define XL_MOST150_ECL_GLITCH_FILTER_MIN                 50      // -> 50 ï¿½s
 #define XL_MOST150_ECL_GLITCH_FILTER_MAX                 50000   // -> 50 ms
 #define XL_MOST150_MODE_DEACTIVATED                       0
 #define XL_MOST150_MODE_ACTIVATED                         1
@@ -1030,11 +1029,6 @@
 #define XL_CANFD_RX_EVENT_HEADER_SIZE        32 
 #define XL_CANFD_MAX_EVENT_SIZE              128
 #define CANFD_GET_NUM_DATABYTES(dlc, edl, rtr)   \
-#define XL_CAN_TXMSG_FLAG_EDL                0x0001    // extended data length
-#define XL_CAN_TXMSG_FLAG_BRS                0x0002    // baud rate switch
-#define XL_CAN_TXMSG_FLAG_RTR                0x0010    // remote transmission request
-#define XL_CAN_TXMSG_FLAG_HIGHPRIO           0x0080    // high priority message - clears all send buffers - then transmits
-#define XL_CAN_TXMSG_FLAG_WAKEUP             0x0200    // generate a wakeup message
 #define XL_CAN_RXMSG_FLAG_EDL                0x0001    // extended data length
 #define XL_CAN_RXMSG_FLAG_BRS                0x0002    // baud rate switch
 #define XL_CAN_RXMSG_FLAG_ESI                0x0004    // error state indicator

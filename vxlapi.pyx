@@ -202,6 +202,14 @@ cdef extern from "vxlapi.h":
     unsigned long _XL_SET_TIMESYNC_ON           "XL_SET_TIMESYNC_ON"
     unsigned long _XL_SET_TIMESYNC_OFF          "XL_SET_TIMESYNC_OFF"
 
+    int _XL_CAN_TXMSG_FLAG_EDL           "XL_CAN_TXMSG_FLAG_EDL"
+    int _XL_CAN_TXMSG_FLAG_BRS           "XL_CAN_TXMSG_FLAG_BRS"
+    int _XL_CAN_TXMSG_FLAG_RTR           "XL_CAN_TXMSG_FLAG_RTR"
+    int _XL_CAN_TXMSG_FLAG_HIGHPRIO      "XL_CAN_TXMSG_FLAG_HIGHPRIO"
+    int _XL_CAN_TXMSG_FLAG_WAKEUP        "XL_CAN_TXMSG_FLAG_WAKEUP"
+
+    unsigned short _XL_CAN_EV_TAG_TX_MSG "XL_CAN_EV_TAG_TX_MSG"
+
     XLstatus xlOpenDriver()
     XLstatus xlCloseDriver()
 
@@ -260,6 +268,10 @@ cdef extern from "vxlapi.h":
     XLstatus xlGetLicenseInfo(XLaccess channelMask, XLlicenseInfo* pLicInfoArray, unsigned int licInfoArraySize)
     XLstatus xlGetKeymanBoxes(unsigned int* boxCount)
     XLstatus xlGetKeymanInfo(unsigned int boxIndex, unsigned int* boxMask, unsigned int* boxSerial, XLuint64* licInfo)
+
+
+    XLstatus xlCanFdSetConfiguration(XLportHandle portHandle, XLaccess accessMask, XLcanFdConf* pCanFdConf)
+    XLstatus xlCanTransmitEx(XLportHandle portHandle, XLaccess accessMask, unsigned int msgCnt, unsigned int* pMsgCntSent, XLcanTxEvent* pXlCanTxEvt)
 
 cpdef enum e_XLevent_type:
     XL_NO_COMMAND               =  0
@@ -858,6 +870,47 @@ def GetKeymanInfo(unsigned int boxIndex, list pBoxMask, list pBoxSerial, list pL
                 pLicInfo.append(licInfo[i])
         return status
 
+cpdef CanFdSetConfiguration(XLportHandle portHandle, XLaccess accessMask, list pCanFdConf):
+    cdef XLstatus status = XL_ERROR
+    cdef XLcanFdConf canFdConf
+    memset(&canFdConf, 0, sizeof(canFdConf))
+
+    status = xlCanFdSetConfiguration(portHandle, accessMask, &canFdConf)
+
+    pCanFdConf[0] = canFdConf
+
+    return status
+
+cpdef CanTransmitEx(XLportHandle portHandle, XLaccess accessMask, unsigned char channelIndex, unsigned int msgCnt, list pMsgCntSent, list pXlCanTxEvt):
+    cdef XLstatus status = XL_ERROR
+    cdef unsigned int message_count = 0
+    cdef unsigned int msgCntSent = 0
+    cdef XLcanTxEvent* pXLcanTxEvents = NULL
+
+    message_count = <unsigned int>len(pXlCanTxEvt)
+    if msgCnt > message_count:
+        msgCnt = message_count
+
+    if msgCnt > 0:
+        pXLcanTxEvents = <XLcanTxEvent *> malloc(sizeof(XLcanTxEvent) * msgCnt)
+        memset(pXLcanTxEvents, 0, sizeof(XLcanTxEvent) * msgCnt)
+        for i, msg in enumerate(pXlCanTxEvt):
+            pXLcanTxEvents[i].tag                 = <unsigned short>XL_CAN_EV_TAG_TX_MSG
+            pXLcanTxEvents[i].transId             = <unsigned short>0xffff
+            pXLcanTxEvents[i].channelIndex        = <unsigned char> channelIndex
+
+            pXLcanTxEvents[i].tagData.canMsg.canId      = <unsigned int>msg["canId"]
+            pXLcanTxEvents[i].tagData.canMsg.msgFlags   = <unsigned int>msg["msgFlags"]
+            pXLcanTxEvents[i].tagData.canMsg.dlc        = <unsigned char>msg["dlc"]
+            for j, b in enumerate(msg["data"]):
+                pXLcanTxEvents[i].tagData.canMsg.data[j] = b
+
+            status = xlCanTransmitEx(portHandle, accessMask, msgCnt, &msgCntSent, pXLcanTxEvents)
+        free(pXLcanTxEvents)
+
+    pMsgCntSent[0] = msgCntSent
+    return status
+
 
 # HwType
 XL_HWTYPE_NONE                   = _XL_HWTYPE_NONE
@@ -1061,3 +1114,11 @@ XL_LIN_MSGFLAG_CRCERROR      = _XL_LIN_MSGFLAG_CRCERROR
 XL_SET_TIMESYNC_NO_CHANGE   = _XL_SET_TIMESYNC_NO_CHANGE
 XL_SET_TIMESYNC_ON          = _XL_SET_TIMESYNC_ON
 XL_SET_TIMESYNC_OFF         = _XL_SET_TIMESYNC_OFF
+
+XL_CAN_TXMSG_FLAG_EDL       = _XL_CAN_TXMSG_FLAG_EDL
+XL_CAN_TXMSG_FLAG_BRS       = _XL_CAN_TXMSG_FLAG_BRS
+XL_CAN_TXMSG_FLAG_RTR       = _XL_CAN_TXMSG_FLAG_RTR
+XL_CAN_TXMSG_FLAG_HIGHPRIO  = _XL_CAN_TXMSG_FLAG_HIGHPRIO
+XL_CAN_TXMSG_FLAG_WAKEUP    = _XL_CAN_TXMSG_FLAG_WAKEUP
+
+XL_CAN_EV_TAG_TX_MSG = _XL_CAN_EV_TAG_TX_MSG
